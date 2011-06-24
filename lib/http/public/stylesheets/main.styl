@@ -19,6 +19,12 @@ body
   background: dark url('/images/bg.jpg') no-repeat fixed 50% 0
   color: light
 
+h1, h2, h3
+  margin: 5px 0 10px 0
+  padding: 0
+  font-weight: normal
+  color: white
+
 button
 a.button
 input[type='submit']
@@ -37,6 +43,16 @@ input[type='submit']
     font-smoothing: antialiased
     color: light + 50%
 
+.block
+  width: 33%
+  padding: 20px
+  border: 1px solid rgba(dark, .8)
+  border-top-color: rgba(darker, .9)
+  border-left-color: rgba(darker, .9)
+  box-shadow: 1px 1px 0 0 rgba(white, .05)
+  border-radius: 10px
+  background: rgba(black, .08)
+
 .bar
   font-smoothing: antialiased
   display: block
@@ -54,8 +70,7 @@ table tr td:first-child
   reset-table()
   tr
     td:first-child
-      padding-right: 10px
-      border-right: 1px solid rgba(black, .5)
+      padding-right: 5px
       text-shadow: 1px 1px 1px black
     td:last-child
       padding-left: 10px
