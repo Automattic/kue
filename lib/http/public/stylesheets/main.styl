@@ -30,6 +30,18 @@ a.button
 input[type='submit']
   bold-button(glow: #00ABFA)
 
+#error
+  absolute: top -50px right 15px
+  padding: 20px
+  transition: top 500ms, opacity 500ms
+  opacity: 0
+  background: rgba(black, .4)
+  border: 1px solid rgba(light, .3)
+  border-radius: 5px
+  &.show
+    top: 60px
+    opacity: 1
+
 #header
   absolute: top left
   background: darker
