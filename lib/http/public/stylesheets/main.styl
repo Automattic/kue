@@ -2,6 +2,7 @@
 @import 'nib'
 
 dark = #1A1919
+darker = #111
 light = #525252
 
 body
@@ -17,3 +18,13 @@ button
 a.button
 input[type='submit']
   bold-button(glow: #00ABFA)
+
+#header
+  absolute: top left
+  background: darker
+  height: 30px
+  line-height: 30px
+  text-indent: 10px
+  width: 100%
+  border-bottom: 1px solid dark
+  box-shadow: 0 0 2px 1px black
