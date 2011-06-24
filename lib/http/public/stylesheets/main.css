@@ -112,5 +112,5 @@ input[type="submit"].focus {
 }
 #header .title {
   color: #737373;
-  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
 }
