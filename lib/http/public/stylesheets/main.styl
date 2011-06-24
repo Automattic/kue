@@ -4,10 +4,15 @@
 font-smoothing()
   -webkit-font-smoothing: arguments
 
+bar(color)
+  background: linear-gradient(top, color + 30%, color)
+  border: 1px solid rgba(white, .2)
+  box-shadow: 0 1px 1px 0 rgba(black, .6)
+
 dark = #1A1919
 darker = #111
 light = #525252
-lighter = light + 40%
+lighter = light + 60%
 
 body
   padding: 50px
@@ -32,3 +37,25 @@ input[type='submit']
   .title
     color: lighter
     font-smoothing: antialiased
+
+.bar
+  font-smoothing: antialiased
+  display: block
+  padding: 2px 0
+  border-radius: 8px
+  font-size: 12px
+  text-indent: 5px
+  color: white
+  text-shadow: 0 1px 1px rgba(black, .3)
+
+#stats .failures .bar
+  bar(#c00)
+
+#stats .complete .bar
+  bar(#18E67C)
+
+#stats .active .bar
+  bar(#DFE617)
+
+#stats .inactive .bar
+  bar(#0ACCF3)
