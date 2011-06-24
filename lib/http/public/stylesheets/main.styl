@@ -5,7 +5,7 @@ font-smoothing()
   -webkit-font-smoothing: arguments
 
 bar(color)
-  background: linear-gradient(top, color + 30%, color)
+  background: linear-gradient(top, color + 40%, color)
   border: 1px solid rgba(white, .2)
   box-shadow: 0 1px 1px 0 rgba(black, .6)
 
@@ -50,14 +50,20 @@ input[type='submit']
 table tr td:first-child
   font-smoothing: antialiased
 
-#stats .failures .bar
-  bar(#c00)
-
-#stats .complete .bar
-  bar(#18E67C)
-
-#stats .active .bar
-  bar(#DFE617)
-
-#stats .inactive .bar
-  bar(#0ACCF3)
+#stats
+  reset-table()
+  tr
+    td:first-child
+      padding-right: 10px
+      border-right: 1px solid rgba(black, .5)
+      text-shadow: 1px 1px 1px black
+    td:last-child
+      padding-left: 10px
+  .inactive .bar
+    bar(#00CCCC)
+  .complete .bar
+    bar(#00CC7A)
+  .active .bar
+    bar(#CCC500)
+  .failures .bar
+    bar(#c00)

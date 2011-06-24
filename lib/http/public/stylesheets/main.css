@@ -129,41 +129,54 @@ input[type="submit"].focus {
 table tr td:first-child {
   -webkit-font-smoothing: antialiased;
 }
-#stats .failures .bar {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ff0a0a), color-stop(1, #c00));
-  background: -webkit-linear-gradient(top, #ff0a0a 0%, #c00 100%);
-  background: -moz-linear-gradient(top, #ff0a0a 0%, #c00 100%);
-  background: linear-gradient(top, #ff0a0a 0%, #c00 100%);
+#stats {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+#stats tr td:first-child {
+  padding-right: 10px;
+  border-right: 1px solid rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 1px #000;
+}
+#stats tr td:last-child {
+  padding-left: 10px;
+}
+#stats .inactive .bar {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #1fffff), color-stop(1, #0cc));
+  background: -webkit-linear-gradient(top, #1fffff 0%, #0cc 100%);
+  background: -moz-linear-gradient(top, #1fffff 0%, #0cc 100%);
+  background: linear-gradient(top, #1fffff 0%, #0cc 100%);
   border: 1px solid rgba(255,255,255,0.2);
   -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
 }
 #stats .complete .bar {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #5ceea3), color-stop(1, #18e67c));
-  background: -webkit-linear-gradient(top, #5ceea3 0%, #18e67c 100%);
-  background: -moz-linear-gradient(top, #5ceea3 0%, #18e67c 100%);
-  background: linear-gradient(top, #5ceea3 0%, #18e67c 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #1fffa5), color-stop(1, #00cc7a));
+  background: -webkit-linear-gradient(top, #1fffa5 0%, #00cc7a 100%);
+  background: -moz-linear-gradient(top, #1fffa5 0%, #00cc7a 100%);
+  background: linear-gradient(top, #1fffa5 0%, #00cc7a 100%);
   border: 1px solid rgba(255,255,255,0.2);
   -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
 }
 #stats .active .bar {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eaef5a), color-stop(1, #dfe617));
-  background: -webkit-linear-gradient(top, #eaef5a 0%, #dfe617 100%);
-  background: -moz-linear-gradient(top, #eaef5a 0%, #dfe617 100%);
-  background: linear-gradient(top, #eaef5a 0%, #dfe617 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff71f), color-stop(1, #ccc500));
+  background: -webkit-linear-gradient(top, #fff71f 0%, #ccc500 100%);
+  background: -moz-linear-gradient(top, #fff71f 0%, #ccc500 100%);
+  background: linear-gradient(top, #fff71f 0%, #ccc500 100%);
   border: 1px solid rgba(255,255,255,0.2);
   -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
 }
-#stats .inactive .bar {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #51dcf8), color-stop(1, #0accf3));
-  background: -webkit-linear-gradient(top, #51dcf8 0%, #0accf3 100%);
-  background: -moz-linear-gradient(top, #51dcf8 0%, #0accf3 100%);
-  background: linear-gradient(top, #51dcf8 0%, #0accf3 100%);
+#stats .failures .bar {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ff1f1f), color-stop(1, #c00));
+  background: -webkit-linear-gradient(top, #ff1f1f 0%, #c00 100%);
+  background: -moz-linear-gradient(top, #ff1f1f 0%, #c00 100%);
+  background: linear-gradient(top, #ff1f1f 0%, #c00 100%);
   border: 1px solid rgba(255,255,255,0.2);
   -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
