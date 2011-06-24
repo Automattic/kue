@@ -1,0 +1,12 @@
+html
+  head
+    title= settings.title
+    link(rel='stylesheet', href='/stylesheets/main.css')
+    script(src='/javascripts/jquery.min.js')
+    script(src='/javascripts/main.js')
+  body
+    #header 
+      span.title Queue
+    #content!= body
+    #error
+    

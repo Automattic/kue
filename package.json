@@ -8,6 +8,9 @@
       "redis": "0.6.0"
     , "log": "1.2.0"
     , "express": "2.3.12"
+    , "jade": "0.12.4"
+    , "stylus": "0.13.4"
+    , "nib": "0.0.8"
   }
   , "main": "index"
   , "engines": { "node": "0.4.x" }

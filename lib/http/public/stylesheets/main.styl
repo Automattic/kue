@@ -1,0 +1,97 @@
+
+@import 'nib'
+
+font-smoothing()
+  -webkit-font-smoothing: arguments
+
+bar(color)
+  background: linear-gradient(top, color + 40%, color)
+  border: 1px solid rgba(white, .2)
+  box-shadow: 0 1px 1px 0 rgba(black, .6)
+
+dark = #1A1919
+darker = #111
+light = #666
+
+body
+  padding: 90px 50px
+  font: 14px "helvetica neue", helvetica, arial, sans-serif
+  background: dark url('/images/bg.jpg') no-repeat fixed 50% 0
+  color: light
+
+h1, h2, h3
+  margin: 5px 0 10px 0
+  padding: 0
+  font-weight: normal
+  color: white
+
+button
+a.button
+input[type='submit']
+  bold-button(glow: #00ABFA)
+
+#error
+  absolute: top -50px right 15px
+  padding: 20px
+  transition: top 500ms, opacity 500ms
+  opacity: 0
+  background: rgba(black, .4)
+  border: 1px solid rgba(light, .3)
+  border-radius: 5px
+  &.show
+    top: 60px
+    opacity: 1
+
+#header
+  absolute: top left
+  background: darker
+  height: 40px
+  line-height: 40px
+  text-indent: 15px
+  width: 100%
+  border-bottom: 1px solid dark + 40%
+  box-shadow: 0 0 2px 1px black
+  .title
+    font-smoothing: antialiased
+    color: light + 50%
+
+.block
+  width: 33%
+  padding: 20px
+  border: 1px solid rgba(dark, .8)
+  border-top-color: rgba(darker, .9)
+  border-left-color: rgba(darker, .9)
+  box-shadow: 1px 1px 0 0 rgba(white, .05)
+  border-radius: 10px
+  background: rgba(black, .08)
+
+.bar
+  font-smoothing: antialiased
+  display: block
+  padding: 2px 0
+  border-radius: 8px
+  font-size: 12px
+  text-indent: 5px
+  color: white
+  text-shadow: 0 1px 1px rgba(black, .3)
+  opacity: 0
+  transition: width 500ms ease-out, opacity 500ms ease-out
+
+table tr td:first-child
+  font-smoothing: antialiased
+
+#stats
+  reset-table()
+  tr
+    td
+      padding: 1px 5px
+      &:first-child
+        text-shadow: 1px 1px 1px black
+  .inactive .bar
+    bar(#00CCCC)
+  .complete .bar
+    bar(#00CC7A)
+  .active .bar
+    bar(#CCC500)
+  .failures .bar
+    bar(#c00)
