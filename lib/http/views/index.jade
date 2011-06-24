@@ -1,19 +1,23 @@
 
-.block
+.block#stats
   h2 Jobs
-  table#stats
+  table
     tr.inactive
       td Queued:
-      td: span.bar 15
+      td: span.bar 0
     tr.complete
       td Complete:
-      td: span.bar 30
+      td: span.bar 0
     tr.active
       td Active:
-      td: span.bar 5
+      td: span.bar 0
     tr.failures
       td Failures:
-      td: span.bar 5
+      td: span.bar 0
 
-.block
-  h2 Job #1
+.block.job-1
+  h2 #1
+  table
+    tr.progress
+      td Progress:
+      td: span.bar 0

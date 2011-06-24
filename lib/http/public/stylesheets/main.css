@@ -228,3 +228,13 @@ table .failures .bar {
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
 }
+table .progress .bar {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #1fffff), color-stop(1, #0cc));
+  background: -webkit-linear-gradient(top, #1fffff 0%, #0cc 100%);
+  background: -moz-linear-gradient(top, #1fffff 0%, #0cc 100%);
+  background: linear-gradient(top, #1fffff 0%, #0cc 100%);
+  border: 1px solid rgba(255,255,255,0.2);
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
+}
