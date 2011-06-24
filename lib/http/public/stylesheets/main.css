@@ -147,6 +147,10 @@ input[type="submit"].focus {
   text-indent: 5px;
   color: #fff;
   text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+  opacity: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  -webkit-transition: width 500ms ease-out, opacity 500ms ease-out;
+  -moz-transition: width 500ms ease-out, opacity 500ms ease-out;
 }
 table tr td:first-child {
   -webkit-font-smoothing: antialiased;
@@ -156,12 +160,11 @@ table tr td:first-child {
   border-spacing: 0;
   vertical-align: middle;
 }
-#stats tr td:first-child {
-  padding-right: 5px;
-  text-shadow: 1px 1px 1px #000;
+#stats tr td {
+  padding: 1px 5px;
 }
-#stats tr td:last-child {
-  padding-left: 10px;
+#stats tr td:first-child {
+  text-shadow: 1px 1px 1px #000;
 }
 #stats .inactive .bar {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #1fffff), color-stop(1, #0cc));
