@@ -11,8 +11,7 @@ bar(color)
 
 dark = #1A1919
 darker = #111
-light = #525252
-lighter = light + 60%
+light = #666
 
 body
   padding: 50px
@@ -35,8 +34,8 @@ input[type='submit']
   border-bottom: 1px solid dark + 40%
   box-shadow: 0 0 2px 1px black
   .title
-    color: lighter
     font-smoothing: antialiased
+    color: light + 50%
 
 .bar
   font-smoothing: antialiased
@@ -47,6 +46,9 @@ input[type='submit']
   text-indent: 5px
   color: white
   text-shadow: 0 1px 1px rgba(black, .3)
+
+table tr td:first-child
+  font-smoothing: antialiased
 
 #stats .failures .bar
   bar(#c00)

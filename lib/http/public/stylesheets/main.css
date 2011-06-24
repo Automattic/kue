@@ -2,7 +2,7 @@ body {
   padding: 50px;
   font: 14px "helvetica neue", helvetica, arial, sans-serif;
   background: #1a1919 url("/images/bg.jpg") no-repeat fixed 50% 0;
-  color: #525252;
+  color: #666;
 }
 button,
 a.button,
@@ -111,8 +111,8 @@ input[type="submit"].focus {
   box-shadow: 0 0 2px 1px #000;
 }
 #header .title {
-  color: #838383;
   -webkit-font-smoothing: antialiased;
+  color: #999;
 }
 .bar {
   -webkit-font-smoothing: antialiased;
@@ -125,6 +125,9 @@ input[type="submit"].focus {
   text-indent: 5px;
   color: #fff;
   text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+table tr td:first-child {
+  -webkit-font-smoothing: antialiased;
 }
 #stats .failures .bar {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ff0a0a), color-stop(1, #c00));
