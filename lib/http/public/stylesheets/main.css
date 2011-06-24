@@ -1,5 +1,9 @@
 body {
   padding: 50px;
   font: 14px "helvetica neue", helvetica, arial, sans-serif;
-  color: 292929;
+  background: #1a1919 url("/images/bg.jpg") no-repeat fixed 50% 0;
+  color: #525252;
+}
+h1 {
+  font-weight: normal;
 }
