@@ -1,0 +1,14 @@
+{
+    "name": "q"
+  , "version": "0.0.1"
+  , "description": "Job Queue"
+  , "keywords": ["redis", "job", "queue", "worker"]
+  , "author": "TJ Holowaychuk <tj@learnboost.com>"
+  , "dependencies": {
+      "redis": "0.6.0"
+    , "log": "1.2.0"
+    , "express": "2.3.12"
+  }
+  , "main": "index"
+  , "engines": { "node": "0.4.x" }
+}
