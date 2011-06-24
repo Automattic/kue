@@ -101,9 +101,9 @@ input[type="submit"].focus {
   top: 0;
   left: 0;
   background: #111;
-  height: 30px;
-  line-height: 30px;
-  text-indent: 10px;
+  height: 40px;
+  line-height: 40px;
+  text-indent: 15px;
   width: 100%;
   border-bottom: 1px solid #242323;
   -webkit-box-shadow: 0 0 2px 1px #000;
