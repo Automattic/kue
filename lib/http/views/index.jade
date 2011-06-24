@@ -15,9 +15,10 @@
       td Failures:
       td: span.bar 0
 
-.block.job-1
-  h2 #1
-  table
-    tr.progress
-      td Progress:
-      td: span.bar 0
+- each n in [1,2,3,4]
+  .block(class='job-' + n)
+    h2 #{n}
+    table
+      tr.progress
+        td Progress:
+        td: span.bar 0
