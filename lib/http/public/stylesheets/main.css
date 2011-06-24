@@ -7,3 +7,95 @@ body {
 h1 {
   font-weight: normal;
 }
+button,
+a.button,
+input[type="submit"] {
+  margin: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  display: inline-block;
+  text-decoration: none;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  background: #333;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4d4d4d), color-stop(1, #333));
+  background: -webkit-linear-gradient(top, #4d4d4d 0%, #333 100%);
+  background: -moz-linear-gradient(top, #4d4d4d 0%, #333 100%);
+  background: linear-gradient(top, #4d4d4d 0%, #333 100%);
+  -webkit-box-shadow: inset 0 1px 1px 0 #6c6c6c;
+  -moz-box-shadow: inset 0 1px 1px 0 #6c6c6c;
+  box-shadow: inset 0 1px 1px 0 #6c6c6c;
+  border: 1px solid #333;
+  line-height: 1;
+  padding: 7px 10px 8px 10px;
+  text-align: center;
+  text-shadow: 0 -1px 0 #2b2b2b;
+  color: #fff;
+}
+button:hover,
+a.button:hover,
+input[type="submit"]:hover,
+button.hover,
+a.button.hover,
+input[type="submit"].hover {
+#383838
+  background: #383838;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4d4d4d), color-stop(1, #383838));
+  background: -webkit-linear-gradient(top, #4d4d4d 0%, #383838 100%);
+  background: -moz-linear-gradient(top, #4d4d4d 0%, #383838 100%);
+  background: linear-gradient(top, #4d4d4d 0%, #383838 100%);
+  -webkit-box-shadow: inset 0 1px 1px 0 #838383;
+  -moz-box-shadow: inset 0 1px 1px 0 #838383;
+  box-shadow: inset 0 1px 1px 0 #838383;
+}
+button:active,
+a.button:active,
+input[type="submit"]:active,
+button.active,
+a.button.active,
+input[type="submit"].active {
+#292929
+  background: #292929;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #292929), color-stop(1, #3e3e3e));
+  background: -webkit-linear-gradient(top, #292929 0%, #3e3e3e 100%);
+  background: -moz-linear-gradient(top, #292929 0%, #3e3e3e 100%);
+  background: linear-gradient(top, #292929 0%, #3e3e3e 100%);
+  -webkit-box-shadow: inset 0 -1px 1px 0 #5c5c5c;
+  -moz-box-shadow: inset 0 -1px 1px 0 #5c5c5c;
+  box-shadow: inset 0 -1px 1px 0 #5c5c5c;
+}
+button:hover,
+a.button:hover,
+input[type="submit"]:hover,
+button.hover,
+a.button.hover,
+input[type="submit"].hover {
+  -webkit-box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa;
+  -moz-box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa;
+  box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa;
+}
+button:active,
+a.button:active,
+input[type="submit"]:active,
+button.active,
+a.button.active,
+input[type="submit"].active {
+  -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+  -moz-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+  box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+}
+button:focus,
+a.button:focus,
+input[type="submit"]:focus,
+button.focus,
+a.button.focus,
+input[type="submit"].focus {
+  outline: none;
+  -webkit-box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa, 0 0 3px 1px rgba(0,171,250,0.5);
+  -moz-box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa, 0 0 3px 1px rgba(0,171,250,0.5);
+  box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa, 0 0 3px 1px rgba(0,171,250,0.5);
+}
