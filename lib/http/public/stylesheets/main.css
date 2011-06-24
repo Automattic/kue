@@ -153,18 +153,18 @@ input[type="submit"].focus {
   -webkit-box-shadow: 1px 1px 0 0 rgba(255,255,255,0.05);
   -moz-box-shadow: 1px 1px 0 0 rgba(255,255,255,0.05);
   box-shadow: 1px 1px 0 0 rgba(255,255,255,0.05);
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
   background: rgba(0,0,0,0.08);
 }
 .bar {
   -webkit-font-smoothing: antialiased;
   display: block;
   padding: 2px 0;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   font-size: 12px;
   text-indent: 5px;
   color: #fff;
