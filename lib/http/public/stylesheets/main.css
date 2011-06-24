@@ -4,9 +4,6 @@ body {
   background: #1a1919 url("/images/bg.jpg") no-repeat fixed 50% 0;
   color: #525252;
 }
-h1 {
-  font-weight: normal;
-}
 button,
 a.button,
 input[type="submit"] {
@@ -108,8 +105,12 @@ input[type="submit"].focus {
   line-height: 30px;
   text-indent: 10px;
   width: 100%;
-  border-bottom: 1px solid #1a1919;
+  border-bottom: 1px solid #242323;
   -webkit-box-shadow: 0 0 2px 1px #000;
   -moz-box-shadow: 0 0 2px 1px #000;
   box-shadow: 0 0 2px 1px #000;
+}
+#header .title {
+  color: #737373;
+  font-smoothing: antialiased;
 }

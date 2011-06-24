@@ -1,18 +1,19 @@
 
 @import 'nib'
 
+font-smoothing()
+  -webkit-font-smoothing: arguments
+
 dark = #1A1919
 darker = #111
 light = #525252
+lighter = light + 40%
 
 body
   padding: 50px
   font: 14px "helvetica neue", helvetica, arial, sans-serif
   background: dark url('/images/bg.jpg') no-repeat fixed 50% 0
   color: light
-
-h1
-  font-weight: normal
 
 button
 a.button
@@ -26,5 +27,8 @@ input[type='submit']
   line-height: 30px
   text-indent: 10px
   width: 100%
-  border-bottom: 1px solid dark
+  border-bottom: 1px solid dark + 40%
   box-shadow: 0 0 2px 1px black
+  .title
+    color: lighter
+    font-smoothing: antialiased
