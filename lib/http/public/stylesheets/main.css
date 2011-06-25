@@ -143,7 +143,9 @@ input[type="submit"].focus {
   color: #999;
 }
 .block {
-  width: 33%;
+  margin: 2px;
+  float: left;
+  width: 25%;
   padding: 20px;
   border: 1px solid rgba(26,25,25,0.8);
   border-top-color: rgba(17,17,17,0.9);
@@ -151,18 +153,18 @@ input[type="submit"].focus {
   -webkit-box-shadow: 1px 1px 0 0 rgba(255,255,255,0.05);
   -moz-box-shadow: 1px 1px 0 0 rgba(255,255,255,0.05);
   box-shadow: 1px 1px 0 0 rgba(255,255,255,0.05);
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
   background: rgba(0,0,0,0.08);
 }
 .bar {
   -webkit-font-smoothing: antialiased;
   display: block;
   padding: 2px 0;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   font-size: 12px;
   text-indent: 5px;
   color: #fff;
@@ -175,18 +177,18 @@ input[type="submit"].focus {
 table tr td:first-child {
   -webkit-font-smoothing: antialiased;
 }
-#stats {
+table {
   border-collapse: separate;
   border-spacing: 0;
   vertical-align: middle;
 }
-#stats tr td {
+table tr td {
   padding: 1px 5px;
 }
-#stats tr td:first-child {
+table tr td:first-child {
   text-shadow: 1px 1px 1px #000;
 }
-#stats .inactive .bar {
+table .inactive .bar {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #1fffff), color-stop(1, #0cc));
   background: -webkit-linear-gradient(top, #1fffff 0%, #0cc 100%);
   background: -moz-linear-gradient(top, #1fffff 0%, #0cc 100%);
@@ -196,7 +198,7 @@ table tr td:first-child {
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
 }
-#stats .complete .bar {
+table .complete .bar {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #1fffa5), color-stop(1, #00cc7a));
   background: -webkit-linear-gradient(top, #1fffa5 0%, #00cc7a 100%);
   background: -moz-linear-gradient(top, #1fffa5 0%, #00cc7a 100%);
@@ -206,7 +208,7 @@ table tr td:first-child {
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
 }
-#stats .active .bar {
+table .active .bar {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff71f), color-stop(1, #ccc500));
   background: -webkit-linear-gradient(top, #fff71f 0%, #ccc500 100%);
   background: -moz-linear-gradient(top, #fff71f 0%, #ccc500 100%);
@@ -216,11 +218,21 @@ table tr td:first-child {
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
 }
-#stats .failures .bar {
+table .failures .bar {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ff1f1f), color-stop(1, #c00));
   background: -webkit-linear-gradient(top, #ff1f1f 0%, #c00 100%);
   background: -moz-linear-gradient(top, #ff1f1f 0%, #c00 100%);
   background: linear-gradient(top, #ff1f1f 0%, #c00 100%);
+  border: 1px solid rgba(255,255,255,0.2);
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
+}
+table .progress .bar {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #1fffff), color-stop(1, #0cc));
+  background: -webkit-linear-gradient(top, #1fffff 0%, #0cc 100%);
+  background: -moz-linear-gradient(top, #1fffff 0%, #0cc 100%);
+  background: linear-gradient(top, #1fffff 0%, #0cc 100%);
   border: 1px solid rgba(255,255,255,0.2);
   -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
   -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.6);
