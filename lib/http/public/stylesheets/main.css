@@ -246,6 +246,30 @@ table tr td:first-child {
   list-style: none;
   margin: 0;
 }
+#stats li.inactive:hover .bar {
+  -webkit-box-shadow: 0 0 4px 1px rgba(0,204,204,0.8);
+  -moz-box-shadow: 0 0 4px 1px rgba(0,204,204,0.8);
+  box-shadow: 0 0 4px 1px rgba(0,204,204,0.8);
+}
+#stats li.complete:hover .bar {
+  -webkit-box-shadow: 0 0 4px 1px rgba(0,204,122,0.8);
+  -moz-box-shadow: 0 0 4px 1px rgba(0,204,122,0.8);
+  box-shadow: 0 0 4px 1px rgba(0,204,122,0.8);
+}
+#stats li.active:hover .bar {
+  -webkit-box-shadow: 0 0 4px 1px rgba(204,197,0,0.8);
+  -moz-box-shadow: 0 0 4px 1px rgba(204,197,0,0.8);
+  box-shadow: 0 0 4px 1px rgba(204,197,0,0.8);
+}
+#stats li.failures:hover .bar {
+  -webkit-box-shadow: 0 0 4px 1px rgba(204,0,0,0.8);
+  -moz-box-shadow: 0 0 4px 1px rgba(204,0,0,0.8);
+  box-shadow: 0 0 4px 1px rgba(204,0,0,0.8);
+}
+#stats li a {
+  text-decoration: none;
+  color: inherit;
+}
 #stats li .bar {
   margin-top: 4px;
 }

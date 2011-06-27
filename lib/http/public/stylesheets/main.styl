@@ -12,6 +12,11 @@ bar(color)
 dark = #1A1919
 darker = #111
 light = #666
+progress-bar-color = #00CCCC
+inactive-bar-color = #00CCCC
+complete-bar-color = #00CC7A
+active-bar-color = #CCC500
+failures-bar-color = #c00
 
 body
   padding: 90px 50px
@@ -78,15 +83,15 @@ input[type='submit']
   opacity: 0
   transition: width 500ms ease-out, opacity 500ms ease-out
   .inactive &
-    bar(#00CCCC)
+    bar(inactive-bar-color)
   .complete &
-    bar(#00CC7A)
+    bar(complete-bar-color)
   .active &
-    bar(#CCC500)
+    bar(active-bar-color)
   .failures &
-    bar(#c00)
+    bar(failures-bar-color)
   .progress &
-    bar(#00CCCC)
+    bar(progress-bar-color)
 
 table
   reset-table()
@@ -105,5 +110,16 @@ table
     padding: 0 5px
     list-style: none
     margin: 0
+    &.inactive:hover .bar
+      box-shadow: 0 0 4px 1px rgba(inactive-bar-color, .8)
+    &.complete:hover .bar
+      box-shadow: 0 0 4px 1px rgba(complete-bar-color, .8)
+    &.active:hover .bar
+      box-shadow: 0 0 4px 1px rgba(active-bar-color, .8)
+    &.failures:hover .bar
+      box-shadow: 0 0 4px 1px rgba(failures-bar-color, .8)
+    a
+      text-decoration: none
+      color: inherit
     .bar
       margin-top: 4px
