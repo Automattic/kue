@@ -139,14 +139,15 @@ input[type="submit"].focus {
   box-shadow: 0 0 2px 1px #000;
   color: #999;
 }
-#templates {
+#job-template {
   display: none;
 }
 .block {
+  position: relative;
   margin: 2px;
   float: left;
   width: 25%;
-  padding: 20px;
+  padding: 30px 20px;
   border: 1px solid rgba(26,25,25,0.8);
   border-top-color: rgba(17,17,17,0.9);
   border-left-color: rgba(17,17,17,0.9);
@@ -157,6 +158,18 @@ input[type="submit"].focus {
   -moz-border-radius: 4px;
   border-radius: 4px;
   background: rgba(0,0,0,0.08);
+}
+.block h2 {
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  font-size: 10px;
+  background: rgba(17,17,17,0.5);
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .bar {
   display: block;
