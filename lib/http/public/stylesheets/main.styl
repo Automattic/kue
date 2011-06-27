@@ -17,6 +17,8 @@ body
   padding: 90px 50px
   font: 14px "helvetica neue", helvetica, arial, sans-serif
   background: dark url('/images/bg.jpg') no-repeat fixed 50% 0
+  text-shadow: 0 1px 1px rgba(black, .3)
+  font-smoothing: antialiased
   color: light
 
 h1, h2, h3
@@ -45,15 +47,11 @@ input[type='submit']
 #header
   absolute: top left
   background: darker
-  height: 40px
-  line-height: 40px
-  text-indent: 15px
+  height: 60px
   width: 100%
   border-bottom: 1px solid dark + 40%
   box-shadow: 0 0 2px 1px black
-  .title
-    font-smoothing: antialiased
-    color: light + 50%
+  color: light + 50%
 
 #templates
   display: none
@@ -71,19 +69,24 @@ input[type='submit']
   background: rgba(black, .08)
 
 .bar
-  font-smoothing: antialiased
   display: block
   padding: 2px 0
   border-radius: 2px
   font-size: 12px
   text-indent: 5px
   color: white
-  text-shadow: 0 1px 1px rgba(black, .3)
   opacity: 0
   transition: width 500ms ease-out, opacity 500ms ease-out
-
-table tr td:first-child
-  font-smoothing: antialiased
+  .inactive &
+    bar(#00CCCC)
+  .complete &
+    bar(#00CC7A)
+  .active &
+    bar(#CCC500)
+  .failures &
+    bar(#c00)
+  .progress &
+    bar(#00CCCC)
 
 table
   reset-table()
@@ -92,13 +95,15 @@ table
       padding: 1px 5px
       &:first-child
         text-shadow: 1px 1px 1px black
-  .inactive .bar
-    bar(#00CCCC)
-  .complete .bar
-    bar(#00CC7A)
-  .active .bar
-    bar(#CCC500)
-  .failures .bar
-    bar(#c00)
-  .progress .bar
-    bar(#00CCCC)
+
+#stats
+  absolute: top 10px left 10px
+  margin: 0
+  padding: 0
+  li
+    float: left
+    padding: 0 5px
+    list-style: none
+    margin: 0
+    .bar
+      margin-top: 4px

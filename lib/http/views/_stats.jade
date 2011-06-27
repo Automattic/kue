@@ -1,16 +1,14 @@
 
-.block#stats
-  h2 Stats
-  table
-    tr.inactive
-      td Queued:
-      td: span.bar 0
-    tr.complete
-      td Complete:
-      td: span.bar 0
-    tr.active
-      td Active:
-      td: span.bar 0
-    tr.failures
-      td Failures:
-      td: span.bar 0
+ul#stats
+  li.inactive 
+    | Queued
+    span.bar 0
+  li.complete
+    | Complete
+    span.bar 0
+  li.active
+    | Active
+    span.bar 0
+  li.failures
+    | Failures
+    span.bar 0
