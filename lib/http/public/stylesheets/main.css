@@ -142,6 +142,9 @@ input[type="submit"].focus {
   -webkit-font-smoothing: antialiased;
   color: #999;
 }
+#templates {
+  display: none;
+}
 .block {
   margin: 2px;
   float: left;

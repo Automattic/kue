@@ -1,6 +1,9 @@
-.block(class='job-' + n)
-  h2 #{n}
+.block(class='job-' + id)
+  h2 #{id}
   table
+    tr.state
+      td State
+      td inactive
     tr.progress
       td Progress:
       td: span.bar 0
