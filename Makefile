@@ -1,6 +1,7 @@
 
 test:
 	@./node_modules/.bin/expresso \
-		--require should
+		--require should \
+		--serial
 
 .PHONY: test
