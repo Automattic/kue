@@ -52,11 +52,17 @@ input[type='submit']
 #header
   absolute: top left
   background: darker
-  height: 60px
+  height: 30px
   width: 100%
   border-bottom: 1px solid dark + 40%
   box-shadow: 0 0 2px 1px black
   color: light + 50%
+  transition: height 300ms ease-out
+  &:hover
+    height: 60px
+    #stats
+      top: 15px
+    
 
 #job-template
   display: none
@@ -107,9 +113,10 @@ table
     padding: 2px 5px
 
 #stats
-  absolute: top 10px left 10px
+  absolute: top -15px left 10px
   margin: 0
   padding: 0
+  transition: top 300ms ease-out
   li
     float: left
     padding: 0 5px

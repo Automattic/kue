@@ -131,13 +131,21 @@ input[type="submit"].focus {
   top: 0;
   left: 0;
   background: #111;
-  height: 60px;
+  height: 30px;
   width: 100%;
   border-bottom: 1px solid #242323;
   -webkit-box-shadow: 0 0 2px 1px #000;
   -moz-box-shadow: 0 0 2px 1px #000;
   box-shadow: 0 0 2px 1px #000;
   color: #999;
+  -webkit-transition: height 300ms ease-out;
+  -moz-transition: height 300ms ease-out;
+}
+#header:hover {
+  height: 60px;
+}
+#header:hover #stats {
+  top: 15px;
 }
 #job-template {
   display: none;
@@ -245,10 +253,12 @@ table tr td {
 }
 #stats {
   position: absolute;
-  top: 10px;
+  top: -15px;
   left: 10px;
   margin: 0;
   padding: 0;
+  -webkit-transition: top 300ms ease-out;
+  -moz-transition: top 300ms ease-out;
 }
 #stats li {
   float: left;
