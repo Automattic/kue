@@ -241,10 +241,7 @@ table {
   vertical-align: middle;
 }
 table tr td {
-  padding: 1px 5px;
-}
-table tr td:first-child {
-  text-shadow: 1px 1px 1px #000;
+  padding: 2px 5px;
 }
 #stats {
   position: absolute;
