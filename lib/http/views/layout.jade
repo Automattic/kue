@@ -6,6 +6,8 @@ html
     script(src='/javascripts/main.js')
   body
     #header!= partial('stats')
-    #content!= body
+    #content
+      h1 Active
+      != body
     #job-template!= partial('job')
     #error

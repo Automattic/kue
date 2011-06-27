@@ -19,7 +19,7 @@ active-bar-color = #CCC500
 failures-bar-color = #c00
 
 body
-  padding: 90px 50px
+  padding: 60px 50px
   font: 14px "helvetica neue", helvetica, arial, sans-serif
   background: dark url('/images/bg.jpg') no-repeat fixed 50% 0
   text-shadow: 0 1px 1px rgba(black, .3)
@@ -27,9 +27,10 @@ body
   color: light
 
 h1, h2, h3
-  margin: 5px 0 10px 0
+  margin: 0 0 25px 0
   padding: 0
   font-weight: normal
+  text-transform: capitalize
   color: white
 
 button
@@ -58,11 +59,6 @@ input[type='submit']
   box-shadow: 0 0 2px 1px black
   color: light + 50%
   transition: height 300ms ease-out
-  &:hover
-    height: 60px
-    #stats
-      top: 15px
-    
 
 #job-template
   display: none
@@ -113,13 +109,13 @@ table
     padding: 2px 5px
 
 #stats
-  absolute: top -15px left 10px
+  absolute: top 1px left 10px
   margin: 0
   padding: 0
   transition: top 300ms ease-out
   li
     float: left
-    padding: 0 5px
+    padding: 0 15px 0 0
     list-style: none
     margin: 0
     &.inactive:hover .bar
