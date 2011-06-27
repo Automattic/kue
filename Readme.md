@@ -1,7 +1,7 @@
 
 # q
 
-  Job Queue
+  Priority job queue backed by Redis.
 
 ## License 
 
