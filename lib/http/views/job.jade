@@ -20,7 +20,7 @@
         td= job.state
       tr
         td Priority
-        td= job.priority()
+        td= priority(job)
       tr.progress
         td Progress
         td: span.bar= job.progress()
