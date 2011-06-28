@@ -1,7 +1,10 @@
 .block.job
   h2
   .overlay
-    a(href='#') View
+    ul
+      li: a.remove(href='#') Remove
+      li: a.retry(href='#') Retry
+      li: a.view(href='#') View
   table
     tr.type
       td Type:

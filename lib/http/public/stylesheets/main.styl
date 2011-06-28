@@ -90,22 +90,33 @@ pre
   .overlay
     opacity: 0
     absolute: top left
-    background: rgba(black, .5)
+    background: rgba(black, .85)
     width: 100%
     height: 100%
     text-align: center
-    transition: opacity 200ms ease-out
-    a
-      absolute: top 1px right 1px 
-      display: block
-      width: 20%
-      padding: 5px
-      text-decoration: none
-      border-radius: top right 3px
-      background: rgba(white, .05)
-      color: white
-      &:hover
-        background: rgba(white, .1)
+    transition: opacity 300ms ease-out
+    ul
+      margin: 0
+      padding: 0
+      width: 96%
+      li
+        width: 100%
+        list-style: none
+        &:first-child a
+          border-radius: top 3px
+        a
+          display: block
+          width: 100%
+          padding: 5px
+          text-decoration: none
+          background: rgba(white, .05)
+          color: white
+          font-size: 13px
+          &:hover
+            background: rgba(white, .1)
+          &:active
+            background: rgba(white, .02)
+            color: rgba(white, .5)
   &:hover .overlay
     display: block
     opacity: 1

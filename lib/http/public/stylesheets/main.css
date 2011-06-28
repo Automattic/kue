@@ -183,29 +183,45 @@ pre {
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.85);
   width: 100%;
   height: 100%;
   text-align: center;
-  -webkit-transition: opacity 200ms ease-out;
-  -moz-transition: opacity 200ms ease-out;
+  -webkit-transition: opacity 300ms ease-out;
+  -moz-transition: opacity 300ms ease-out;
 }
-.block.job .overlay a {
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  display: block;
-  width: 20%;
-  padding: 5px;
-  text-decoration: none;
+.block.job .overlay ul {
+  margin: 0;
+  padding: 0;
+  width: 96%;
+}
+.block.job .overlay ul li {
+  width: 100%;
+  list-style: none;
+}
+.block.job .overlay ul li:first-child a {
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
   -moz-border-radius-topright: 3px;
   -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
+}
+.block.job .overlay ul li a {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  text-decoration: none;
   background: rgba(255,255,255,0.05);
   color: #fff;
+  font-size: 13px;
 }
-.block.job .overlay a:hover {
+.block.job .overlay ul li a:hover {
   background: rgba(255,255,255,0.1);
+}
+.block.job .overlay ul li a:active {
+  background: rgba(255,255,255,0.02);
+  color: rgba(255,255,255,0.5);
 }
 .block.job:hover .overlay {
   display: block;
