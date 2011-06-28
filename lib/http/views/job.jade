@@ -23,4 +23,7 @@
     tr.progress
       td Progress
       td: span.bar= job.progress()
+    tr.data
+      td(colspan=2)
+        pre= inspect(job.data)
     
