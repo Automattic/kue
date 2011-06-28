@@ -1,8 +1,11 @@
-.job
+.job(id='job-' + job.id)
   h1 Job ##{job.id} #{job.type}
 
   script
-    $(init);
+    $(function(){
+      init();
+      pollStatsForJob(#{job.id}, 1000);
+    });
 
   table
     tr
@@ -17,7 +20,7 @@
     tr
       td Priority
       td= job.priority()
-    tr
+    tr.progress
       td Progress
-      td= job.progress()
+      td: span.bar= job.progress()
     
