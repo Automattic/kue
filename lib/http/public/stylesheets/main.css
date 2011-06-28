@@ -324,3 +324,6 @@ table tr td {
 #stats li .bar {
   margin-top: 4px;
 }
+#job table td:first-child {
+  width: 35px;
+}

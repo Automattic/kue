@@ -1,29 +1,30 @@
-.job(id='job-' + job.id)
-  h1 Job ##{job.id} #{job.type}
+#job
+  .job(id='job-' + job.id)
+    h1 Job ##{job.id} #{job.type}
 
-  script
-    $(function(){
-      init();
-      pollStatsForJob(#{job.id}, 1000);
-    });
+    script
+      $(function(){
+        init();
+        pollStatsForJob(#{job.id}, 1000);
+      });
 
-  table
-    tr
-      td Id
-      td= job.id
-    tr
-      td Type
-      td= job.type
-    tr
-      td State
-      td= job.state
-    tr
-      td Priority
-      td= job.priority()
-    tr.progress
-      td Progress
-      td: span.bar= job.progress()
-    tr.data
-      td(colspan=2)
-        pre= inspect(job.data)
+    table
+      tr
+        td Id
+        td= job.id
+      tr
+        td Type
+        td= job.type
+      tr
+        td State
+        td= job.state
+      tr
+        td Priority
+        td= job.priority()
+      tr.progress
+        td Progress
+        td: span.bar= job.progress()
+      tr.data
+        td(colspan=2)
+          pre= inspect(job.data)
     
