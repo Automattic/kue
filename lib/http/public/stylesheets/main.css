@@ -183,27 +183,29 @@ pre {
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.5);
   width: 100%;
   height: 100%;
   text-align: center;
-  -webkit-transition: opacity 300ms ease-out;
-  -moz-transition: opacity 300ms ease-out;
+  -webkit-transition: opacity 200ms ease-out;
+  -moz-transition: opacity 200ms ease-out;
 }
 .block.job .overlay a {
+  position: absolute;
+  top: 1px;
+  right: 1px;
   display: block;
-  margin: 35px auto 0 auto;
   width: 20%;
-  padding: 10px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  padding: 5px;
   text-decoration: none;
-  background: rgba(255,255,255,0.2);
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  background: rgba(255,255,255,0.05);
   color: #fff;
 }
 .block.job .overlay a:hover {
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
 }
 .block.job:hover .overlay {
   display: block;

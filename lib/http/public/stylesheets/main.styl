@@ -90,22 +90,22 @@ pre
   .overlay
     opacity: 0
     absolute: top left
-    background: rgba(black, .9)
+    background: rgba(black, .5)
     width: 100%
     height: 100%
     text-align: center
-    transition: opacity 300ms ease-out
+    transition: opacity 200ms ease-out
     a
+      absolute: top 1px right 1px 
       display: block
-      margin: 35px auto 0 auto
       width: 20%
-      padding: 10px
-      border-radius: 5px
+      padding: 5px
       text-decoration: none
-      background: rgba(white, .2)
+      border-radius: top right 3px
+      background: rgba(white, .05)
       color: white
       &:hover
-        background: rgba(white, .3)
+        background: rgba(white, .1)
   &:hover .overlay
     display: block
     opacity: 1
