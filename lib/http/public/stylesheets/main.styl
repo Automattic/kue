@@ -83,6 +83,30 @@ input[type='submit']
     background: rgba(darker, .5)
     border-radius: 2px
 
+.block.job
+  .overlay
+    opacity: 0
+    absolute: top left
+    background: rgba(black, .9)
+    width: 100%
+    height: 100px
+    text-align: center
+    transition: opacity 300ms ease-out
+    a
+      display: block
+      margin: 30px auto 0 auto
+      width: 20%
+      padding: 10px
+      border-radius: 5px
+      text-decoration: none
+      background: rgba(white, .2)
+      color: white
+      &:hover
+        background: rgba(white, .3)
+  &:hover .overlay
+    display: block
+    opacity: 1
+
 .bar
   display: block
   padding: 2px 0
