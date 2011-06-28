@@ -1,6 +1,21 @@
-h1 #{job.id} #{job.type}
+h1 Job ##{job.id} #{job.type}
 script
-  $(function(){
-    resizeBars('.bar');
-    pollStats(1000);
-  });
+  $(init);
+
+table
+  tr
+    td Id
+    td= job.id
+  tr
+    td Type
+    td= job.type
+  tr
+    td State
+    td= job.state
+  tr
+    td Priority
+    td= job.priority()
+  tr
+    td Progress
+    td= job.progress()
+    
