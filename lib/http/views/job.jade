@@ -18,7 +18,7 @@
       tr
         td State
         td= job.state
-      tr
+      tr.priority(class=priority(job))
         td Priority
         td= priority(job)
       tr.progress
