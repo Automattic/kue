@@ -180,6 +180,9 @@ pre {
 .block.job {
   position: relative;
 }
+.block.job table td:first-child {
+  display: none;
+}
 .block.job:hover ul {
   opacity: 1;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
