@@ -87,39 +87,34 @@ pre
     border-radius: 2px
 
 .block.job
-  .overlay
-    opacity: 0
-    absolute: top left
-    background: rgba(black, .85)
-    width: 100%
-    height: 100%
-    text-align: center
-    transition: opacity 300ms ease-out
-    ul
-      margin: 0
-      padding: 0
-      width: 96%
-      li
-        width: 100%
-        list-style: none
-        &:first-child a
-          border-radius: top 3px
-        a
-          display: block
-          width: 100%
-          padding: 5px
-          text-decoration: none
-          background: rgba(white, .05)
-          color: white
-          font-size: 13px
-          &:hover
-            background: rgba(white, .1)
-          &:active
-            background: rgba(white, .02)
-            color: rgba(white, .5)
-  &:hover .overlay
-    display: block
+  position: relative
+  &:hover ul
     opacity: 1
+  ul
+    absolute: top right 10px
+    opacity: 0
+    margin: 0
+    padding: 0
+    width: 60px
+    li
+      width: 100%
+      list-style: none
+      &:first-child a
+        border-radius: top 3px
+      a
+        display: block
+        margin-top: 1px
+        width: 100%
+        padding: 5px
+        text-decoration: none
+        background: rgba(white, .05)
+        color: white
+        font-size: 13px
+        &:hover
+          background: rgba(white, .1)
+        &:active
+          background: rgba(white, .02)
+          color: rgba(white, .5)
 
 .bar
   display: block

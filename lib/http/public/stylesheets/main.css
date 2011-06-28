@@ -177,29 +177,28 @@ pre {
   -moz-border-radius: 2px;
   border-radius: 2px;
 }
-.block.job .overlay {
-  opacity: 0;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+.block.job {
+  position: relative;
+}
+.block.job:hover ul {
+  opacity: 1;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+}
+.block.job ul {
   position: absolute;
   top: 0;
-  left: 0;
-  background: rgba(0,0,0,0.85);
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  -webkit-transition: opacity 300ms ease-out;
-  -moz-transition: opacity 300ms ease-out;
-}
-.block.job .overlay ul {
+  right: 10px;
+  opacity: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   margin: 0;
   padding: 0;
-  width: 96%;
+  width: 60px;
 }
-.block.job .overlay ul li {
+.block.job ul li {
   width: 100%;
   list-style: none;
 }
-.block.job .overlay ul li:first-child a {
+.block.job ul li:first-child a {
   -moz-border-radius-topleft: 3px;
   -webkit-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
@@ -207,8 +206,9 @@ pre {
   -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
 }
-.block.job .overlay ul li a {
+.block.job ul li a {
   display: block;
+  margin-top: 1px;
   width: 100%;
   padding: 5px;
   text-decoration: none;
@@ -216,17 +216,12 @@ pre {
   color: #fff;
   font-size: 13px;
 }
-.block.job .overlay ul li a:hover {
+.block.job ul li a:hover {
   background: rgba(255,255,255,0.1);
 }
-.block.job .overlay ul li a:active {
+.block.job ul li a:active {
   background: rgba(255,255,255,0.02);
   color: rgba(255,255,255,0.5);
-}
-.block.job:hover .overlay {
-  display: block;
-  opacity: 1;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
 }
 .bar {
   display: block;
