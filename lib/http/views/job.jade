@@ -32,9 +32,9 @@
         td Progress
         td: span.bar= job.progress()
 
-  h2 Data
-  pre= inspect(job.data)
+    h2 Data
+    pre= inspect(job.data)
 
-  - if (job.error().length)
-    h2 Error
-    pre= job.error()
+    - if (job.error().length)
+      h2 Error
+      pre= job.error()
