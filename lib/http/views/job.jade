@@ -34,4 +34,7 @@
       tr.data
         td(colspan=2)
           pre= inspect(job.data)
-    
+      - if (job.error().length)
+        tr.error
+          td(colspan=2)
+            pre= job.error()
