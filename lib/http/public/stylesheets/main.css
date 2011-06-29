@@ -390,3 +390,16 @@ table tr td {
 #job table td:first-child {
   width: 35px;
 }
+#log {
+  padding: 0;
+  overflow-y: scroll;
+  max-height: 300px;
+}
+#log li {
+  padding: 2px 0;
+  list-style: none;
+  border-bottom: 1px solid rgba(102,102,102,0.1);
+}
+#log li:last-child {
+  border-bottom: none;
+}

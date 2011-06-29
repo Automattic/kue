@@ -7,6 +7,7 @@
       $(function(){
         init();
         pollStatsForJob(#{job.id}, 1000);
+        pollLogForJob(#{job.id}, 1000);
       });
 
     table
@@ -41,3 +42,6 @@
     - if (job.error())
       h2 Error
       pre= job.error()
+    
+    h2 Log
+    ul#log
