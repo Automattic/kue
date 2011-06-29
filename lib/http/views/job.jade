@@ -21,7 +21,7 @@
         td= job.state
       tr
         td Attempts
-        td= job._attempts
+        td= job._attempts || 0
       tr.priority(class=priority(job))
         td Priority
         td
