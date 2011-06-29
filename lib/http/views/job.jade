@@ -35,6 +35,6 @@
     h2 Data
     pre= inspect(job.data)
 
-    - if (job.error().length)
+    - if (job.error())
       h2 Error
       pre= job.error()
