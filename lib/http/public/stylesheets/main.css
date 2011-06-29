@@ -17,7 +17,8 @@ h3 {
 }
 button,
 a.button,
-input[type="submit"] {
+input[type="submit"],
+#pager li a {
   margin: 0;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -29,59 +30,65 @@ input[type="submit"] {
   -moz-border-radius: 4px;
   border-radius: 4px;
   font-size: 11px;
-  background: #333;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4d4d4d), color-stop(1, #333));
-  background: -webkit-linear-gradient(top, #4d4d4d 0%, #333 100%);
-  background: -moz-linear-gradient(top, #4d4d4d 0%, #333 100%);
-  background: linear-gradient(top, #4d4d4d 0%, #333 100%);
-  -webkit-box-shadow: inset 0 1px 1px 0 #6c6c6c;
-  -moz-box-shadow: inset 0 1px 1px 0 #6c6c6c;
-  box-shadow: inset 0 1px 1px 0 #6c6c6c;
-  border: 1px solid #333;
+  background: #1a1919;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #272626), color-stop(1, #1a1919));
+  background: -webkit-linear-gradient(top, #272626 0%, #1a1919 100%);
+  background: -moz-linear-gradient(top, #272626 0%, #1a1919 100%);
+  background: linear-gradient(top, #272626 0%, #1a1919 100%);
+  -webkit-box-shadow: inset 0 1px 1px 0 #373535;
+  -moz-box-shadow: inset 0 1px 1px 0 #373535;
+  box-shadow: inset 0 1px 1px 0 #373535;
+  border: 1px solid #1a1919;
   line-height: 1;
   padding: 7px 10px 8px 10px;
   text-align: center;
-  text-shadow: 0 -1px 0 #2b2b2b;
+  text-shadow: 0 -1px 0 #161515;
   color: #fff;
 }
 button:hover,
 a.button:hover,
 input[type="submit"]:hover,
+#pager li a:hover,
 button.hover,
 a.button.hover,
-input[type="submit"].hover {
-#383838
-  background: #383838;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4d4d4d), color-stop(1, #383838));
-  background: -webkit-linear-gradient(top, #4d4d4d 0%, #383838 100%);
-  background: -moz-linear-gradient(top, #4d4d4d 0%, #383838 100%);
-  background: linear-gradient(top, #4d4d4d 0%, #383838 100%);
-  -webkit-box-shadow: inset 0 1px 1px 0 #838383;
-  -moz-box-shadow: inset 0 1px 1px 0 #838383;
-  box-shadow: inset 0 1px 1px 0 #838383;
+input[type="submit"].hover,
+#pager li a.hover {
+#1d1c1c
+  background: #1d1c1c;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #272626), color-stop(1, #1d1c1c));
+  background: -webkit-linear-gradient(top, #272626 0%, #1d1c1c 100%);
+  background: -moz-linear-gradient(top, #272626 0%, #1d1c1c 100%);
+  background: linear-gradient(top, #272626 0%, #1d1c1c 100%);
+  -webkit-box-shadow: inset 0 1px 1px 0 #424141;
+  -moz-box-shadow: inset 0 1px 1px 0 #424141;
+  box-shadow: inset 0 1px 1px 0 #424141;
 }
 button:active,
 a.button:active,
 input[type="submit"]:active,
+#pager li a:active,
 button.active,
 a.button.active,
-input[type="submit"].active {
-#292929
-  background: #292929;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #292929), color-stop(1, #3e3e3e));
-  background: -webkit-linear-gradient(top, #292929 0%, #3e3e3e 100%);
-  background: -moz-linear-gradient(top, #292929 0%, #3e3e3e 100%);
-  background: linear-gradient(top, #292929 0%, #3e3e3e 100%);
-  -webkit-box-shadow: inset 0 -1px 1px 0 #5c5c5c;
-  -moz-box-shadow: inset 0 -1px 1px 0 #5c5c5c;
-  box-shadow: inset 0 -1px 1px 0 #5c5c5c;
+input[type="submit"].active,
+#pager li a.active {
+#151414
+  background: #151414;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #151414), color-stop(1, #201e1e));
+  background: -webkit-linear-gradient(top, #151414 0%, #201e1e 100%);
+  background: -moz-linear-gradient(top, #151414 0%, #201e1e 100%);
+  background: linear-gradient(top, #151414 0%, #201e1e 100%);
+  -webkit-box-shadow: inset 0 -1px 1px 0 #2f2e2e;
+  -moz-box-shadow: inset 0 -1px 1px 0 #2f2e2e;
+  box-shadow: inset 0 -1px 1px 0 #2f2e2e;
 }
 button:hover,
 a.button:hover,
 input[type="submit"]:hover,
+#pager li a:hover,
 button.hover,
 a.button.hover,
-input[type="submit"].hover {
+input[type="submit"].hover,
+#pager li a.hover {
   -webkit-box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa;
   -moz-box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa;
   box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa;
@@ -89,9 +96,11 @@ input[type="submit"].hover {
 button:active,
 a.button:active,
 input[type="submit"]:active,
+#pager li a:active,
 button.active,
 a.button.active,
-input[type="submit"].active {
+input[type="submit"].active,
+#pager li a.active {
   -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
   -moz-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
   box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
@@ -99,9 +108,11 @@ input[type="submit"].active {
 button:focus,
 a.button:focus,
 input[type="submit"]:focus,
+#pager li a:focus,
 button.focus,
 a.button.focus,
-input[type="submit"].focus {
+input[type="submit"].focus,
+#pager li a.focus {
   outline: none;
   -webkit-box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa, 0 0 3px 1px rgba(0,171,250,0.5);
   -moz-box-shadow: inset 0 0 3px 1px rgba(0,171,250,0.6), inset 0 -1px 0 0 #00abfa, 0 0 3px 1px rgba(0,171,250,0.5);
@@ -109,6 +120,23 @@ input[type="submit"].focus {
 }
 pre {
   margin-top: 20px;
+}
+a {
+  text-decoration: none;
+}
+#pager {
+  margin: 15px 0;
+  padding: 0;
+  float: left;
+  clear: both;
+  width: 100%;
+}
+#pager li {
+  display: inline;
+  list-style: none;
+}
+#pager li.active a {
+  background: #2a2828;
 }
 #error {
   position: absolute;
@@ -214,7 +242,6 @@ pre {
   margin-top: 1px;
   width: 100%;
   padding: 5px;
-  text-decoration: none;
   background: rgba(255,255,255,0.05);
   color: #fff;
   font-size: 13px;
@@ -334,7 +361,6 @@ table tr td {
   box-shadow: 0 0 4px 1px rgba(204,0,0,0.8);
 }
 #stats li a {
-  text-decoration: none;
   color: inherit;
 }
 #stats li .bar {
