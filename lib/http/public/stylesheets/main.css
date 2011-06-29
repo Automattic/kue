@@ -237,6 +237,11 @@ a {
   -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
 }
+.block.job ul li:last-child a {
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
 .block.job ul li a {
   display: block;
   margin-top: 1px;
