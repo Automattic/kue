@@ -3,6 +3,7 @@
     h1 Job
 
     script
+      var currentJob = #{job.id};
       $(function(){
         init();
         pollStatsForJob(#{job.id}, 1000);
@@ -20,7 +21,13 @@
         td= job.state
       tr.priority(class=priority(job))
         td Priority
-        td= priority(job)
+        td
+          select#job-priority
+            - each name, n in priorities
+              - if (n == job.priority())
+                option(value=n, selected)= name
+              - else
+                option(value=n)= name
       tr.progress
         td Progress
         td: span.bar= job.progress()
