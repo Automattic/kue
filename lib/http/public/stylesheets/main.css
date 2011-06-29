@@ -134,6 +134,7 @@ a {
 #pager li {
   display: inline;
   list-style: none;
+  margin-right: 2px;
 }
 #pager li.active a {
   background: #2a2828;
