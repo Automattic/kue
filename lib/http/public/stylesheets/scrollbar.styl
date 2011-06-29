@@ -1,5 +1,6 @@
 
 color = #2b2b2b
+radius = 6px
 
 body
   ::-webkit-scrollbar
@@ -11,11 +12,15 @@ body
     display: block
     height: 0
 
+  ::-webkit-scrollbar-track
+    border-radius: radius
+    box-shadow: inset 0 0 4px rgba(black, .3)
+
   ::-webkit-scrollbar-track-piece
     background: transparent
 
   ::-webkit-scrollbar-thumb:vertical
-    height: 50px
-    background: rgba(color, .3)
-    border: 1px solid color
-    border-radius: 6px
+    height: 30px
+    background: rgba(color, .7)
+    border: 1px solid color + 10%
+    border-radius: radius
