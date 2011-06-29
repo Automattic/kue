@@ -19,6 +19,9 @@
       tr
         td State
         td= job.state
+      tr
+        td Attempts
+        td= job._attempts
       tr.priority(class=priority(job))
         td Priority
         td
