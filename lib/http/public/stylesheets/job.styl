@@ -36,6 +36,8 @@ bar(color)
   background: job-bg
   table td:first-child
     display: none
+  .progress
+    absolute: top 15px right 20px
   .attempts
     display: none
     absolute: top right
@@ -64,19 +66,6 @@ bar(color)
   &:hover .remove
       opacity: 1
       top: -6px
-
-// job progress
-
-.bar
-  display: block
-  padding: 2px 0
-  border-radius: 2px
-  font-size: 12px
-  text-indent: 5px
-  opacity: 0
-  transition: width 500ms ease-out, opacity 500ms ease-out
-  .progress &
-    bar(progress-color)
 
 // job page
 
