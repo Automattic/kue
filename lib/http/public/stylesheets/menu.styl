@@ -1,7 +1,8 @@
 
+@import 'mixins'
+
 #menu
-  margin: 0
-  padding: 0
+  reset-list()
   fixed: top left
   height: 100%
   width: 80px
@@ -10,8 +11,6 @@
   box-shadow: 0 0 0 1px rgba(white, .5)
   li
     position: relative
-    margin: 0
-    list-style: none
     text-align: center
     if menu-colored
       &.inactive

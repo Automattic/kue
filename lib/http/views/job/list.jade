@@ -1,6 +1,14 @@
 h1 Active
+
 script
   $(function(){
     init();
     $('.#{state} a').click();
   });
+
+ul#actions
+  li: a Remove All
+  li: a#remove-inactive Remove Queued
+  li: a#remove-active Remove Active  
+  li: a#remove-failed Remove Failed
+  li: a#remove-complete Remove Complete
