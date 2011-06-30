@@ -6,7 +6,7 @@
 
 .block
   width: 90%
-  margin: 5px 25px
+  margin: 15px 25px
   padding: 20px 25px 10px 25px
   border: 1px solid #eee
   border-bottom-color: rgba(black, .25)
@@ -32,39 +32,36 @@
   background: job-bg
   table td:first-child
     display: none
-  &:hover ul
-    opacity: 1
   .attempts
+    display: none
     absolute: top right
     background: rgba(darker, .5)
     padding: 5px 8px
     border-radius: 2px
     font-size: 10px
-  ul
-    absolute: top right 10px
+  .remove
+    absolute: top 30px right -6px
+    background: white
+    display: block
+    width: size = 20px
+    height: size
+    line-height: size
+    text-align: center
+    font-size: 12px
+    font-weight: bold
+    cursor: pointer
+    outline: none
+    border: 1px solid #eee
+    border-radius: size
+    transition: opacity 200ms, top 300ms
     opacity: 0
-    margin: 0
-    padding: 0
-    width: 60px
-    li
-      width: 100%
-      list-style: none
-      &:first-child a
-        border-radius: top 3px
-      &:last-child a
-        border-radius: bottom left 3px
-      a
-        display: block
-        margin-top: 1px
-        width: 100%
-        padding: 5px
-        background: rgba(white, .05)
-        font-size: 13px
-        &:hover
-          background: rgba(white, .1)
-        &:active
-          background: rgba(white, .02)
-          color: rgba(white, .5)
+    &:hover
+      border: 1px solid #eee - 10%
+    &:active
+      border: 1px solid #eee - 20%
+  &:hover .remove
+      opacity: 1
+      top: -6px
 
 // job progress
 
