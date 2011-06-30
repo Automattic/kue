@@ -1,14 +1,18 @@
 
 ul#menu
   li.inactive
-    .count
-    a(href='/inactive') Queued
+    a(href='/inactive')
+      .count 0
+      | Queued
   li.active
-    .count
-    a.active(href='/active') Active
+    a.active(href='/active') 
+      .count 0
+      | Active
   li.failed
-    .count
-    a(href='/failed') Failed
+    a(href='/failed') 
+      .count 0
+      | Failed
   li.complete
-    .count
-    a(href='/complete') Complete
+    a(href='/complete') 
+      .count 0
+      | Complete
