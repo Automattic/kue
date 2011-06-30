@@ -1,0 +1,28 @@
+
+@import 'mixins'
+
+highlight-color = #00B3E9
+
+.context-menu
+  reset-list()
+  decorated-box()
+  z-index: 100
+  fixed: top 5px right 5px
+  li
+    &:last-child a
+      border-bottom: none
+    a
+      display: block
+      background: white
+      padding: 5px 10px
+      border: 1px solid transparent
+      border-bottom: 1px solid #eee
+      font-size: 12px
+      cursor: pointer
+      &:hover
+        background: linear-gradient(bottom, highlight-color, highlight-color + 50%)
+        color: white
+        border: 1px solid white
+      &:active
+        highlight-color += 10%
+        background: linear-gradient(bottom, highlight-color, highlight-color + 50%)
