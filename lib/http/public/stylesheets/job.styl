@@ -3,9 +3,9 @@
   display: none
 
 bar(color)
-  background: linear-gradient(top, color + 40%, color)
+  background: linear-gradient(top, color + 20%, color)
   border: 1px solid rgba(white, .2)
-  box-shadow: 0 1px 1px 0 rgba(black, .6)
+  color: white
 
 // generic blocks
 
@@ -78,14 +78,6 @@ bar(color)
   text-indent: 5px
   opacity: 0
   transition: width 500ms ease-out, opacity 500ms ease-out
-  .inactive &
-    bar(inactive-color)
-  .complete &
-    bar(complete-color)
-  .active &
-    bar(active-color)
-  .failed &
-    bar(failed-color)
   .progress &
     bar(progress-color)
 
