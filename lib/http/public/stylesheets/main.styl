@@ -1,6 +1,10 @@
 
 @import 'nib'
+@import 'config'
 @import 'scrollbar'
+@import 'menu'
+@import 'job'
+@import 'error'
 
 font-smoothing()
   -webkit-font-smoothing: arguments
@@ -10,21 +14,10 @@ bar(color)
   border: 1px solid rgba(white, .2)
   box-shadow: 0 1px 1px 0 rgba(black, .6)
 
-dark = #1A1919
-darker = #111
-light = #666
-progress-bar-color = #00CCCC
-inactive-bar-color = #00CCCC
-complete-bar-color = #00CC7A
-active-bar-color = #CCC500
-failures-bar-color = #c00
-
 body
-  padding: 60px 50px
   font: 14px "helvetica neue", helvetica, arial, sans-serif
-  background: dark url('/images/bg.jpg') no-repeat fixed 50% 0
-  text-shadow: 0 1px 1px rgba(black, .3)
   font-smoothing: antialiased
+  background: bg
   color: light
 
 h1, h2, h3
@@ -32,7 +25,7 @@ h1, h2, h3
   padding: 0
   font-weight: normal
   text-transform: capitalize
-  color: white
+  color: light
 
 h2
   font-size: 16px
@@ -42,7 +35,7 @@ button
 a.button
 input[type='submit']
 #pager li a
-  bold-button(bg: dark, glow: #00ABFA)
+  bold-button(glow: #00ABFA)
 
 pre
   margin-top: 20px
@@ -50,162 +43,7 @@ pre
 a
   text-decoration: none
 
-#pager
-  margin: 15px 0
-  padding: 0
-  float: left
-  clear: both
-  width: 100%
-  li
-    display: inline
-    list-style: none
-    margin-right: 2px
-    &.active a
-      background: dark + 60%
-
-#error
-  absolute: top -50px right 15px
-  padding: 20px
-  transition: top 500ms, opacity 500ms
-  opacity: 0
-  background: rgba(black, .4)
-  border: 1px solid rgba(light, .3)
-  border-radius: 5px
-  &.show
-    top: 60px
-    opacity: 1
-
-#header
-  absolute: top left
-  background: darker
-  height: 30px
-  width: 100%
-  border-bottom: 1px solid dark + 40%
-  box-shadow: 0 0 2px 1px black
-  color: light + 50%
-  transition: height 300ms ease-out
-
-#job-template
-  display: none
-
-.block
-  position: relative
-  margin: 2px
-  float: left
-  width: 25%
-  padding: 30px 20px
-  border: 1px solid rgba(dark, .8)
-  border-top-color: rgba(darker, .9)
-  border-left-color: rgba(darker, .9)
-  box-shadow: 1px 1px 0 0 rgba(white, .05)
-  border-radius: 4px
-  background: rgba(black, .08)
-  h2
-    margin: 0
-    absolute: top left
-    padding: 5px
-    font-size: 10px
-    background: rgba(darker, .5)
-    border-radius: 2px
-
-.block.job
-  position: relative
-  table td:first-child
-    display: none
-  &:hover ul
-    opacity: 1
-  .attempts
-    absolute: top right
-    background: rgba(darker, .5)
-    padding: 5px 8px
-    border-radius: 2px
-    font-size: 10px
-  ul
-    absolute: top right 10px
-    opacity: 0
-    margin: 0
-    padding: 0
-    width: 60px
-    li
-      width: 100%
-      list-style: none
-      &:first-child a
-        border-radius: top 3px
-      &:last-child a
-        border-radius: bottom left 3px
-      a
-        display: block
-        margin-top: 1px
-        width: 100%
-        padding: 5px
-        background: rgba(white, .05)
-        color: white
-        font-size: 13px
-        &:hover
-          background: rgba(white, .1)
-        &:active
-          background: rgba(white, .02)
-          color: rgba(white, .5)
-
-.bar
-  display: block
-  padding: 2px 0
-  border-radius: 2px
-  font-size: 12px
-  text-indent: 5px
-  color: white
-  opacity: 0
-  transition: width 500ms ease-out, opacity 500ms ease-out
-  .inactive &
-    bar(inactive-bar-color)
-  .complete &
-    bar(complete-bar-color)
-  .active &
-    bar(active-bar-color)
-  .failures &
-    bar(failures-bar-color)
-  .progress &
-    bar(progress-bar-color)
-
 table
   reset-table()
   tr td
     padding: 2px 5px
-
-#stats
-  absolute: top 1px left 10px
-  margin: 0
-  padding: 0
-  transition: top 300ms ease-out
-  li
-    float: left
-    padding: 0 15px 0 0
-    list-style: none
-    margin: 0
-    &.inactive:hover .bar
-      box-shadow: 0 0 4px 1px rgba(inactive-bar-color, .8)
-    &.complete:hover .bar
-      box-shadow: 0 0 4px 1px rgba(complete-bar-color, .8)
-    &.active:hover .bar
-      box-shadow: 0 0 4px 1px rgba(active-bar-color, .8)
-    &.failures:hover .bar
-      box-shadow: 0 0 4px 1px rgba(failures-bar-color, .8)
-    a
-      color: inherit
-    .bar
-      margin-top: 4px
-
-#job
-  table td:first-child
-    width: 35px
-
-#log
-  padding: 0
-  overflow-y: scroll
-  max-height: 300px
-  li
-    padding: 2px 0
-    list-style: none
-    border-bottom: 1px solid rgba(light, .05)
-    &:last-child
-      border-bottom: none

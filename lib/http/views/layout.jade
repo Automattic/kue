@@ -5,8 +5,7 @@ html
     script(src='/javascripts/jquery.min.js')
     script(src='/javascripts/main.js')
   body
-    #header!= partial('stats')
+    != partial('menu')
     #content!= body
-    ul#pager
     #job-template!= partial('job')
     #error

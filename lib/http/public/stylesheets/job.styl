@@ -1,0 +1,129 @@
+
+#job-template
+  display: none
+
+// generic blocks
+
+.block
+  width: 90%
+  margin: 5px 25px
+  padding: 20px 25px 10px 25px
+  border: 1px solid #eee
+  border-bottom-color: rgba(black, .25)
+  border-left-color: rgba(black, .2)
+  border-right-color: rgba(black, .2)
+  box-shadow: 0 1px 3px 1px rgba(black, .1)
+  border-radius: 4px
+  h2
+    margin: 0
+    absolute: top 5px left -10px
+    padding: 5px
+    font-size: 10px
+    border-radius: left 5px right 2px
+    background: linear-gradient(left, menu-fg - 10%, 50% menu-fg + 5%)
+    box-shadow: -1px 0 1px 1px rgba(black, .1)
+    color: white
+    text-shadow: 1px 1px 1px #444
+
+// .block
+//   position: relative
+//   margin: 5px
+//   float: left
+//   width: 25%
+//   padding: 25px 20px
+//   border: 1px solid #eee
+//   border-bottom-color: rgba(black, .25)
+//   border-left-color: rgba(black, .2)
+//   border-right-color: rgba(black, .2)
+//   box-shadow: 0 1px 3px 1px rgba(black, .1)
+//   border-radius: 4px
+//   h2
+//     margin: 0
+//     absolute: top 1px left 1px
+//     padding: 5px
+//     font-size: 10px
+//     background: #eee
+//     border-radius: 2px
+
+// job blocks
+
+.block.job
+  position: relative
+  background: job-bg
+  table td:first-child
+    display: none
+  &:hover ul
+    opacity: 1
+  .attempts
+    absolute: top right
+    background: rgba(darker, .5)
+    padding: 5px 8px
+    border-radius: 2px
+    font-size: 10px
+  ul
+    absolute: top right 10px
+    opacity: 0
+    margin: 0
+    padding: 0
+    width: 60px
+    li
+      width: 100%
+      list-style: none
+      &:first-child a
+        border-radius: top 3px
+      &:last-child a
+        border-radius: bottom left 3px
+      a
+        display: block
+        margin-top: 1px
+        width: 100%
+        padding: 5px
+        background: rgba(white, .05)
+        font-size: 13px
+        &:hover
+          background: rgba(white, .1)
+        &:active
+          background: rgba(white, .02)
+          color: rgba(white, .5)
+
+// job progress
+
+.bar
+  display: block
+  padding: 2px 0
+  border-radius: 2px
+  font-size: 12px
+  text-indent: 5px
+  opacity: 0
+  transition: width 500ms ease-out, opacity 500ms ease-out
+  .inactive &
+    bar(inactive-color)
+  .complete &
+    bar(complete-color)
+  .active &
+    bar(active-color)
+  .failed &
+    bar(failed-color)
+  .progress &
+    bar(progress-color)
+
+// job page
+
+#job
+  table td:first-child
+    width: 35px
+
+// job log
+
+#log
+  absolute: top right 10px
+  padding: 0
+  width: 300px
+  overflow-y: auto
+  max-height: 300px
+  li
+    padding: 2px 0
+    list-style: none
+    border-bottom: 1px solid rgba(light, .05)
+    &:last-child
+      border-bottom: none
