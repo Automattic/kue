@@ -82,8 +82,11 @@ bar(color)
   transition: padding 200ms, height 200ms
   height: 0
   overflow: hidden
-  td:first-child
-    color: light + 30%
+  table
+    width: 100%
+    td:first-child
+      width: 60px
+      color: light + 30%
   &.show
     padding: 15px
     height: auto
@@ -96,10 +99,9 @@ bar(color)
   padding: 10px
   max-height: 100px
   overflow-y: auto
-  background: dark - 10%
   border-radius: 5px
+  width: 95%
   li
-    width: 100%
     color: light
 
 // more button
