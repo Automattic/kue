@@ -82,9 +82,25 @@ bar(color)
   transition: padding 200ms, height 200ms
   height: 0
   overflow: hidden
+  td:first-child
+    color: light + 30%
   &.show
     padding: 15px
     height: auto
+
+// job log
+
+.job .log ul
+  reset-list()
+  margin: 5px
+  padding: 10px
+  max-height: 100px
+  overflow-y: auto
+  background: dark - 10%
+  border-radius: 5px
+  li
+    width: 100%
+    color: light
 
 // more button
 
