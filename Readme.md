@@ -1,5 +1,5 @@
 
-# q
+# kue
 
   Priority job queue backed by Redis.
 
