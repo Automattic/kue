@@ -66,6 +66,31 @@ job.log('$%d sent to %s', amount, user.name);
 job.progress(frames, totalFrames);
 ```
 
+## Processing Jobs
+
+ Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
+
+ In the following example we pass the callback `done` to `email`, if this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
+
+```js
+var kue = require('kue')
+ , jobs = kue.createQueue();
+
+jobs.process('email', function(job, done){
+  email(job.to, done);
+});
+```
+
+### Processing Concurrency
+
+ By default a call to `jobs.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
+ 
+```js
+jobs.process('email', 20, function(job, done){
+  // ...
+});
+```
+
 ## License 
 
 (The MIT License)
