@@ -124,6 +124,15 @@ jobs.process('slideshow pdf', 5, function(job, done){
 });
 ```
 
+## User-Interface
+
+ The UI is a small [Express](http://github.com/visionmedia/express) application, to fire it up simply run the following, altering the port etc as desired.
+
+```js
+var kue = require('kue');
+kue.app.listen(3000);
+```
+
 ## License 
 
 (The MIT License)
