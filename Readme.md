@@ -16,7 +16,7 @@ var kue = require('kue')
   , jobs = kue.createQueue();
 ```
 
-  Calling `jobs.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong.
+  Calling `jobs.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong. The `title` key is special-cased, and will display in the job listings within the UI, making it easier to find a specific job.
 
 ```js
 jobs.create('email', {
@@ -88,6 +88,39 @@ jobs.process('email', function(job, done){
 ```js
 jobs.process('email', 20, function(job, done){
   // ...
+});
+```
+
+### Updating Progress
+
+ For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](http://github.com/learnboost/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
+ 
+```js
+jobs.create('slideshow pdf', {
+    title: user.name + "'s slideshow"
+  , slides: [...] // keys to data stored in redis, mongodb, or some other store
+});
+```
+
+  We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and process. When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete.
+
+```js
+jobs.process('slideshow pdf', 5, function(job, done){
+  var slides = job.data.slides
+    , len = slides.length;
+
+  function next(i) {
+    var slide = slides[i]; // pretend we did a query on this slide id ;)
+    job.log('rendering %dx%d slide', slide.width, slide.height);
+    renderSlide(slide, function(err){
+      if (err) return done(err);
+      job.progress(i, len);
+      if (i == len) done()
+      else next(i + 1);
+    });
+  }
+
+  next(0);
 });
 ```
 
