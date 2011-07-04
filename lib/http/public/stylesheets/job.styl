@@ -73,10 +73,9 @@ bar(color)
 
 .job .details
   background: dark
-  width: 90%
+  width: 89%
   margin-top: -10px
   margin-left: 35px
-  padding: 0
   border-radius: bottom 5px
   box-shadow: inset 0 1px 10px 0 rgba(black, .8)
   transition: padding 200ms, height 200ms
@@ -88,7 +87,7 @@ bar(color)
       width: 60px
       color: light + 30%
   &.show
-    padding: 15px
+    padding: 15px 20px
     height: auto
 
 // job log
@@ -117,6 +116,15 @@ bar(color)
     background: light + 20%
   ::-webkit-scrollbar-track
     border: 1px solid rgba(white, .1)
+
+// sections
+
+.job .details > div
+  padding: 10px 0
+  border-bottom: 1px solid light - 35%
+  &:last-child
+    border-bottom: none
+
 
 // more button
 
