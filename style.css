@@ -1,18 +1,38 @@
 body {
   padding: 50px;
-  font: 14px "helvetica neue", helvetica, arial, sans-serif;
+  font: 14px/1.5 "helvetica neue", helvetica, arial, sans-serif;
   color: #888;
 }
 h1 {
+  margin: 0;
   font-size: 18px;
+  padding-left: 5px;
   color: #333;
+  border-left: 1px dotted #eee;
 }
 h1 + span {
-  display: block;
+  display: none;
   margin-top: -15px;
 }
-ul li {
+ul {
   margin: 0;
-  padding: 0;
+  width: 600px;
+}
+ul li {
+  text-align: center;
+  margin: 0;
+  padding: 30px 0;
   list-style: none;
+}
+ul li p {
+  text-align: left;
+}
+ul li img {
+  margin-left: 10px;
+  border-left: 1px solid #eee;
+  padding-left: 5px;
+}
+p {
+  color: #bbb;
+  -webkit-font-smoothing: antialiased;
 }
