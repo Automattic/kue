@@ -4,9 +4,15 @@ body {
   color: #888;
 }
 h1 {
+  font-size: 18px;
   color: #333;
 }
 h1 + span {
   display: block;
   margin-top: -15px;
+}
+ul li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
