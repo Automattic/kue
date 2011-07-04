@@ -1,0 +1,12 @@
+body {
+  padding: 50px;
+  font: 14px "helvetica neue", helvetica, arial, sans-serif;
+  color: #888;
+}
+h1 {
+  color: #333;
+}
+h1 + span {
+  display: block;
+  margin-top: -15px;
+}
