@@ -58,6 +58,14 @@ jobs.create('email', {
 job.log('$%d sent to %s', amount, user.name);
 ``` 
 
+## Job Progress
+
+ Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total)`:
+
+```js
+job.progress(frames, totalFrames);
+```
+
 ## License 
 
 (The MIT License)
