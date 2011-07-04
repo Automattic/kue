@@ -5,29 +5,31 @@
     a.remove x
     canvas.progress(width=50, height=50)
     table
-      tr.type
-        td Type:
-        td 
-      tr.title
-        td Title:
-        td 
-      tr.error
-        td Error:
-        td 
+      tbody
+        tr.type
+          td Type:
+          td 
+        tr.title
+          td Title:
+          td 
+        tr.error
+          td Error:
+          td 
   .details
     table
-      tr.time.duration
-        td Duration:
-        td
-      tr.time.created_at
-        td Created:
-        td
-      tr.time.updated_at
-        td Updated:
-        td
-      tr.time.failed_at
-        td Failed:
-        td
-      tr.log
-        td(colspan=2)
-          ul
+      tbody
+        tr.time.duration
+          td Duration:
+          td
+        tr.time.created_at
+          td Created:
+          td
+        tr.time.updated_at
+          td Updated:
+          td
+        tr.time.failed_at
+          td Failed:
+          td
+        tr.log
+          td(colspan=2)
+            ul
