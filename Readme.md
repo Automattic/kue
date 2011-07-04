@@ -133,6 +133,12 @@ var kue = require('kue');
 kue.app.listen(3000);
 ```
 
+The title defaults to "Kue", to alter this invoke:
+
+```js
+kue.app.set('title', 'My Application');
+```
+
 ## License 
 
 (The MIT License)
