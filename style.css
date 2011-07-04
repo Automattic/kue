@@ -30,7 +30,9 @@ ul li p {
 }
 ul li img {
   -webkit-box-shadow: 0 0 15px 1px #ddd;
+  -moz-box-shadow: 0 0 15px 1px #ddd;
   -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
   border: 1px solid white;
 }
 p {
