@@ -26,7 +26,7 @@ jobs.create('email', {
 }).save();
 ```
 
-## Priorities
+### Job Priority
 
  To specify the priority of a job, simply invoke the `priority()` method with a number, or priority name, which is mapped to a number.
 
@@ -50,7 +50,7 @@ jobs.create('email', {
 };
 ```
 
-## Job Logs
+### Job Logs
 
  Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
 
@@ -58,7 +58,7 @@ jobs.create('email', {
 job.log('$%d sent to %s', amount, user.name);
 ``` 
 
-## Job Progress
+### Job Progress
 
  Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total)`:
 
