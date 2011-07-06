@@ -167,16 +167,16 @@ kue.app.set('title', 'My Application');
 ['foo', 'bar', 'baz']
 ```
 
-### GET /jobs/:from..:to
+### GET /jobs/:from..:to/:order?
 
   Get jobs with the specified range `:from` to `:to`, for
-  example "/jobs/0..2":
+  example "/jobs/0..2", where `:order` may be "asc" or "desc":
 
 ```js
 [{"id":"12","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309973299293","updated_at":"1309973299293"},{"id":"130","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309975157291","updated_at":"1309975157291"}]
 ```
 
-### GET /jobs/:state/:from..:to
+### GET /jobs/:state/:from..:to/:order?
 
   Same as above, restricting by `:state` which is one of:
   
@@ -185,7 +185,7 @@ kue.app.set('title', 'My Application');
     - failed
     - complete
 
-### GET /jobs/:type/:state/:from..:to
+### GET /jobs/:type/:state/:from..:to/:order?
 
   Same as above, however restricted to `:type` and `:state`.
 

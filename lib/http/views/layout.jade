@@ -10,7 +10,9 @@ html
     script(src='/javascripts/main.js')
   body
     != partial('menu')
-    != partial('filter')
+    #actions
+      != partial('filter')
+      != partial('sort')
     #content!= body
     #job-template!= partial('job')
     #error
