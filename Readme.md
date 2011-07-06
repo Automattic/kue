@@ -196,6 +196,52 @@ kue.app.set('title', 'My Application');
     $ curl -X DELETE http://local:3000/job/2
     {"message":"job 2 removed"}
 
+## Parallel Processing With Cluster
+
+ The example below shows how you may use [Cluster](http://learnboost.github.com/cluster) to spread the job processing load across CPUs. By default cluster will create one worker per CPU, however you can specify this number via `.set('workers', N)`.
+ 
+ When cluster `.isMaster` the file is being executed in context of the master process, in which case you may perform tasks that you only want once, such as starting the web app bundled with Kue. The logic in the `else` block is executed _per worker_. 
+
+```js
+var kue = require('kue')
+  , cluster = require('cluster')
+  , jobs = kue.createQueue();
+
+cluster = cluster()
+  .set('workers', 8)
+  .use(cluster.debug())
+  .start();
+
+if (cluster.isMaster) {
+  kue.app.listen(3000);
+} else {
+  jobs.process('email', function(job, done){
+    var pending = 5
+      , total = pending;
+
+    setInterval(function(){
+      job.log('sending!');
+      job.progress(total - pending, total);
+      --pending || done();
+    }, 1000);
+  });
+}
+```
+
+running this example you'll see the following output:
+
+    $ node kue-example
+    info - master started
+    info - worker 0 spawned
+    info - worker 1 spawned
+    info - worker 2 spawned
+    info - listening for connections
+    info - worker 2 connected
+    info - worker 1 connected
+    info - worker 0 connected
+
+now when you visit Kue's UI in the browser you'll see that jobs are being processed roughly 8 times faster! (if you have 8 cores).
+
 ## License 
 
 (The MIT License)
