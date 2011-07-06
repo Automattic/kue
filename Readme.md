@@ -176,18 +176,18 @@ kue.app.set('title', 'My Application');
 [{"id":"12","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309973299293","updated_at":"1309973299293"},{"id":"130","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309975157291","updated_at":"1309975157291"}]
 ```
 
-### GET /jobs/:status/:from..:to
+### GET /jobs/:state/:from..:to
 
-  Same as above, restricting by `:status` which is one of:
+  Same as above, restricting by `:state` which is one of:
   
     - active
     - inactive
     - failed
     - complete
 
-### GET /jobs/:type/:status/:from..:to
+### GET /jobs/:type/:state/:from..:to
 
-  Same as above, however restricted to `:type` and `:status`.
+  Same as above, however restricted to `:type` and `:state`.
 
 ### DELETE /job/:id
 
