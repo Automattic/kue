@@ -139,6 +139,53 @@ The title defaults to "Kue", to alter this invoke:
 kue.app.set('title', 'My Application');
 ```
 
+## JSON API
+
+  Along with the UI Kue also exposes a JSON API, which is utilized by the UI.
+
+### GET /stats
+
+  Currently responds with state counts:
+
+```js
+{"inactiveCount":4,"completeCount":69,"activeCount":2,"failedCount":0}
+```
+
+### GET /job/:id
+
+  Get a job by `:id`:
+
+```js
+{"id":"3","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":"100","state":"complete","attempts":null,"created_at":"1309973155248","updated_at":"1309973155248","duration":"15002"}
+```
+
+### GET /job/:id/log
+
+  Get job `:id`'s log:
+  
+```js
+['foo', 'bar', 'baz']
+```
+
+### GET /jobs/:status/:from..:to
+
+  Get range of jobs with `:status`, for example "/jobs/active/0..2":
+
+```js
+[{"id":"12","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309973299293","updated_at":"1309973299293"},{"id":"130","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309975157291","updated_at":"1309975157291"}]
+```
+
+### GET /jobs/:type/:status/:from..:to
+
+  Same as above, however specific to `:type`.
+
+### DELETE /job/:id
+
+  Delete job `:id`:
+  
+    $ curl -X DELETE http://local:3000/job/2
+    {"message":"job 2 removed"}
+
 ## License 
 
 (The MIT License)
