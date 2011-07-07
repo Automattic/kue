@@ -52,6 +52,18 @@ jobs.create('email', {
 };
 ```
 
+### Failure Attempts
+
+ By default jobs only have _one_ attempt, that is when they fail, they are marked as a failure, and remain that way until you intervene. However, Kue allows you to specify this, which is important for jobs such as transferring an email, which upon failure, may usually retry without issue. To do this invoke the `.attempts()` method with a number.
+
+ ```js
+ jobs.create('email', {
+     title: 'welcome email for tj'
+   , to: 'tj@learnboost.com'
+   , template: 'welcome-email'
+ }).priority('high').attempts(5).save();
+```
+
 ### Job Logs
 
  Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
