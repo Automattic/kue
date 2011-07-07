@@ -1,43 +1,43 @@
 .job
   .block.contents
-    h2
+    h2.id
     .attempts
     a.remove x
     canvas.progress(width=50, height=50)
-    table
+    table.meta
       tbody
-        tr.type
+        tr
           td Type:
-          td 
-        tr.title
+          td.type
+        tr
           td Title:
-          td 
-        tr.error
+          td.title
+        tr
           td Error:
-          td 
+          td.errorMessage
   .details
     .data
-      table
+      table.data
         tbody
-          tr.state
+          tr
             td State:
-            td
-          tr.priority
+            td.state
+          tr
             td Priority:
-            td
-          tr.time.duration
+            td.priority
+          tr.time
             td Duration:
-            td
-          tr.time.created_at
+            td.duration
+          tr.time
             td Created:
-            td
-          tr.time.updated_at
+            td.created_at
+          tr.time
             td Updated:
-            td
-          tr.time.failed_at
+            td.updated_at
+          tr.time
             td Failed:
-            td
+            td.failed_at
     .error
       pre
-    .log
-      ul
+    ul.log
+    
