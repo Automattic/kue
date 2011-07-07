@@ -15,5 +15,6 @@ html
       != partial('filter')
       != partial('sort')
     #content!= body
-    #job-template!= partial('job')
+    script(type='text/template')#job-template!= partial('job')
+    script(type='text/template')#row-template!= partial('row')
     #error
