@@ -1,4 +1,17 @@
 
+0.0.3 / 2011-07-07 
+==================
+
+  * Added caustic to aid in template management
+  * Added job attempt support. Closes #31
+  * Added `Job.attempts(n)`
+  * Added minified jQuery
+  * Added cluster integration docs. Closes #13
+  * Added GET _/jobs/:from..:to_ to JSON API
+  * Fixed: hide "More" on sort
+  * Fixed: hide "More" on filter
+  * Fixed: removed "error" emission, blows up when no one is listening
+
 0.0.2 / 2011-07-05 
 ==================
 
