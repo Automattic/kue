@@ -1,0 +1,8 @@
+%html
+  %body
+    %div#a
+    %div I do not self close.
+    :javascript
+      (function(){
+        document.getElementById('a').textContent='I self close';
+      })();

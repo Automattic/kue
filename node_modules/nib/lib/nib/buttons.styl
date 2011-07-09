@@ -1,0 +1,186 @@
+
+@import 'vendor'
+@import 'gradients'
+
+// reset button related properties so that
+// a, button, and input's are supported.
+
+-reset()
+  margin: 0
+  user-select: none
+  display: inline-block
+  text-decoration: none
+
+// minimalistic flat button with white inset.
+
+minimal-button(bg = #e3e3e3, text = #333, text-shadow = #fff)
+  -reset()
+  background: bg
+  border: 1px solid darken(bg, 15%)
+  border-radius: 3px
+  box-shadow: inset 0 0 1px 1px rgba(white, 0.8)
+  font-family: 'helvetica neue', helvetica, arial, sans-serif
+  font-size: 12px
+  font-weight: bold
+  line-height: 1
+  padding: 8px 20px 9px 20px
+  text-align: center
+  text-shadow: 0 1px 0 text-shadow
+  color: text 
+
+  &:hover
+  &.hover
+    background: bg - 5%
+    box-shadow: inset 0 0 1px 1px rgba(white, 0.5)
+    cursor: pointer
+    color: text
+
+  &:active
+  &.active
+    background: bg - 10%
+    box-shadow: inset 0 0 1px 1px rgba(white, 0.2)
+    color: text - 50%
+
+  &:focus
+  &.focus
+    outline: none
+    box-shadow: 0 0 5px 1px rgba(bg, 1)
+
+// smooth flat button, defaulting to green.
+
+smooth-button(bg = #7fbf4d, height = 28px)
+  -reset()
+  dark = bg - 10%
+  background: bg
+  background: linear-gradient(height top, bg, dark)
+  border: 1px solid dark - 5%
+  border-bottom: 1px solid dark
+  border-radius: 3px
+  box-shadow: inset 0 1px 0 0 lighten(bg, 10%)
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif
+  font-size: 11px
+  font-weight: bold
+  line-height: 1
+  padding: 7px 15px 8px 15px
+  text-align: center
+  text-shadow: 0 -1px 0 darken(bg, 15%)
+  color: #fff
+
+  &:hover
+  &.hover
+    dark -= 5%
+    background: dark
+    background: linear-gradient(height top, bg, dark)
+    cursor: pointer
+
+  &:active
+  &.active
+    dark -= 5%
+    border: 1px solid dark
+    border-bottom: 1px solid dark
+    background: linear-gradient(height bottom, bg, dark)
+    box-shadow: inset 0 0 8px 4px rgba(black, 0.15), 0 1px 0 0 #eee
+
+// small pill-shaped blue apple download inspired button.
+
+download-button(bg = #377ad0, height = 20px)
+  -reset()
+  dark = bg - 8%
+  background: light = hsl(bg) + hsl(0,30%,10%) - hsl(5,0,0)
+  background: linear-gradient(height top, light, bg)
+  border: 1px solid dark
+  border-radius: 16px
+  color #fff
+  font-family: "lucida grande", sans-serif
+  font-size: 11px
+  font-weight: normal
+  line-height: 1
+  padding: 3px 10px 5px 10px
+  text-align: center
+  text-shadow: 0 -1px 1px bg - 10%
+
+  &:hover
+  &.hover
+    background: darker
+    background: linear-gradient(height top, light, dark)
+    border: 1px solid dark
+    cursor: pointer
+    text-shadow: 0 -1px 1px bg - 12%
+
+  &:active
+  &.active
+    background: dark
+    border: 1px solid dark
+    border-bottom: 1px solid bg - 20%
+    text-shadow: 0 -1px 1px bg - 15%
+  
+  &:focus
+  &.focus
+    outline: none
+    box-shadow: 0 1px 0 0 rgba(white,0.4), 0 0 4px 0 bg
+
+bold-button(bg = #333, glow = false, height = 25px)
+  -reset()
+  light = bg + 50%
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif
+  border-radius: 4px
+  font-size: 11px
+  background: bg
+  background: linear-gradient(height top, light, bg)
+  box-shadow: inset 0 1px 1px 0 light + 40%
+  border: 1px solid bg
+  line-height: 1
+  padding: 7px 10px 8px 10px
+  text-align: center
+  text-shadow: 0 -1px 0 bg - 15%
+  color: #fff
+  
+  &:hover
+  &.hover
+    bg += 10%
+    background: bg
+    background: linear-gradient(height top, light, bg)
+    box-shadow: inset 0 1px 1px 0 light + 70%
+
+  &:active
+  &.active
+    bg -= 20%
+    background: bg
+    background: linear-gradient(height top, bg, bg + 50%)
+    box-shadow: inset 0 -1px 1px 0 light + 20%
+  
+  if glow
+    &:hover
+    &.hover
+      box-shadow: inset 0 0 3px 1px rgba(glow, 0.6), inset 0 -1px 0 0 glow
+    &:active
+    &.active
+      box-shadow: inset 0 0 5px 1px rgba(black, 0.6)
+    &:focus
+    &.focus
+      outline: none
+      box-shadow: inset 0 0 3px 1px rgba(glow, 0.6), inset 0 -1px 0 0 glow, 0 0 3px 1px rgba(glow, 0.5)
+
+pill-button(bg = #ECECEC, height = 18px)
+  -reset()
+  light = bg + 20
+  dark = bg - 10
+  background: bg
+  font: 10px "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif
+  background: linear-gradient(height top, light, dark)
+  border: 1px solid bg
+  padding: 3px 15px
+  border-radius: 10px
+  box-shadow: 0 1px 1px 0 #aaa, inset 0 1px 0 0 white
+  color: #888
+
+  &:hover
+  &.hover
+    background: linear-gradient(height top, light, dark + 10)
+    box-shadow: 0 1px 1px 0 #aaa, inset 0 -2px 0 0 rgba(white, 0.4)
+
+  &:active
+  &.active
+    background: linear-gradient(height bottom, light, dark)
+    box-shadow: 0 1px 1px 0 #aaa, inset 0 1px 0 0 rgba(white, 0.8)
+

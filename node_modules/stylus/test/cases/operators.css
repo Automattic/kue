@@ -1,0 +1,40 @@
+body {
+  foo: 5px;
+  foo: 0px;
+  foo: 0px;
+  foo: false;
+  foo: true;
+  foo: 5px;
+  foo: 1px;
+  foo: 0;
+  foo: false;
+  foo: 10;
+  foo: #fff;
+  foo: 1;
+  foo: true;
+  foo: true;
+  foo: false;
+  foo: true;
+  foo: true;
+  foo: true;
+  foo: false;
+  foo: wahoo;
+  foo: nope;
+  foo: "got 15px";
+  foo: 1;
+  foo: 5;
+  foo: true;
+  foo: true;
+  foo: true;
+  foo: false;
+  foo: false;
+  foo: false;
+}
+body {
+  foo: <12:>;
+  foo: <1:2>;
+  foo: <a: 1 b: > 2;
+  foo: <a: 1 b: 2>;
+  foo: X::Micrsoft::crap(#0f0);
+  foo: <foo, bar, baz>;
+}

@@ -1,0 +1,10 @@
+{
+  "name": "hamljs",
+  "description": "Faster, harder, better HAML template engine",
+  "keywords": ["haml", "template", "engine", "view", "nodejs"],
+  "author": "TJ Holowaychuk <tj@vision-media.ca>",
+  "version": "0.4.5",
+  "directories": {
+    "lib": "."
+  }
+}

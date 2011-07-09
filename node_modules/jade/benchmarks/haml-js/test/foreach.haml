@@ -1,0 +1,12 @@
+:each color in colors
+  .preview{style: "color: " + color + ";"}&= name
+:each item in data
+  :if item.age < 100
+    %dl
+      :each name, value in item
+        %dt&= name
+        %dd&= value
+:each number in [1,2,3,4,5,6,7]
+  = number
+:for word in "Hello World".split(" ")
+  = word

@@ -1,0 +1,30 @@
+!!!
+%html
+  %head
+    %title Welcome
+    %script{ src: 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', type: 'javascript' }
+    -# javascript filter (and others)
+    -# support arbitrary whitespace
+    :javascript
+      $(function(){
+        alert('yay!')
+      })
+    %meta{ name: 'keywords', content: 'foo bar baz' }
+  %body
+    %h1 Title
+    %ul
+      %li one
+      %li two
+      %li
+        %ol
+          %li one
+          %li two
+      %li three
+      %li four
+      %ul
+        %li five
+        %li six
+        %li
+          %ol
+            %li seven
+            %li eight

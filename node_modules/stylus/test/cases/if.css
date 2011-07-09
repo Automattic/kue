@@ -1,0 +1,43 @@
+body {
+  padding: 100;
+}
+body {
+  padding: false;
+}
+body {
+  padding: 150;
+}
+body {
+  padding: 75;
+}
+body {
+  padding: -1;
+}
+body {
+  padding: 1;
+}
+body {
+  foo: yes;
+  foo: no;
+  foo: zero;
+  foo: invalid;
+}
+body .input {
+  padding: 5px;
+  no: margin;
+}
+body form input {
+  foo: no;
+  foo: bar;
+  bar: baz;
+}
+body something {
+  foo: bar;
+  bar: baz;
+}
+body .nested {
+  foo: bar;
+}
+body .nested .hidden {
+  display: none;
+}

@@ -1,0 +1,9 @@
+#container .hide,
+#footer .hide {
+  display: none;
+}
+#foo .hide .stuff,
+#bar .hide .stuff,
+#baz .hide .stuff {
+  display: none;
+}

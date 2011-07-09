@@ -1,0 +1,153 @@
+
+@import 'config'
+
+/*
+ * Alias "nowrap" as "no-wrap".
+ */
+
+no-wrap = unquote('nowrap')
+
+/*
+ * Vendor support for the given prop / arguments,
+ * optionally specifying the only prefixes to utilize,
+ * or those which should be ignored.
+ */
+
+vendor(prop, args, only = null, ignore = null)
+  for prefix in vendor-prefixes
+    unless (only and !(prefix in only)) or (ignore and prefix in ignore)
+      if official == prefix
+        {prop}: args
+      else
+        {'-' + prefix + '-' + prop}: args
+
+/*
+ * Vendor "box-shadow" support.
+ */
+
+box-shadow()
+  vendor('box-shadow', arguments)
+
+/*
+ * Vendor "user-size" support.
+ */
+
+user-select()
+  vendor('user-select', arguments)
+
+/*
+ * Vendor "column-count" support.
+ */
+
+column-count()
+  vendor('column-count', arguments)
+
+/*
+ * Vendor "column-gap" support.
+ */
+
+column-gap()
+  vendor('column-gap', arguments)
+
+/*
+ * Vendor "background-size" support.
+ */
+
+background-size()
+  vendor('background-size', arguments)
+
+/*
+ * Vendor "box-sizing" support.
+ */
+
+box-sizing()
+  vendor('box-sizing', arguments)
+
+/*
+ * Vendor "transform" support.
+ */
+
+transform()
+  vendor('transform', arguments)
+
+/*
+ * Vendor "border-image" support.
+ */
+
+border-image()
+  vendor('border-image', arguments)
+
+/*
+ * Vendor "transition" support.
+ */
+
+transition()
+  vendor('transition', arguments, only: webkit moz)
+
+/*
+ * Opacity with conditional IE support.
+ */
+
+opacity(n)
+  opacity: n
+  if support-for-ie
+    filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=%s)' % round(n * 100)
+
+/*
+ * Alias the "white-space" property.
+ */
+
+whitespace()
+  white-space: arguments
+
+/*
+ * Helper for border-radius().
+ */
+
+-apply-border-radius(pos)
+  if length(pos) == 3
+    // border-radius: <top | buttom> <left | right> <n>
+    y = pos[0]
+    x = pos[1]
+    vendor('border-radius-%s%s' % pos, pos[2], only: moz)
+    vendor('border-%s-%s-radius' % pos, pos[2], ignore: moz)
+  else if pos[0] in (top bottom)
+    // border-radius: <top | bottom> <n>
+    -apply-border-radius(pos[0] left pos[1])
+    -apply-border-radius(pos[0] right pos[1])
+  else if pos[0] in (left right)
+    // border-radius: <left | right> <n>
+    unshift(pos, top);
+    -apply-border-radius(pos)
+    pos[0] = bottom
+    -apply-border-radius(pos)
+
+/*
+ * border-radius supporting vendor prefixes and
+ * augmented behavior.
+ * 
+ * Examples:
+ *
+ *    border-radius: 2px 5px
+ *    border-radius: top 5px bottom 10px
+ *    border-radius: left 5px
+ *    border-radius: top left 5px
+ *    border-radius: top left 10px bottom right 5px
+ *    border-radius: top left 10px, bottom right 5px
+ *
+ */
+
+border-radius()
+  pos = ()
+  augmented = false
+  for args in arguments
+    for arg in args
+      if arg is a 'ident'
+        append(pos, arg)
+        augmented = true
+      else
+        append(pos, arg)
+        if augmented
+          -apply-border-radius(pos)
+          pos = ()
+  vendor('border-radius', pos) unless augmented

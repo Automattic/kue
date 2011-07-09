@@ -1,0 +1,216 @@
+instrument-js.o instrument-js.o: instrument-js.cpp config.h \
+  instrument-js.h /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h \
+  stream.h /usr/include/stdio.h /usr/include/_types.h \
+  /usr/include/sys/_types.h /usr/include/sys/cdefs.h \
+  /usr/include/machine/_types.h /usr/include/i386/_types.h \
+  /usr/include/stdlib.h /usr/include/Availability.h \
+  /usr/include/AvailabilityInternal.h /usr/include/sys/wait.h \
+  /usr/include/sys/signal.h /usr/include/sys/appleapiopts.h \
+  /usr/include/machine/signal.h /usr/include/i386/signal.h \
+  /usr/include/i386/_structs.h /usr/include/sys/_structs.h \
+  /usr/include/machine/_structs.h /usr/include/mach/i386/_structs.h \
+  /usr/include/sys/resource.h /usr/include/machine/endian.h \
+  /usr/include/i386/endian.h /usr/include/sys/_endian.h \
+  /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
+  /usr/include/machine/types.h /usr/include/i386/types.h \
+  /usr/include/i386/_types.h util.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdbool.h \
+  /usr/include/sys/stat.h /usr/include/assert.h /usr/include/math.h \
+  /usr/include/architecture/i386/math.h /usr/include/string.h js/jsapi.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h \
+  js/obj/js-config.h js/jspubtd.h js/jstypes.h js/obj/jsautocfg.h \
+  js/jsotypes.h /usr/include/sys/types.h js/jscompat.h js/jslong.h \
+  js/jsproto.tbl js/jsversion.h js/jsutil.h js/jsarena.h js/jsatom.h \
+  js/jshash.h js/jsdhash.h js/jsapi.h js/jsprvtd.h js/jslock.h \
+  js/jsemit.h js/jsstddef.h js/jsatom.h js/jsopcode.h js/jsopcode.tbl \
+  js/jsscript.h js/jsexn.h js/jsfun.h js/jsobj.h js/jsinterp.h js/jsfun.h \
+  js/jsiter.h js/jsparse.h js/jsscan.h js/jskeyword.tbl js/jsregexp.h \
+  js/jsstr.h /usr/include/ctype.h /usr/include/runetype.h js/jsscope.h \
+  js/jsstr.h encoding.h global.h highlight.h js/jscntxt.h js/jsarena.h \
+  js/jsclist.h js/jsgc.h js/jsbit.h js/jsinterp.h js/jsregexp.h js/js.msg \
+  resource-manager.h
+
+config.h:
+
+instrument-js.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h:
+
+stream.h:
+
+/usr/include/stdio.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/sys/appleapiopts.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/i386/_structs.h:
+
+/usr/include/sys/_structs.h:
+
+/usr/include/machine/_structs.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+/usr/include/alloca.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/include/i386/_types.h:
+
+util.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdbool.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/assert.h:
+
+/usr/include/math.h:
+
+/usr/include/architecture/i386/math.h:
+
+/usr/include/string.h:
+
+js/jsapi.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h:
+
+js/obj/js-config.h:
+
+js/jspubtd.h:
+
+js/jstypes.h:
+
+js/obj/jsautocfg.h:
+
+js/jsotypes.h:
+
+/usr/include/sys/types.h:
+
+js/jscompat.h:
+
+js/jslong.h:
+
+js/jsproto.tbl:
+
+js/jsversion.h:
+
+js/jsutil.h:
+
+js/jsarena.h:
+
+js/jsatom.h:
+
+js/jshash.h:
+
+js/jsdhash.h:
+
+js/jsapi.h:
+
+js/jsprvtd.h:
+
+js/jslock.h:
+
+js/jsemit.h:
+
+js/jsstddef.h:
+
+js/jsatom.h:
+
+js/jsopcode.h:
+
+js/jsopcode.tbl:
+
+js/jsscript.h:
+
+js/jsexn.h:
+
+js/jsfun.h:
+
+js/jsobj.h:
+
+js/jsinterp.h:
+
+js/jsfun.h:
+
+js/jsiter.h:
+
+js/jsparse.h:
+
+js/jsscan.h:
+
+js/jskeyword.tbl:
+
+js/jsregexp.h:
+
+js/jsstr.h:
+
+/usr/include/ctype.h:
+
+/usr/include/runetype.h:
+
+js/jsscope.h:
+
+js/jsstr.h:
+
+encoding.h:
+
+global.h:
+
+highlight.h:
+
+js/jscntxt.h:
+
+js/jsarena.h:
+
+js/jsclist.h:
+
+js/jsgc.h:
+
+js/jsbit.h:
+
+js/jsinterp.h:
+
+js/jsregexp.h:
+
+js/js.msg:
+
+resource-manager.h:

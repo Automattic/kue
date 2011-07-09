@@ -1,0 +1,9 @@
+{   "name": "should"
+  , "description": "test framework agnostic BDD-style assertions"
+  , "version": "0.2.1"
+  , "author": "TJ Holowaychuk <tj@vision-media.ca>"
+  , "contributors": [ "Aseem Kishore <aseem.kishore@gmail.com>" ]
+  , "keywords": ["test", "bdd", "assert"]
+  , "main": "./lib/should.js"
+  , "engines": { "node": ">= 0.2.0" }
+}

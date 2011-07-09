@@ -1,0 +1,30 @@
+ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+}
+ul li:first-child {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+body {
+  did: nothing;
+}
+body {
+  padding: 5px;
+}
+body {
+  padding: 5px;
+  margin: 5px;
+}

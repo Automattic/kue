@@ -1,0 +1,7 @@
+application/mp4  m4p
+application/octet-stream  bin buffer
+audio/mp4  m4a
+text/cache-manifest  appcache manifest
+application/x-web-app-manifest+json  webapp
+application/x-mpegURL  m3u8
+video/MP2T  ts

@@ -1,0 +1,22 @@
+%html
+  %head
+    %title= title
+  
+    %script{ src: 'jquery.js' }
+    
+    %script{ src: 'jquery.ui.js' }
+    
+  %body
+    %h1 Welcome
+    
+    %ul#menu
+      %li.first one
+      %li two
+      %li.last three
+      %li
+        %ul
+          %li nested
+          
+    #content
+      = body
+    #usersOnline= usersOnline

@@ -1,0 +1,55 @@
+
+## Interpolation
+
+  Stylus supports interpolation by using the `{}` characters to surround an expression, which then becomes part of the identifier. For example `-webkit-{'border' + '-radius'}` would evaluate to `-webkit-border-radius`.
+
+ A great example use-case for this is expanding properties with vendor prefixes.
+
+      vendor(prop, args)
+        -webkit-{prop} args
+        -moz-{prop} args
+        {prop} args
+
+      border-radius()
+        vendor('border-radius', arguments)
+      
+      box-shadow()
+        vendor('box-shadow', arguments)
+
+      button
+        border-radius 1px 2px / 3px 4px
+
+yielding:
+
+      button {
+        -webkit-border-radius: 1px 2px / 3px 4px;
+        -moz-border-radius: 1px 2px / 3px 4px;
+        border-radius: 1px 2px / 3px 4px;
+      }
+
+## Selector Interpolation
+
+ Interpolation works with selectors as well, for example we may iterate while assigning the `height` property for the first 5 rows in a table as shown below.
+
+    table
+      for row in 1 2 3 4 5
+        tr:nth-child({row})
+          height: 10px * row
+
+yielding:
+
+    table tr:nth-child(1) {
+      height: 10px;
+    }
+    table tr:nth-child(2) {
+      height: 20px;
+    }
+    table tr:nth-child(3) {
+      height: 30px;
+    }
+    table tr:nth-child(4) {
+      height: 40px;
+    }
+    table tr:nth-child(5) {
+      height: 50px;
+    }

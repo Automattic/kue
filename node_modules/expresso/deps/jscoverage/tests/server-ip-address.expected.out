@@ -1,0 +1,4 @@
+Starting HTTP server on @ADDRESS@:8080
+GET / HTTP/1.0
+POST /jscoverage-shutdown HTTP/1.0
+Stopping HTTP server

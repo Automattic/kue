@@ -1,0 +1,183 @@
+highlight.o highlight.o: highlight.c config.h highlight.h js/jscntxt.h \
+  js/jsarena.h /usr/include/stdlib.h /usr/include/Availability.h \
+  /usr/include/AvailabilityInternal.h /usr/include/_types.h \
+  /usr/include/sys/_types.h /usr/include/sys/cdefs.h \
+  /usr/include/machine/_types.h /usr/include/i386/_types.h \
+  /usr/include/sys/wait.h /usr/include/sys/signal.h \
+  /usr/include/sys/appleapiopts.h /usr/include/machine/signal.h \
+  /usr/include/i386/signal.h /usr/include/i386/_structs.h \
+  /usr/include/sys/_structs.h /usr/include/machine/_structs.h \
+  /usr/include/mach/i386/_structs.h /usr/include/sys/resource.h \
+  /usr/include/machine/endian.h /usr/include/i386/endian.h \
+  /usr/include/sys/_endian.h /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
+  /usr/include/machine/types.h /usr/include/i386/types.h \
+  /usr/include/i386/_types.h js/jstypes.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h \
+  js/obj/jsautocfg.h js/jsotypes.h /usr/include/sys/types.h js/jscompat.h \
+  js/jslong.h js/jsclist.h js/jsatom.h js/jsversion.h js/jshash.h \
+  /usr/include/stdio.h /usr/include/secure/_stdio.h \
+  /usr/include/secure/_common.h js/jsdhash.h js/jsapi.h \
+  js/obj/js-config.h js/jspubtd.h js/jsproto.tbl js/jsutil.h js/jsprvtd.h \
+  js/jslock.h js/jsgc.h js/jsbit.h js/jsinterp.h js/jsfun.h js/jsobj.h \
+  js/jsopcode.h js/jsopcode.tbl js/jsscript.h js/jsregexp.h js/jsstr.h \
+  /usr/include/ctype.h /usr/include/runetype.h js/js.msg stream.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h \
+  /usr/include/assert.h /usr/include/string.h \
+  /usr/include/secure/_string.h js/jslock.h js/jsscan.h js/jskeyword.tbl \
+  util.h /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdbool.h \
+  /usr/include/sys/stat.h
+
+config.h:
+
+highlight.h:
+
+js/jscntxt.h:
+
+js/jsarena.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/sys/appleapiopts.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/i386/_structs.h:
+
+/usr/include/sys/_structs.h:
+
+/usr/include/machine/_structs.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+/usr/include/alloca.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/include/i386/_types.h:
+
+js/jstypes.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h:
+
+js/obj/jsautocfg.h:
+
+js/jsotypes.h:
+
+/usr/include/sys/types.h:
+
+js/jscompat.h:
+
+js/jslong.h:
+
+js/jsclist.h:
+
+js/jsatom.h:
+
+js/jsversion.h:
+
+js/jshash.h:
+
+/usr/include/stdio.h:
+
+/usr/include/secure/_stdio.h:
+
+/usr/include/secure/_common.h:
+
+js/jsdhash.h:
+
+js/jsapi.h:
+
+js/obj/js-config.h:
+
+js/jspubtd.h:
+
+js/jsproto.tbl:
+
+js/jsutil.h:
+
+js/jsprvtd.h:
+
+js/jslock.h:
+
+js/jsgc.h:
+
+js/jsbit.h:
+
+js/jsinterp.h:
+
+js/jsfun.h:
+
+js/jsobj.h:
+
+js/jsopcode.h:
+
+js/jsopcode.tbl:
+
+js/jsscript.h:
+
+js/jsregexp.h:
+
+js/jsstr.h:
+
+/usr/include/ctype.h:
+
+/usr/include/runetype.h:
+
+js/js.msg:
+
+stream.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h:
+
+/usr/include/assert.h:
+
+/usr/include/string.h:
+
+/usr/include/secure/_string.h:
+
+js/jslock.h:
+
+js/jsscan.h:
+
+js/jskeyword.tbl:
+
+util.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdbool.h:
+
+/usr/include/sys/stat.h:

@@ -1,0 +1,15 @@
+body {
+  foo: no;
+  foo: yes;
+  foo: false;
+  foo: yes;
+  foo: "a is not a unit";
+  foo: 2;
+}
+body {
+  foo: five;
+  foo: something;
+}
+body {
+  foo: 3;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0">
+<channel>
+<title>ExpressJS</title>
+<link>http://expressjs.com</link>
+<description>Is super cool</description>
+<language>en-us</language>
+<item>
+<title>Creating Routes</title>
+<description>Some stuff</description>
+<link>http://expressjs.com/routes</link></item></channel></rss>

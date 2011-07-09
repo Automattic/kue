@@ -1,0 +1,30 @@
+input[for=name] {
+  width: 200px;
+}
+body {
+  foo: 1;
+}
+body {
+  foo: 2;
+}
+body {
+  foo: 3;
+}
+body foo {
+  bar: 1;
+  bar: 2;
+  bar: 3;
+}
+#login foo,
+#login input[for=name] {
+  foo: bar;
+}
+#login foo input[for=name] {
+  bar: 1;
+}
+#login foo input[for=name] {
+  bar: 2;
+}
+#login foo input[for=name] {
+  bar: 3;
+}

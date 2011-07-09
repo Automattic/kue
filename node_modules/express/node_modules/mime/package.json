@@ -1,0 +1,11 @@
+{ "name"          : "mime"
+, "description"   : "A comprehensive library for mime-type mapping"
+, "url"           : "http://github.com/bentomas/node-mime"
+, "keywords"      : ["util", "mime"]
+, "author"        : "Benjamin Thomas <benjamin@benjaminthomas.org>"
+, "contributors"  : []
+, "dependencies"  : []
+, "lib"           : "."
+, "main"          : "mime.js"
+, "version"       : "1.2.2"
+}

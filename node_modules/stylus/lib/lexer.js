@@ -1,0 +1,674 @@
+
+/*!
+ * Stylus - Lexer
+ * Copyright(c) 2010 LearnBoost <dev@learnboost.com>
+ * MIT Licensed
+ */
+
+/**
+ * Module dependencies.
+ */
+
+var Token = require('./token')
+  , nodes = require('./nodes')
+  , errors = require('./errors');
+
+/**
+ * Operator aliases.
+ */
+
+var alias = {
+    'and': '&&'
+  , 'or': '||'
+  , 'is': '=='
+  , 'isnt': '!='
+  , 'is not': '!='
+};
+
+/**
+ * Units.
+ */
+
+var units = [
+    'em'
+  , 'ex'
+  , 'px'
+  , 'mm'
+  , 'cm'
+  , 'in'
+  , 'pt'
+  , 'pc'
+  , 'deg'
+  , 'rad'
+  , 'grad'
+  , 'ms'
+  , 's'
+  , 'Hz'
+  , 'kHz'
+  , '%'].join('|');
+
+/**
+ * Unit RegExp.
+ */
+
+var unit = new RegExp('^(-)?(\\d+\\.\\d+|\\d+|\\.\\d+)(' + units + ')? *');
+
+/**
+ * Initialize a new `Lexer` with the given `str` and `options`.
+ *
+ * @param {String} str
+ * @param {Object} options
+ * @api private
+ */
+
+var Lexer = module.exports = function Lexer(str, options) {
+  options = options || {};
+  this.str = str.replace(/\r\n?/g, '\n');
+  this.stash = [];
+  this.indentStack = [];
+  this.indentRe = null;
+  this.lineno = 1;
+};
+
+/**
+ * Lexer prototype.
+ */
+
+Lexer.prototype = {
+  
+  /**
+   * Custom inspect.
+   */
+  
+  inspect: function(){
+    var tok
+      , tmp = this.str
+      , buf = [];
+    while ('eos' != (tok = this.next()).type) {
+      buf.push(tok.inspect());
+    }
+    this.str = tmp;
+    this.prevIndents = 0;
+    return buf.concat(tok.inspect()).join('\n');
+  },
+
+  /**
+   * Lookahead `n` tokens.
+   *
+   * @param {Number} n
+   * @return {Object}
+   * @api private
+   */
+  
+  lookahead: function(n){
+    var fetch = n - this.stash.length;
+    while (fetch-- > 0) this.stash.push(this.advance());
+    return this.stash[--n];
+  },
+  
+  /**
+   * Consume the given `len`.
+   *
+   * @param {Number|Array} len
+   * @api private
+   */
+
+  skip: function(len){
+    this.str = this.str.substr(Array.isArray(len)
+      ? len[0].length
+      : len);
+  },
+
+  /**
+   * Fetch next token including those stashed by peek.
+   *
+   * @return {Token}
+   * @api private
+   */
+
+  next: function() {
+    var tok = this.stashed() || this.advance();
+    switch (tok.type) {
+      case 'newline':
+      case 'indent':
+        ++this.lineno;
+        break;
+      case 'outdent':
+        if ('outdent' != this.prev.type) ++this.lineno;
+    }
+    this.prev = tok;
+    tok.lineno = this.lineno;
+    return tok;
+  },
+
+  /**
+   * Fetch next token.
+   *
+   * @return {Token}
+   * @api private
+   */
+
+  advance: function() {
+    return this.eos()
+      || this.null()
+      || this.sep()
+      || this.keyword()
+      || this.urlchars()
+      || this.atrule()
+      || this.media()
+      || this.comment()
+      || this.newline()
+      || this.escaped()
+      || this.important()
+      || this.literal()
+      || this.function()
+      || this.brace()
+      || this.paren()
+      || this.color()
+      || this.string()
+      || this.unit()
+      || this.namedop()
+      || this.boolean()
+      || this.ident()
+      || this.op()
+      || this.space()
+      || this.selector();
+  },
+
+  /**
+   * Lookahead a single token.
+   *
+   * @return {Token}
+   * @api private
+   */
+  
+  peek: function() {
+    return this.lookahead(1);
+  },
+  
+  /**
+   * Return the next possibly stashed token.
+   *
+   * @return {Token}
+   * @api private
+   */
+
+  stashed: function() {
+    return this.stash.shift();
+  },
+
+  /**
+   * EOS | trailing outdents.
+   */
+
+  eos: function() {
+    if (this.str.length) return;
+    if (this.indentStack.length) {
+      this.indentStack.shift();
+      return new Token('outdent');
+    } else {
+      return new Token('eos');
+    }
+  },
+
+  /**
+   * url char
+   */
+
+  urlchars: function() {
+    var captures;
+    if (!this.isURL) return;
+    if (captures = /^[\/:@.;?&=*!,<>#%0-9]+/.exec(this.str)) {
+      this.skip(captures);
+      return new Token('literal', new nodes.Literal(captures[0]));
+    }
+  },
+
+  /**
+   * ';' ' '*
+   */
+
+  sep: function() {
+    var captures;
+    if (captures = /^; */.exec(this.str)) {
+      this.skip(captures);
+      return new Token(';');
+    }
+  },
+  
+  /**
+   * ' '+
+   */
+
+  space: function() {
+    var captures;
+    if (captures = /^( +)/.exec(this.str)) {
+      this.skip(captures);
+      return new Token('space');
+    }
+  },
+  
+  /**
+   * '\\' . ' '*
+   */
+   
+  escaped: function() {
+    var captures;
+    if (captures = /^\\(.) */.exec(this.str)) {
+      var c = captures[1];
+      this.skip(captures);
+      return new Token('ident', new nodes.Literal(c));
+    }
+  },
+  
+  /**
+   * '@css' ' '* '{' .* '}' ' '*
+   */
+  
+  literal: function() {
+    // HACK attack !!!
+    var captures;
+    if (captures = /^@css *\{/.exec(this.str)) {
+      this.skip(captures);
+      var c
+        , braces = 1
+        , css = '';
+      while (c = this.str[0]) {
+        this.str = this.str.substr(1);
+        switch (c) {
+          case '{': ++braces; break;
+          case '}': --braces; break;
+        }
+        css += c;
+        if (!braces) break;
+      }
+      css = css.replace(/\s*}$/, '');
+      return new Token('literal', new nodes.Literal(css));
+    }
+  },
+  
+  /**
+   * '!important' ' '*
+   */
+  
+  important: function() {
+    var captures;
+    if (captures = /^!important */.exec(this.str)) {
+      this.skip(captures);
+      return new Token('ident', new nodes.Literal('!important'));
+    }
+  },
+  
+  /**
+   * '{' | '}'
+   */
+  
+  brace: function() {
+    var captures;
+    if (captures = /^([{}])/.exec(this.str)) {
+      this.skip(1);
+      var brace = captures[1];
+      return new Token(brace, brace);
+    }
+  },
+  
+  /**
+   * '(' | ')' ' '*
+   */
+  
+  paren: function() {
+    var captures;
+    if (captures = /^([()]) */.exec(this.str)) {
+      var paren = captures[1];
+      this.skip(captures);
+      if (')' == paren) this.isURL = false;
+      return new Token(paren, paren);
+    }
+  },
+  
+  /**
+   * 'null'
+   */
+  
+  null: function() {
+    var captures;
+    if (captures = /^(null)\b */.exec(this.str)) {
+      this.skip(captures);
+      return new Token('null', nodes.null);
+    }
+  },
+  
+  /**
+   *   'if'
+   * | 'else'
+   * | 'unless'
+   * | 'return'
+   * | 'for'
+   * | 'in'
+   */
+  
+  keyword: function() {
+    var captures;
+    if (captures = /^(return|if|else|unless|for|in)\b */.exec(this.str)) {
+      var keyword = captures[1];
+      this.skip(captures);
+      return new Token(keyword, keyword);
+    }
+  },
+  
+  /**
+   *   'not'
+   * | 'and'
+   * | 'or'
+   * | 'is'
+   * | 'is not'
+   * | 'isnt'
+   * | 'is a'
+   * | 'is defined'
+   */
+  
+  namedop: function() {
+    var captures;
+    if (captures = /^(not|and|or|is a|is defined|isnt|is not|is)\b( *)/.exec(this.str)) {
+      var op = captures[1];
+      this.skip(captures);
+      op = alias[op] || op;
+      var tok = new Token(op, op);
+      tok.space = captures[2];
+      return tok;
+    }
+  },
+  
+  /**
+   *   ','
+   * | '+'
+   * | '+='
+   * | '-'
+   * | '-='
+   * | '*'
+   * | '*='
+   * | '/'
+   * | '/='
+   * | '%'
+   * | '%='
+   * | '**'
+   * | '!'
+   * | '&'
+   * | '&&'
+   * | '||'
+   * | '>'
+   * | '>='
+   * | '<'
+   * | '<='
+   * | '='
+   * | '=='
+   * | '!='
+   * | '!'
+   * | '~'
+   * | '?='
+   * | '?'
+   * | ':'
+   * | '['
+   * | ']'
+   * | '..'
+   * | '...'
+   */
+  
+  op: function() {
+    var captures;
+    if (captures = /^([.]{2,3}|&&|\|\||[!<>=?]=|\*\*|[-+*\/%]=?|[,=?:!~<>&\[\]])( *)/.exec(this.str)) {
+      var op = captures[1];
+      this.skip(captures);
+      op = alias[op] || op;
+      var tok = new Token(op, op);
+      tok.space = captures[2];
+      return tok;
+    }
+  },
+
+  /**
+   * '@media' ([^{\n]+)
+   */
+  
+  media: function() {
+    var captures;
+    if (captures = /^@media *([^{\n]+)/.exec(this.str)) {
+      this.skip(captures);
+      return new Token('media', captures[1].trim());
+    }
+  },
+  
+  /**
+   * '@' ('import' | 'keyframes' | 'charset' | 'page')
+   */
+  
+  atrule: function() {
+    var captures;
+    if (captures = /^@(import|keyframes|charset|page) */.exec(this.str)) {
+      this.skip(captures);
+      return new Token(captures[1]);
+    }
+  },
+
+  /**
+   * '//' *
+   */
+  
+  comment: function() {
+    // Single line
+    if ('/' == this.str[0] && '/' == this.str[1]) {
+      var end = this.str.indexOf('\n');
+      if (-1 == end) end = this.str.length;
+      this.skip(end);
+      return this.advance();
+    }
+
+    // Multi-line
+    if ('/' == this.str[0] && '*' == this.str[1]) {
+      var end = this.str.indexOf('*/');
+      if (-1 == end) end = this.str.length;
+      var str = this.str.substr(0, end + 2)
+        , lines = str.split('\n').length - 1;
+      this.lineno += lines;
+      this.skip(end + 2);
+      return this.allowComments
+        ? new Token('comment', str)
+        : this.advance();
+    }
+  },
+
+  /**
+   * 'true' | 'false'
+   */
+  
+  boolean: function() {
+    var captures;
+    if (captures = /^(true|false)\b( *)/.exec(this.str)) {
+      var val = nodes.Boolean('true' == captures[1]);
+      this.skip(captures);
+      var tok = new Token('boolean', val);
+      tok.space = captures[2];
+      return tok;
+    }
+  },
+
+  /**
+   * -?[a-zA-Z$] [-\w\d$]* '('
+   */
+  
+  function: function() {
+    var captures;
+    if (captures = /^(-?[a-zA-Z$][-\w\d$]*)\(( *)/.exec(this.str)) {
+      var name = captures[1];
+      this.skip(captures);
+      this.isURL = 'url' == name;
+      var tok = new Token('function', new nodes.Ident(name));
+      tok.space = captures[2];
+      return tok;
+    } 
+  },
+
+  /**
+   * -?[_a-zA-Z$] [-\w\d$]*
+   */
+  
+  ident: function() {
+    var captures;
+    if (captures = /^(-?[_a-zA-Z$][-\w\d$]*)/.exec(this.str)) {
+      var name = captures[1];
+      this.skip(captures);
+      return new Token('ident', new nodes.Ident(name));
+    }
+  },
+  
+  /**
+   * '\n' ' '+
+   */
+
+  newline: function() {
+    var captures, re;
+
+    // we have established the indentation regexp
+    if (this.indentRe){
+      captures = this.indentRe.exec(this.str);
+    // figure out if we are using tabs or spaces
+    } else {
+      // try tabs
+      re = /^\n([\t]*) */;
+      captures = re.exec(this.str);
+
+      // nope, try spaces
+      if (captures && !captures[1].length) {
+        re = /^\n( *)/;
+        captures = re.exec(this.str);
+      }
+
+      // established
+      if (captures && captures[1].length) this.indentRe = re;
+    }
+
+
+    if (captures) {
+      var tok
+        , indents = captures[1].length;
+
+      this.skip(captures);
+      if (this.str[0] === ' ' || this.str[0] === '\t') {
+        throw new errors.SyntaxError('Invalid indentation, you can use tabs or spaces to indent but not both');
+      }
+
+      // Reset state
+      this.isVariable = false;
+
+      // Blank line
+      if ('\n' == this.str[0]) {
+        ++this.lineno;
+        return this.advance();
+      }
+
+      // Outdent
+      if (this.indentStack.length && indents < this.indentStack[0]) {
+        while (this.indentStack.length && this.indentStack[0] > indents) {
+          this.stash.push(new Token('outdent'));
+          this.indentStack.shift();
+        }
+        tok = this.stash.pop();
+      // Indent
+      } else if (indents && indents != this.indentStack[0]) {
+        this.indentStack.unshift(indents);
+        tok = new Token('indent');
+      // Newline
+      } else {
+        tok = new Token('newline');
+      }
+
+      return tok;
+    }
+  },
+
+  /**
+   * '-'? (digit+ | digit* '.' digit+) unit
+   */
+
+  unit: function() {
+    var captures;
+    if (captures = unit.exec(this.str)) {
+      this.skip(captures);
+      var n = parseFloat(captures[2]);
+      if ('-' == captures[1]) n = -n;
+      var node = new nodes.Unit(n, captures[3]);
+      return new Token('unit', node);
+    }
+  },
+
+  /**
+   * '"' [^"]+ '"' | "'"" [^']+ "'"
+   */
+
+  string: function() {
+    var captures;
+    if (captures = /^("[^"]*"|'[^']*') */.exec(this.str)) {
+      var str = captures[1];
+      this.skip(captures);
+      return new Token('string', new nodes.String(str.slice(1,-1)));
+    }
+  },
+
+  /**
+   * #nnnnnn | #nnn
+   */
+
+  color: function() {
+    return this.hex6()
+      || this.hex3();
+  },
+  
+  /**
+   * #nnn
+   */
+  
+  hex3: function() {
+    var captures;
+    if (captures = /^#([a-fA-F0-9]{3}) */.exec(this.str)) {
+      this.skip(captures);
+      var rgb = captures[1]
+        , r = parseInt(rgb[0] + rgb[0], 16)
+        , g = parseInt(rgb[1] + rgb[1], 16)
+        , b = parseInt(rgb[2] + rgb[2], 16)
+        , color = new nodes.RGBA(r, g, b, 1);
+      color.raw = captures[0];
+      return new Token('color', color); 
+    }
+  },
+  
+  /**
+   * #nnnnnn
+   */
+  
+  hex6: function() {
+    var captures;
+    if (captures = /^#([a-fA-F0-9]{6}) */.exec(this.str)) {
+      this.skip(captures);
+      var rgb = captures[1]
+        , r = parseInt(rgb.substr(0, 2), 16)
+        , g = parseInt(rgb.substr(2, 2), 16)
+        , b = parseInt(rgb.substr(4, 2), 16)
+        , color = new nodes.RGBA(r, g, b, 1);
+      color.raw = captures[0];
+      return new Token('color', color); 
+    }
+  },
+  
+  /**
+   * [^\n,;]+
+   */
+  
+  selector: function() {
+    var captures;
+    if (captures = /^[^{\n,]+/.exec(this.str)) {
+      var selector = captures[0];
+      this.skip(captures);
+      return new Token('selector', selector);
+    }
+  }
+};

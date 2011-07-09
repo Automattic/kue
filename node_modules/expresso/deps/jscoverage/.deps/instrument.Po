@@ -1,0 +1,148 @@
+instrument.o instrument.o: instrument.c config.h instrument.h \
+  /usr/include/assert.h /usr/include/sys/cdefs.h /usr/include/errno.h \
+  /usr/include/sys/errno.h /usr/include/string.h /usr/include/_types.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h /usr/include/secure/_string.h \
+  /usr/include/secure/_common.h /usr/include/dirent.h \
+  /usr/include/sys/dirent.h /usr/include/Availability.h \
+  /usr/include/AvailabilityInternal.h /usr/include/sys/stat.h \
+  /usr/include/sys/_structs.h /usr/include/sys/types.h \
+  /usr/include/sys/appleapiopts.h /usr/include/machine/types.h \
+  /usr/include/i386/types.h /usr/include/i386/_types.h \
+  /usr/include/machine/endian.h /usr/include/i386/endian.h \
+  /usr/include/sys/_endian.h /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h encoding.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h \
+  /usr/include/stdlib.h /usr/include/sys/wait.h /usr/include/sys/signal.h \
+  /usr/include/machine/signal.h /usr/include/i386/signal.h \
+  /usr/include/i386/_structs.h /usr/include/machine/_structs.h \
+  /usr/include/mach/i386/_structs.h /usr/include/sys/resource.h \
+  /usr/include/alloca.h js/jsapi.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h \
+  /usr/include/stdio.h /usr/include/secure/_stdio.h js/obj/js-config.h \
+  js/jspubtd.h js/jstypes.h js/obj/jsautocfg.h js/jsotypes.h \
+  js/jscompat.h js/jslong.h js/jsproto.tbl js/jsversion.h js/jsutil.h \
+  global.h /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdbool.h \
+  instrument-js.h stream.h util.h resource-manager.h
+
+config.h:
+
+instrument.h:
+
+/usr/include/assert.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/errno.h:
+
+/usr/include/sys/errno.h:
+
+/usr/include/string.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/secure/_string.h:
+
+/usr/include/secure/_common.h:
+
+/usr/include/dirent.h:
+
+/usr/include/sys/dirent.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/sys/_structs.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/sys/appleapiopts.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+encoding.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/i386/_structs.h:
+
+/usr/include/machine/_structs.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/alloca.h:
+
+js/jsapi.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h:
+
+/usr/include/stdio.h:
+
+/usr/include/secure/_stdio.h:
+
+js/obj/js-config.h:
+
+js/jspubtd.h:
+
+js/jstypes.h:
+
+js/obj/jsautocfg.h:
+
+js/jsotypes.h:
+
+js/jscompat.h:
+
+js/jslong.h:
+
+js/jsproto.tbl:
+
+js/jsversion.h:
+
+js/jsutil.h:
+
+global.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdbool.h:
+
+instrument-js.h:
+
+stream.h:
+
+util.h:
+
+resource-manager.h:
