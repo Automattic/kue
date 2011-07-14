@@ -8,7 +8,7 @@
       "redis": "0.6.0"
     , "express": "2.3.12"
     , "jade": "0.12.4"
-    , "stylus": "0.13.5"
+    , "stylus": "0.13.6"
     , "nib": "0.0.8"
   }, "devDependencies": {
       "expresso": "0.7.9"
