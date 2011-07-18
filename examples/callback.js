@@ -19,17 +19,21 @@ function create() {
       title: 'converting ' + name + '\'s to avi'
     , user: 1
     , frames: 200
+  }).on('complete', function(){
+      console.log("Job complete");
+  }).on('failed', function(){
+      console.log("Job failed");
   }).save();
-  setTimeout(create, Math.random() * 3000 | 0);
+  setTimeout(create, Math.random() * 300 | 0);
 }
 
 create();
 
 // process video conversion jobs, 3 at a time.
 
-jobs.process('video conversion', 3, function(job, done){
+jobs.process('video conversion', 20, function(job, done){
   var frames = job.data.frames;
-  console.log("job process %d", job.id);
+
   function next(i) {
     // pretend we are doing some work
     convertFrame(i, function(err){
@@ -37,7 +41,7 @@ jobs.process('video conversion', 3, function(job, done){
       // report progress, i/frames complete
       job.progress(i, frames);
       if (i == frames) done()
-      else next(i + 1);
+      else next(i + 4);
     });
   }
 
@@ -45,7 +49,7 @@ jobs.process('video conversion', 3, function(job, done){
 });
 
 function convertFrame(i, fn) {
-  setTimeout(fn, Math.random() * 100);
+  setTimeout(fn, Math.random() * 1);
 }
 
 // start the UI
