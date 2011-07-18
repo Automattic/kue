@@ -24,14 +24,14 @@ function create() {
   }).on('failed', function(){
       console.log("Job failed");
   }).save();
-  setTimeout(create, Math.random() * 300 | 0);
+  setTimeout(create, Math.random() * 2000 | 0);
 }
 
 create();
 
 // process video conversion jobs, 3 at a time.
 
-jobs.process('video conversion', 20, function(job, done){
+jobs.process('video conversion', 3, function(job, done){
   var frames = job.data.frames;
 
   function next(i) {
