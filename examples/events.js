@@ -14,26 +14,30 @@ var jobs = kue.createQueue();
 
 function create() {
   var name = ['tobi', 'loki', 'jane', 'manny'][Math.random() * 4 | 0];
-  console.log('- creating job for %s', name);
-  jobs.create('video conversion', {
+  var job = jobs.create('video conversion', {
       title: 'converting ' + name + '\'s to avi'
     , user: 1
     , frames: 200
-  }).on('complete', function(){
+  });
+
+  job.on('complete', function(){
       console.log("Job complete");
   }).on('failed', function(){
       console.log("Job failed");
   }).on('progress', function(progress){
-    console.log(progress);
-  }).save();
+    process.stdout.write('\r  job #' + job.id + ' ' + progress + '% complete');
+  });
+
+  job.save();
+
   setTimeout(create, Math.random() * 2000 | 0);
 }
 
 create();
 
-// process video conversion jobs, 3 at a time.
+// process video conversion jobs, 1 at a time.
 
-jobs.process('video conversion', 3, function(job, done){
+jobs.process('video conversion', 1, function(job, done){
   var frames = job.data.frames;
 
   function next(i) {
@@ -42,8 +46,8 @@ jobs.process('video conversion', 3, function(job, done){
       if (err) return done(err);
       // report progress, i/frames complete
       job.progress(i, frames);
-      if (i == frames) done()
-      else next(i + 4);
+      if (i >= frames) done()
+      else next(i + Math.random() * 10);
     });
   }
 
@@ -51,7 +55,7 @@ jobs.process('video conversion', 3, function(job, done){
 });
 
 function convertFrame(i, fn) {
-  setTimeout(fn, Math.random() * 100);
+  setTimeout(fn, Math.random() * 50);
 }
 
 // start the UI
