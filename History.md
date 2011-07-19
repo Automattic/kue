@@ -1,4 +1,12 @@
 
+0.1.0 / 2011-07-19 
+==================
+
+  * Added exposing of progress via redis pubsub
+  * Added pubsub job events "complete" and "failed"
+  * Fixed: capping of progress > 100 == 100
+  * UI: scroll details into view
+
 0.0.3 / 2011-07-07 
 ==================
 
