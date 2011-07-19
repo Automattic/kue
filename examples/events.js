@@ -23,6 +23,8 @@ function create() {
       console.log("Job complete");
   }).on('failed', function(){
       console.log("Job failed");
+  }).on('progress', function(progress){
+    console.log(progress);
   }).save();
   setTimeout(create, Math.random() * 2000 | 0);
 }
@@ -49,7 +51,7 @@ jobs.process('video conversion', 3, function(job, done){
 });
 
 function convertFrame(i, fn) {
-  setTimeout(fn, Math.random() * 1);
+  setTimeout(fn, Math.random() * 100);
 }
 
 // start the UI
