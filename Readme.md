@@ -108,6 +108,26 @@ job.on('complete', function(){
 });
 ```
 
+### Delayed Jobs
+
+  Delayed jobs may be scheduled to be queued for an arbitrary distance in tim by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
+
+```js
+var email = jobs.create('email', {
+    title: 'Account renewal required'
+  , to: 'tj@learnboost.com'
+  , template: 'renewal-email'
+}).delay(minute)
+  .priority('high')
+  .save();
+```
+
+When using delayed jobs, we must also check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded. This `setInterval` is defined within `Queue#promote(ms)`, defaulting to a check every 5 seconds.
+
+```js
+jobs.promote();
+```
+
 ## Processing Jobs
 
  Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
