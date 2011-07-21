@@ -9,13 +9,22 @@ var jobs = kue.createQueue();
 
 var minute = 60000;
 
-jobs.create('email', {
+var email = jobs.create('email', {
     title: 'Account renewal required'
   , to: 'tj@learnboost.com'
   , template: 'renewal-email'
 }).delay(minute)
   .priority('high')
   .save();
+
+
+email.on('promotion', function(){
+  console.log('renewal job promoted');
+});
+
+email.on('complete', function(){
+  console.log('renewal job completed');
+});
 
 jobs.create('email', {
     title: 'Account expired'
@@ -24,6 +33,10 @@ jobs.create('email', {
 }).delay(minute * 10)
   .priority('high')
   .save();
+
+jobs.promote();
+
+
 
 // start the UI
 kue.app.listen(3000);
