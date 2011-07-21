@@ -52,6 +52,30 @@ jobs.create('email', {
 };
 ```
 
+### Delayed Jobs
+
+  Sometimes you want to delay jobs to be executed after a certain timespan. `create()` supports a third parameter with a timestamp when the
+  job should be executed. This is the minimum point of time and may vary depending on your job queue. If the job has a delay and high priority, the job
+  is very likely to run on near the specified point in time. This example starts the email job, 30 seconds in future.
+
+```js
+jobs.create('email', {
+    title: 'welcome email for tj'
+  , to: 'tj@learnboost.com'
+  , template: 'welcome-email'
+}, new Date().getTime() + 30000).priority('high').save();
+```
+
+  This requires that the `jobs.promote([timestamp])` function is regulary executed on at least one node. One easy way is to use your master process and
+  schedule a regular call:
+
+```js
+setInterval(jobs.promote, 2000);
+```
+
+  The promote function moves all jobs that are realy for running into the queue. From their they will take a normal path. Please consider that the promote
+  intervall is setting additional delay on the specified point in time.
+
 ### Failure Attempts
 
  By default jobs only have _one_ attempt, that is when they fail, they are marked as a failure, and remain that way until you intervene. However, Kue allows you to specify this, which is important for jobs such as transferring an email, which upon failure, may usually retry without issue. To do this invoke the `.attempts()` method with a number.
