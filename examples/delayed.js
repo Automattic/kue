@@ -36,7 +36,11 @@ jobs.create('email', {
 
 jobs.promote();
 
-
+jobs.process('email', 5, function(job, done){
+  setTimeout(function(){
+    done();
+  }, Math.random() * 5000);
+});
 
 // start the UI
 kue.app.listen(3000);
