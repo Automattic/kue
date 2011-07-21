@@ -9,6 +9,17 @@
 
     $ npm install kue
 
+## Features
+
+  - delayed jobs
+  - job event and progress pubsub
+  - rich integrated UI
+  - UI progress indication
+  - job specific logging
+  - powered by Redis
+  - optional retries
+  - RESTful JSON API
+
 ## Creating Jobs
 
  First create a job `Queue` with `kue.createQueue()`:
