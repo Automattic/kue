@@ -80,6 +80,34 @@ job.log('$%d sent to %s', amount, user.name);
 job.progress(frames, totalFrames);
 ```
 
+### Job Events
+
+ Job-specific events are fired are fire on the `Job` instances themselves
+ via Redis pubsub. The following events are currently supported:
+
+    - `failed` the job has failed
+    - `complete` the job has completed
+    - `promotion` the job (when delayed) is now queued
+    - `progress` the job's progress ranging from 0-100
+
+ For example this may look something like the following:
+
+```js
+var job = jobs.create('video conversion', {
+    title: 'converting loki\'s to avi'
+  , user: 1
+  , frames: 200
+});
+
+job.on('complete', function(){
+  console.log("Job complete");
+}).on('failed', function(){
+  console.log("Job failed");
+}).on('progress', function(progress){
+  process.stdout.write('\r  job #' + job.id + ' ' + progress + '% complete');
+});
+```
+
 ## Processing Jobs
 
  Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
