@@ -17,6 +17,14 @@ jobs.create('email', {
   .priority('high')
   .save();
 
+jobs.create('email', {
+    title: 'Account expired'
+  , to: 'tj@learnboost.com'
+  , template: 'expired-email'
+}).delay(minute * 10)
+  .priority('high')
+  .save();
+
 // start the UI
 kue.app.listen(3000);
 console.log('UI started on port 3000');
