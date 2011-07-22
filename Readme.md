@@ -314,6 +314,17 @@ running this example you'll see the following output:
 
 now when you visit Kue's UI in the browser you'll see that jobs are being processed roughly 8 times faster! (if you have 8 cores).
 
+## Securing Kue
+
+ Through the use of app mounting you may customize the web application, enabling TLS, or adding additional middleware like Connect's `basicAuth()`.
+
+```js
+var app = express.createServer({ ... tls options ... });
+app.use(express.basicAuth('foo', 'bar'));
+app.use(kue.app);
+app.listen(3000);
+```
+
 ## License 
 
 (The MIT License)

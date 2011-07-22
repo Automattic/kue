@@ -1,5 +1,6 @@
 
-var kue = require('../');
+var kue = require('../')
+  , express = require('express');
 
 // create our job queue
 
@@ -49,5 +50,8 @@ function convertFrame(i, fn) {
 }
 
 // start the UI
-kue.app.listen(3000);
+var app = express.createServer();
+app.use(express.basicAuth('foo', 'bar'));
+app.use(kue.app);
+app.listen(3000);
 console.log('UI started on port 3000');
