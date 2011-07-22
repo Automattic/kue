@@ -128,25 +128,3 @@ bar(color)
   border-bottom: 1px solid light - 35%
   &:last-child
     border-bottom: none
-
-
-// more button
-
-#more
-  display: block
-  margin: 20px auto
-  padding: 10px
-  width: 80%
-  text-align: center
-  decorated-box()
-  background: linear-gradient(top, light, dark)
-  box-shadow: inset 0 0 0 1px lighter
-  color: fg = lighter + 50%
-  font-weight: bold
-  text-shadow: 1px 1px 1px rgba(black, .2)
-  &:hover
-    color: fg + 20%
-  &:active
-    box-shadow: inset 0 -1px 10px 1px rgba(black, .8)
-    background: linear-gradient(top, light - 10%, dark - 10%)
-    color: fg - 20%
