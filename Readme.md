@@ -140,9 +140,22 @@ jobs.process('slideshow pdf', 5, function(job, done){
 
 ## Redis Connection Settings
 
- By default, Kue will connect to Redis using the client default settings (port defaults to `6389`, host defaults to `127.0.0.1`).  Redis client connection settings can be set with `kue.redis.set(key, val)`.  This function accepts the keys `port`, `host` and `options` and returns `kue.redis` so `set` calls can be chained.  See [redis.createClient](https://github.com/mranney/node_redis) documentation for `options` properties.
+  By default, Kue will connect to Redis using the client default settings (port defaults to `6389`, host defaults to `127.0.0.1`).  Redis client connection settings can be set by overriding the `kue.redis.createConnection` function.
 
- Redis connection settings must be set before calling `kue.createQueue()` or accessing `kue.app`.
+  For example, to create a Redis client that connects to `192.168.1.2` on port `1234` that requires authentication, use the following:
+
+  ```javascript
+  var kue = require('kue')
+    , redis = require('redis');
+  
+  kue.redis.createClient = function() {
+      var client = redis.createClient(1234, `192.168.1.2`);
+      client.auth('YOUR_PASSWORD');
+      return client;
+  }
+  ```
+
+  Redis connection settings must be set before calling `kue.createQueue()` or accessing `kue.app`.
 
 ## User-Interface
 
