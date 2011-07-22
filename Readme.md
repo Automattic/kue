@@ -5,8 +5,6 @@
 
 ## Installation
 
- Requires redis >= 2.1.0 for __WATCH__.
-
     $ npm install kue
 
 ## Features
