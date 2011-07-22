@@ -149,7 +149,7 @@ jobs.process('slideshow pdf', 5, function(job, done){
     , redis = require('redis');
   
   kue.redis.createClient = function() {
-      var client = redis.createClient(1234, `192.168.1.2`);
+      var client = redis.createClient(1234, '192.168.1.2');
       client.auth('YOUR_PASSWORD');
       return client;
   }
