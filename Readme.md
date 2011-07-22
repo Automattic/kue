@@ -12,6 +12,7 @@
   - delayed jobs
   - job event and progress pubsub
   - rich integrated UI
+  - infinite scrolling
   - UI progress indication
   - job specific logging
   - powered by Redis
