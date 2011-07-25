@@ -5,9 +5,19 @@
 
 ## Installation
 
- Requires redis >= 2.1.0 for __WATCH__.
-
     $ npm install kue
+
+## Features
+
+  - delayed jobs
+  - job event and progress pubsub
+  - rich integrated UI
+  - infinite scrolling
+  - UI progress indication
+  - job specific logging
+  - powered by Redis
+  - optional retries
+  - RESTful JSON API
 
 ## Creating Jobs
 
@@ -78,6 +88,54 @@ job.log('$%d sent to %s', amount, user.name);
 
 ```js
 job.progress(frames, totalFrames);
+```
+
+### Job Events
+
+ Job-specific events are fired are fire on the `Job` instances themselves
+ via Redis pubsub. The following events are currently supported:
+
+    - `failed` the job has failed
+    - `complete` the job has completed
+    - `promotion` the job (when delayed) is now queued
+    - `progress` the job's progress ranging from 0-100
+
+ For example this may look something like the following:
+
+```js
+var job = jobs.create('video conversion', {
+    title: 'converting loki\'s to avi'
+  , user: 1
+  , frames: 200
+});
+
+job.on('complete', function(){
+  console.log("Job complete");
+}).on('failed', function(){
+  console.log("Job failed");
+}).on('progress', function(progress){
+  process.stdout.write('\r  job #' + job.id + ' ' + progress + '% complete');
+});
+```
+
+### Delayed Jobs
+
+  Delayed jobs may be scheduled to be queued for an arbitrary distance in tim by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
+
+```js
+var email = jobs.create('email', {
+    title: 'Account renewal required'
+  , to: 'tj@learnboost.com'
+  , template: 'renewal-email'
+}).delay(minute)
+  .priority('high')
+  .save();
+```
+
+When using delayed jobs, we must also check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded. This `setInterval` is defined within `Queue#promote(ms)`, defaulting to a check every 5 seconds.
+
+```js
+jobs.promote();
 ```
 
 ## Processing Jobs
@@ -274,6 +332,17 @@ running this example you'll see the following output:
     info - worker 0 connected
 
 now when you visit Kue's UI in the browser you'll see that jobs are being processed roughly 8 times faster! (if you have 8 cores).
+
+## Securing Kue
+
+ Through the use of app mounting you may customize the web application, enabling TLS, or adding additional middleware like Connect's `basicAuth()`.
+
+```js
+var app = express.createServer({ ... tls options ... });
+app.use(express.basicAuth('foo', 'bar'));
+app.use(kue.app);
+app.listen(3000);
+```
 
 ## License 
 
