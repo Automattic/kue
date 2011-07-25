@@ -1,4 +1,18 @@
 
+0.2.0 / 2011-07-25 
+==================
+
+  * Added infinite scroll
+  * Added delayed job support
+  * Added configurable redis support [davidwood]
+  * Added job windowing. Closes #28
+  * Added `Job#delay(ms)`
+  * Removed job scrollIntoView
+  * Removed fancy scrollbar (for infinite scroll / windowing :( )
+  * Removed "More" button
+  * Fixed z-index for actions
+  * Fixed job mapping. Closes #43
+
 0.1.0 / 2011-07-19 
 ==================
 
