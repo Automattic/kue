@@ -1,6 +1,6 @@
 {
     "name": "kue"
-  , "version": "0.0.4"
+  , "version": "0.1.0"
   , "description": "Feature rich priority job queue backed by redis"
   , "keywords": ["redis", "job", "queue", "worker", "redis"]
   , "author": "TJ Holowaychuk <tj@learnboost.com>"
