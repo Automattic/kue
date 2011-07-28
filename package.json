@@ -10,6 +10,7 @@
     , "jade": "0.12.4"
     , "stylus": "0.13.6"
     , "nib": "0.0.8"
+    , "reds": "0.1.0"
   }, "devDependencies": {
       "expresso": "0.7.9"
     , "should": "0.2.1"
