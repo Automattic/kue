@@ -234,6 +234,14 @@ kue.app.set('title', 'My Application');
 
   Along with the UI Kue also exposes a JSON API, which is utilized by the UI.
 
+### GET /job/search?q=
+
+  Query jobs, for example "GET /job/search?q=avi video":
+
+```js
+["5", "7", "10"]
+```
+
 ### GET /stats
 
   Currently responds with state counts:

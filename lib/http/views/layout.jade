@@ -9,10 +9,12 @@ html
     script(src='/javascripts/progress.js')
     script(src='/javascripts/loading.js')
     script(src='/javascripts/job.js')
+    script(src='/javascripts/search.js')
     script(src='/javascripts/main.js')
   body
     != partial('menu')
     #actions
+      != partial('search')
       != partial('filter')
       != partial('sort')
     #content!= body
