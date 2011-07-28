@@ -344,6 +344,10 @@ app.use(kue.app);
 app.listen(3000);
 ```
 
+## Screencasts
+
+  - [Introduction](http://nodetuts.com/tutorials/27-kue-jobs.html#video) to Kue
+
 ## License 
 
 (The MIT License)
