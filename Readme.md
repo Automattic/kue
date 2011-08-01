@@ -1,4 +1,3 @@
-
 # Kue
 
   Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
@@ -120,7 +119,7 @@ job.on('complete', function(){
 
 ### Delayed Jobs
 
-  Delayed jobs may be scheduled to be queued for an arbitrary distance in tim by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
+  Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
 
 ```js
 var email = jobs.create('email', {
