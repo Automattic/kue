@@ -91,8 +91,7 @@ job.progress(frames, totalFrames);
 
 ### Job Events
 
- Job-specific events are fired are fire on the `Job` instances themselves
- via Redis pubsub. The following events are currently supported:
+ Job-specific events are fired on the `Job` instances via Redis pubsub. The following events are currently supported:
 
     - `failed` the job has failed
     - `complete` the job has completed
