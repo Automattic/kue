@@ -260,10 +260,10 @@ kue.app.set('title', 'My Application');
 
 ### GET /stats
 
-  Currently responds with state counts:
+  Currently responds with state counts, and worker activity time in milliseconds:
 
 ```js
-{"inactiveCount":4,"completeCount":69,"activeCount":2,"failedCount":0}
+{"inactiveCount":4,"completeCount":69,"activeCount":2,"failedCount":0,"workTime":20892}
 ```
 
 ### GET /job/:id
