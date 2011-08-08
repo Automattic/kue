@@ -116,6 +116,24 @@ job.on('complete', function(){
 });
 ```
 
+### Queue Events
+
+ Queue-level events are currently provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to to apply logic at a "global" level. An example of this is removing completed jobs:
+ 
+```js
+jobs.on('job complete', function(id){
+  Job.get(id, function(err, job){
+    if (err) return;
+    job.remove(function(err){
+      if (err) throw err;
+      console.log('removed completed job #%d', job.id);
+    });
+  });
+});
+```
+
+ The events available are the same as mentioned in "Job Events", however prefixed with "job ". 
+
 ### Delayed Jobs
 
   Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
