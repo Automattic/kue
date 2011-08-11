@@ -16,6 +16,7 @@
   - job specific logging
   - powered by Redis
   - optional retries
+  - full-text search capabilities
   - RESTful JSON API
 
 ## Creating Jobs

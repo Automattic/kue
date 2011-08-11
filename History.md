@@ -1,4 +1,16 @@
 
+0.3.0 / 2011-08-11 
+==================
+
+  * Added search capabilities
+  * Added `workTime` stat
+  * Added removal of stale jobs example
+  * Added Queue-level job events, useful for removing stale jobs etc. Closes   * Changed: lazy load reds search [David Wood]
+  * Fixed `Job#error` for modules that throw strings or emit `error` events with strings [guillermo]
+#51
+  * Fixed `Job#remove(fn)`
+  * Fixed proxy issue with paths, use relative paths [booo]
+
 0.2.0 / 2011-07-25 
 ==================
 
