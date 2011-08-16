@@ -36,7 +36,7 @@ jobs.create('email', {
 
 jobs.promote();
 
-jobs.process('email', 5, function(job, done){
+jobs.process('email', 10, function(job, done){
   setTimeout(function(){
     done();
   }, Math.random() * 5000);
