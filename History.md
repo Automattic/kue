@@ -1,4 +1,11 @@
 
+0.3.1 / 2011-08-25 
+==================
+
+  * Fixed auto event subscription. Closes #68
+  * Changed: one redis connection for all workers
+  * Removed user-select: none from everything. Closes #50
+
 0.3.0 / 2011-08-11 
 ==================
 
