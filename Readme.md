@@ -9,6 +9,7 @@
 ## Features
 
   - delayed jobs
+  - resource limitations
   - job event and progress pubsub
   - rich integrated UI
   - infinite scrolling
@@ -212,6 +213,59 @@ jobs.process('slideshow pdf', 5, function(job, done){
   next(0);
 });
 ```
+
+### Ressource Limitations
+
+  Often jobs need different resources and a good job queue tries not to overload different resources while keeping the workers busy. Often ressources depend on data provided by the job itself. Therefore kue allows you to have flexible ressource limitations. Usage defaults to 1.
+
+  Resources use a hirarchy to find an apropriate limit. a.b.c will test limits for [a:b:c, a:b:__default__, a:b, a:__default__, __default__], first match wins.
+
+  useResources allocates the resources and runs the callback when the resources ane allocated. If not, the job is delayed by delay and resheduled. When delay is 0, job is forced to run.
+
+```js
+
+job.useResources(["type:key[:usage]",...], delay, function() {});
+
+
+jobs.process('slideshow pdf', 5, function(job, done){
+  job.useResources(
+    {
+      "io:" + process.ENV.HOST : 10,
+      "net:" + job.data.remote : 1
+    },
+    60, // wait 60 seconds for retry
+    function run() {
+      // process job
+      done();
+    });
+  }
+});
+```
+### Setting limits
+
+  You can set limits for any ressource.
+
+```js
+jobs.setLimit({"a:b:c":23, "a:__default__":42});
+
+jobs.clearLimit(["a:b", "x:p"]);
+```
+
+
+### Problems with ressource limitations
+
+  Resources allocated by a job are freed when the job calls `done()`. The worker tries to free all resources of current running jobs when he detects a exit/SIGINT, but this may fail and resources are still allocated for dead jobs. 
+  If can clear resource allocations by hand if you find dead limits there.
+
+```js
+
+jobs.clearResources(["a:b"]);
+
+// clear all resources
+jobs.clearAllResources();
+
+```
+
 
 ## Redis Connection Settings
 
