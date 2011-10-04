@@ -1,4 +1,11 @@
 
+0.3.2 / 2011-10-04 
+==================
+
+  * Removed unnecessary "pooling"
+  * Fixed multiple event emitting. Closes #73
+  * Fixed menu styling
+
 0.3.1 / 2011-08-25 
 ==================
 
