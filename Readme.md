@@ -166,7 +166,7 @@ var kue = require('kue')
  , jobs = kue.createQueue();
 
 jobs.process('email', function(job, done){
-  email(job.to, done);
+  email(job.data.to, done);
 });
 ```
 
