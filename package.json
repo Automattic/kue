@@ -5,7 +5,7 @@
   , "keywords": ["redis", "job", "queue", "worker", "redis"]
   , "author": "TJ Holowaychuk <tj@learnboost.com>"
   , "dependencies": {
-      "redis": "0.6.0"
+      "redis": "0.7.1"
     , "express": "2.5.0"
     , "jade": "0.17.0"
     , "stylus": "0.17.0"
