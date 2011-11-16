@@ -6,11 +6,11 @@
   , "author": "TJ Holowaychuk <tj@learnboost.com>"
   , "dependencies": {
       "redis": "0.6.0"
-    , "express": "2.3.12"
-    , "jade": "0.13.0"
+    , "express": "2.5.0"
+    , "jade": "0.16.2"
     , "stylus": "0.17.0"
     , "nib": "0.0.8"
-    , "reds": "0.1.0"
+    , "reds": "0.1.1"
   }, "devDependencies": {
       "expresso": "0.7.9"
     , "should": "0.2.1"
