@@ -1,4 +1,11 @@
 
+0.3.3 / 2011-11-28 
+==================
+
+  * Fixed: use relative stats route to support mounting [alexkwolfe]
+  * Fixed 0.6.x support
+  * Removed empty Makefile
+
 0.3.2 / 2011-10-04 
 ==================
 
