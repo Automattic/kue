@@ -74,7 +74,7 @@ jobs.create('email', {
  }).priority('high').attempts(5).save();
 ```
 
-Note that the 'failed' message is emitted for each worker process fail. To determine when a task has exhausted its attempts, bind to the 'max_attempts' event._
+Note that the 'failed' message is emitted for each worker process fail. To determine when a task has exhausted its attempts, bind to the `max_attempts` event.
 
 ### Job Logs
 
