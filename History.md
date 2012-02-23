@@ -1,4 +1,9 @@
 
+0.3.4 / 2012-02-23 
+==================
+
+  * Changed: reduce polling by using BLPOP to notify workers of activity [Davide Bertola]
+
 0.3.3 / 2011-11-28 
 ==================
 
