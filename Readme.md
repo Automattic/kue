@@ -329,7 +329,7 @@ kue.app.set('title', 'My Application');
              "priority": "high"
            }
          }' http://localhost:3000/job
-    {"message":"job created"}
+    {"message":"job 3 created"}
 
 
 ## Parallel Processing With Cluster
