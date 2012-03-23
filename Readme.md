@@ -312,6 +312,26 @@ kue.app.set('title', 'My Application');
     $ curl -X DELETE http://local:3000/job/2
     {"message":"job 2 removed"}
 
+### POST /job
+
+  Create a job:
+
+    $ curl -H "Content-Type: application/json" -X POST -d \
+        '{
+           "type": "email",
+           "data": {
+             "title": "welcome email for tj",
+             "to": "tj@learnboost.com",
+             "template": "welcome-email"
+           },
+           "options" : {
+             "attempts": 5,
+             "priority": "high"
+           }
+         }' http://localhost:3000/job
+    {"message":"job created"}
+
+
 ## Parallel Processing With Cluster
 
  The example below shows how you may use [Cluster](http://learnboost.github.com/cluster) to spread the job processing load across CPUs. By default cluster will create one worker per CPU, however you can specify this number via `.set('workers', N)`.
