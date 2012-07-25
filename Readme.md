@@ -74,6 +74,8 @@ jobs.create('email', {
  }).priority('high').attempts(5).save();
 ```
 
+Note that the 'failed' message is emitted for each worker process fail. To determine when a task has exhausted its attempts, bind to the `max_attempts` event.
+
 ### Job Logs
 
  Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
@@ -98,6 +100,8 @@ job.progress(frames, totalFrames);
     - `complete` the job has completed
     - `promotion` the job (when delayed) is now queued
     - `progress` the job's progress ranging from 0-100
+    - `max_attempts` the job has failed its maximum number of attempts
+
 
  For example this may look something like the following:
 
