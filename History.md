@@ -1,4 +1,9 @@
 
+0.4.1 / 2012-09-25 
+==================
+
+  * fix: if a job with a delay has more attempts, honor the original delay [mathrawka]
+
 0.4.0 / 2012-06-28 
 ==================
 
