@@ -9,6 +9,8 @@
 ## Features
 
   - delayed jobs
+  - auto-restart of stuck/crashed jobs
+  - job dependencies
   - job event and progress pubsub
   - rich integrated UI
   - infinite scrolling
@@ -90,6 +92,23 @@ job.log('$%d sent to %s', amount, user.name);
 job.progress(frames, totalFrames);
 ```
 
+### Job Heartbeat
+
+ Jobs, especially those that are long running, can get stuck or terminated without completing. The heartbeat is used to ensure that jobs get restarted if this happens.  To set a heartbeat interval for a job when the job is created, simply invoke `job.heartbeat(ms)`:
+
+```js
+job.heartbeat(60000).restarts(2); // heart must beat at least every 60s, and will only be restarted twice (default is one restart)
+```
+
+  During job execution, invoke `job.heartbeat()` at least as often as the heart beat interval (shorter is fine, longer will trigger a restart).
+
+  When using heartbeats, the watchdog that checks every job's heart beat must be started.  The watchdog will check for dead jobs every `Queue#watchdoc(ms)`, defaulting to a check every 5 seconds.
+
+```js
+jobs.watchdog();
+```
+When a dead job is restarted, the `restarted` event is fired and it is moved back to the `inactive` state.  If too many restarts have occurred, the job is moved to the `failed` state and the `failed` event is triggered.
+
 ### Job Events
 
  Job-specific events are fired on the `Job` instances via Redis pubsub. The following events are currently supported:
@@ -97,6 +116,7 @@ job.progress(frames, totalFrames);
     - `failed` the job has failed
     - `complete` the job has completed
     - `promotion` the job (when delayed) is now queued
+    - `restarted` the job has been restarted
     - `progress` the job's progress ranging from 0-100
 
  For example this may look something like the following:
@@ -154,6 +174,47 @@ When using delayed jobs, we must also check the delayed jobs with a timer, promo
 ```js
 jobs.promote();
 ```
+
+### Job dependencies
+
+  Some jobs can only execute once other jobs have completed.  Dependent jobs are left in the `waiting` state until all of their precursor jobs have finished successfully or have been removed.  Once their precursors have finished, the job is moved into the 'inactive' state to be scheduled on the next available worker.
+
+```js
+var customer = jobs.create('newcustomer', {
+    name: 'Jim Steele',
+    email: 'js@steeleinc.com'
+}).save();
+
+var config = jobs.create('customconfig', {
+	title: 'S5',
+	color: 'sprint blue',
+	transmission: 'dsg'
+}).save();
+
+var charge = jobs.create('change', {
+    email: 'js@steeleinc.com',
+    car: 'S5',
+    charge: '$59,000'
+}).after(newcustomer).after(config).save();
+```
+
+### Job serialization
+
+  In some cases, two related jobs can't be processed at the same time (regardless of the worker).  Jobs that are being held back because another job is executing are in the `staged` state. To handle this, jobs can be put in named groups, where members of the group are staged - only one executing at a time across all workers (even when workers are distributed or handling different queues).  This is controlled by the `.serialize(name)` method.
+  
+```js
+var rjob1 = jobs.create('sellstocks', {
+    stocks: [ 'ORCL', 'MSFT' ]
+}).serialize('js@steeleinc.com').save(); // ensure this user can't buy and sell stocks at the same time
+
+var rjob2 = jobs.create('buystocks', {
+    stocks: [ 'FB', 'LNKD' ]
+}).serialize('js@steeleinc.com').save();
+```
+
+### Job states
+
+  Jobs can combine together use of `delay`, `after`, and `serialize`.  If they are combined, first the delay (if any) is handled, and the job stays in the `delayed` state.  Once the delay is finished then the job waits for all precursor jobs to finish in the `waiting` state.  Once those are finished the job is then put in the `staged` state along with the other jobs that are in the same serialization group.  Once other jobs from the same serialization group have finished, the job moves to the `inactive` state to wait for a worker.  Once a worker takes on the job it is moved to the `active` state.
 
 ## Processing Jobs
 

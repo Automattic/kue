@@ -37,7 +37,7 @@ jobs.process('video conversion', 3, function(job, done){
       if (err) return done(err);
       // report progress, i/frames complete
       job.progress(i, frames);
-      if (i == frames) done()
+      if (i == frames) done();
       else next(i + 1);
     });
   }
