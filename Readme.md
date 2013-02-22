@@ -10,7 +10,6 @@
 
   - delayed jobs
   - auto-restart of stuck/crashed jobs
-  - job dependencies
   - job event and progress pubsub
   - rich integrated UI
   - infinite scrolling
@@ -175,29 +174,6 @@ When using delayed jobs, we must also check the delayed jobs with a timer, promo
 jobs.promote();
 ```
 
-### Job dependencies
-
-  Some jobs can only execute once other jobs have completed.  Dependent jobs are left in the `waiting` state until all of their precursor jobs have finished successfully or have been removed.  Once their precursors have finished, the job is moved into the 'inactive' state to be scheduled on the next available worker.
-
-```js
-var customer = jobs.create('newcustomer', {
-    name: 'Jim Steele',
-    email: 'js@steeleinc.com'
-}).save();
-
-var config = jobs.create('customconfig', {
-	title: 'S5',
-	color: 'sprint blue',
-	transmission: 'dsg'
-}).save();
-
-var charge = jobs.create('change', {
-    email: 'js@steeleinc.com',
-    car: 'S5',
-    charge: '$59,000'
-}).after(newcustomer).after(config).save();
-```
-
 ### Job serialization
 
   In some cases, two related jobs can't be processed at the same time (regardless of the worker).  Jobs that are being held back because another job is executing are in the `staged` state. To handle this, jobs can be put in named groups, where members of the group are staged - only one executing at a time across all workers (even when workers are distributed or handling different queues).  This is controlled by the `.serialize(name)` method.
@@ -214,7 +190,7 @@ var rjob2 = jobs.create('buystocks', {
 
 ### Job states
 
-  Jobs can combine together use of `delay`, `after`, and `serialize`.  If they are combined, first the delay (if any) is handled, and the job stays in the `delayed` state.  Once the delay is finished then the job waits for all precursor jobs to finish in the `waiting` state.  Once those are finished the job is then put in the `staged` state along with the other jobs that are in the same serialization group.  Once other jobs from the same serialization group have finished, the job moves to the `inactive` state to wait for a worker.  Once a worker takes on the job it is moved to the `active` state.
+  Jobs can combine together use of `delay`, `after`, and `serialize`.  If they are combined, first the delay (if any) is handled, and the job stays in the `delayed` state.  Once the delay is finished the job is then put in the `staged` state along with the other jobs that are in the same serialization group.  Once other jobs from the same serialization group have finished, the job moves to the `inactive` state to wait for a worker.  Once a worker takes on the job it is moved to the `active` state.
 
 ## Processing Jobs
 
@@ -238,6 +214,9 @@ jobs.process('email', function(job, done){
 ```js
 jobs.process('email', 20, function(job, done){
   // ...
+},
+function(level, msg, data){
+  // Print out worker error message here
 });
 ```
 

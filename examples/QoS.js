@@ -38,13 +38,13 @@ function create() {
 		      title: 'analyzing ' + name + '\'s avi'
 		    , user: 1
 		    , frames: 200
-		  }).heartbeat(10000).after(stage2).serialize('analysis').save();
+		  }).heartbeat(10000).serialize('analysis').save();
 		  
 		  jobs.create('video analysis', {
 		      title: 'analyzing ' + name + '\'s avi and mpeg'
 		    , user: 1
 		    , frames: 200
-		  }).heartbeat(10000).after(stage1).after(stage2).serialize('analysis').save();
+		  }).heartbeat(10000).serialize('analysis').save();
 	  });	  
   });
 
