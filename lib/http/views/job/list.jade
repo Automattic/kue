@@ -1,10 +1,13 @@
-h1 #{state}
+extends ../layout
 
-script
-  o(function(){
-    init('#{state}');
-  });
+block body
+  h1 #{state}
+
+  script
+    o(function(){
+      init('#{state}');
+    });
 
 
-#jobs
-#loading: canvas(width=50, height=50)
+  #jobs
+  #loading: canvas(width=50, height=50)

@@ -12,12 +12,15 @@ html
     script(src='./javascripts/search.js')
     script(src='./javascripts/main.js')
   body
-    != partial('menu')
+    include _menu
     #actions
-      != partial('search')
-      != partial('filter')
-      != partial('sort')
-    #content!= body
-    script(type='text/template')#job-template!= partial('job')
-    script(type='text/template')#row-template!= partial('row')
+      include _search
+      include _filter
+      include _sort
+    #content
+      block body
+    script(type='text/template')#job-template
+      include _job
+    script(type='text/template')#row-template
+      include _row
     #error
