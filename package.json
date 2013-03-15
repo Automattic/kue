@@ -10,7 +10,7 @@
       , "url": "https://github.com/LearnBoost/kue.git"
     }
   , "dependencies": {
-      "redis": "0.7.2"
+      "redis": "0.8.2"
     , "express": "~3.0.3"
     , "jade": "0.26.3"
     , "stylus": "0.27.2"
