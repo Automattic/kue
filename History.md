@@ -1,4 +1,5 @@
-0.5.1 / 2013-03-20
+0.6.0 / 2013-03-20
+==================
 
  * Make pollForJobs actually use ms argument. Closes #158
  * Support delay over HTTP POST. Closes #165
