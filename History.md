@@ -1,3 +1,10 @@
+0.5.1 / 2013-03-20
+
+ * Make pollForJobs actually use ms argument. Closes #158
+ * Support delay over HTTP POST. Closes #165
+ * Fix natural sorting. Closes #174
+ * Update `updated_at` timestamp during `log`, `progress`, `attempt`, or `state` changes. Closes #188
+ * Fix redirection to /active. Closes #190
 
 0.5.0 / 2012-11-16 
 ==================
