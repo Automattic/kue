@@ -1,4 +1,18 @@
 
+0.6.0 / 2013-03-20
+==================
+
+  * Fixed redirect to /active
+  * Fixed updated_at not changing in certain cases
+  * Fix sorting
+  * Added support for delay over http post
+  * Added support for express path mounting
+  * Added pollForJobs ms support
+  * Fixed switching between states in web/ui and dashboard issue
+  * Removing redis log keys when job is removed
+  * Updated express
+  * Added homepage and repository in package.json
+
 0.5.0 / 2012-11-16 
 ==================
 
