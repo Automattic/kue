@@ -1,4 +1,9 @@
 
+0.6.1 / 2013-03-25 
+==================
+
+  * Fixed issue preventing polling for new jobs. Closes #192
+
 0.6.0 / 2013-03-20
 ==================
 
