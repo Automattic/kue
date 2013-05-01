@@ -1,5 +1,34 @@
 var kue = require('../')
   , jobs = kue.createQueue();
+var should = require('should');
+
+
+arraysAlmostEql = function(obj1, obj2) {
+  if(obj1.length!=obj2.length) {
+    return false;
+  }
+  for (var i = 0; i < obj1.length; i++) {
+    expected = obj1[i];
+    current = obj2[i];
+    if(!(
+        ((expected-100)<current) && (current<(expected+100))
+      )) {
+      return false;
+    }
+  }
+  return true;
+}
+
+should.Assertion.prototype.arraysAlmostEql = function(val, desc){
+    this.assert(
+        arraysAlmostEql(val, this.obj)
+      , function(){ return 'expected ' + this.inspect + ' to equal ' + (val) + (desc ? " | " + desc : "") }
+      , function(){ return 'expected ' + this.inspect + ' to not equal ' + (val) + (desc ? " | " + desc : "") }
+      , val
+      , true);
+    return this;
+  },
+
 
 describe('Jobs', function(){
 
@@ -50,7 +79,7 @@ describe('Jobs', function(){
 
   it('should delay retries on failure if attempts and delay is set', function(done){
       this.timeout(20000);
-      jobs.create('failure-attempts-delay', jobData).delay(1000).attempts(5).attemptsDelay(100).save();
+      jobs.create('failure-attempts-delay', {}).delay(1000).attempts(5).attemptsDelay(100).save();
       delays = []
       jobs.process('failure-attempts-delay', function(job, done){
         delays.push((new Date()) - job.created_at);
@@ -58,14 +87,7 @@ describe('Jobs', function(){
       });
       jobs.promote(1);
       setTimeout(function(){
-        console.error(delays);
-        delays.length.should.be.equal(5);
-        delays[0].should.be.above(1000);
-        delays[0].should.be.below(1090)
-        delays[1].should.be.above(1100);
-        delays[1].should.be.below(1190);
-        delays[4].should.be.above(1400);
-        delays[4].should.be.below(1490);
+        delays.should.arraysAlmostEql([1000,1100, 1200,1300,1400]);
         done();
       },1500);
   })
@@ -80,14 +102,8 @@ describe('Jobs', function(){
       });
       jobs.promote(1);
       setTimeout(function(){
-        console.error(delays);
-        delays.length.should.be.equal(5);
-        delays[0].should.be.above(1000);
-        delays[0].should.be.below(1090)
-        delays[1].should.be.above(1000);
-        delays[1].should.be.below(1090);
-        delays[4].should.be.above(1000);
-        delays[4].should.be.below(1090);
+        delays.should.arraysAlmostEql([1000,1000, 1000,1000,1000]);
+
         done();
       },1500);
   })
