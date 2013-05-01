@@ -50,20 +50,23 @@ describe('Jobs', function(){
 
   it('should delay retries on failure if attempts and delay is set', function(done){
       this.timeout(20000);
-      jobs.create('failure-attempts-delay', jobData).delay(1).attempts(5).save();
+      jobs.create('failure-attempts-delay', jobData).delay(100).attempts(5).save();
       delays = []
       jobs.process('failure-attempts-delay', function(job, done){
-        delays.push((new Date()) - job.created_at);
         done(new Error("error"));
       });
-      jobs.promote();
+      jobs.promote(1);
       setTimeout(function(){
-        delays.length.should.be.equal(5);
         console.error(delays);
-        delays[0].should.be.above(5000);
-        delays[1].should.be.above(10000);
+        delays.length.should.be.equal(5);
+        delays[0].should.be.above(98);
+        delays[0].should.be.below(190)
+        delays[1].should.be.above(200);
+        delays[1].should.be.below(290);
+        delays[4].should.be.above(500);
+        delays[4].should.be.below(590);
         done();
-      },15000);
+      },1500);
   })
 
 
