@@ -70,6 +70,29 @@ describe('Jobs', function(){
       },1500);
   })
 
+  it('should fire up retries right away on failure if attemptsDelay is nil', function(done){
+      this.timeout(20000);
+      jobs.create('failure-attempts-without-delay', jobData).delay(1000).attempts(5).save();
+      delays = []
+      jobs.process('failure-attempts-without-delay', function(job, done){
+        delays.push((new Date()) - job.created_at);
+        done(new Error("error"));
+      });
+      jobs.promote(1);
+      setTimeout(function(){
+        console.error(delays);
+        delays.length.should.be.equal(5);
+        delays[0].should.be.above(1000);
+        delays[0].should.be.below(1090)
+        delays[1].should.be.above(1000);
+        delays[1].should.be.below(1090);
+        delays[4].should.be.above(1000);
+        delays[4].should.be.below(1090);
+        done();
+      },1500);
+  })
+
+
 
 });
 
