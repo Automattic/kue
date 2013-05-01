@@ -16,7 +16,7 @@ describe('Jobs', function(){
 
   })
 
-  it('should set the timeout', function(done){
+  it('should be processed', function(done){
       jobData = {
           title: 'welcome email for tj'
         , to: 'tj@learnboost.com'
@@ -33,5 +33,19 @@ describe('Jobs', function(){
         done();
       },400);
   })
+
+  it('should retry on failure if attempts is set', function(done){
+      jobs.create('failure-attempts', jobData).attempts(5).save();
+      attempts = 0
+      jobs.process('failure-attempts', function(job, done){
+        attempts += 1;
+        done(new Error("error"));
+      });
+      setTimeout(function(){
+        attempts.should.be.equal(5);
+        done();
+      },800);
+  })
+
 });
 
