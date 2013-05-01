@@ -61,6 +61,7 @@ describe('Jobs', function(){
         delays.length.should.be.equal(5);
         console.error(delays);
         delays[0].should.be.above(5000);
+        delays[1].should.be.above(10000);
         done();
       },15000);
   })
