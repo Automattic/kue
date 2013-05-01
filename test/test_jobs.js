@@ -47,5 +47,24 @@ describe('Jobs', function(){
       },800);
   })
 
+
+  it('should delay retries on failure if attempts and delay is set', function(done){
+      this.timeout(20000);
+      jobs.create('failure-attempts-delay', jobData).delay(1).attempts(5).save();
+      delays = []
+      jobs.process('failure-attempts-delay', function(job, done){
+        delays.push((new Date()) - job.created_at);
+        done(new Error("error"));
+      });
+      jobs.promote();
+      setTimeout(function(){
+        delays.length.should.be.equal(5);
+        console.error(delays);
+        delays[0].should.be.above(5000);
+        done();
+      },15000);
+  })
+
+
 });
 
