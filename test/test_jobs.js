@@ -53,6 +53,7 @@ describe('Jobs', function(){
       jobs.create('failure-attempts-delay', jobData).delay(100).attempts(5).save();
       delays = []
       jobs.process('failure-attempts-delay', function(job, done){
+        delays.push((new Date()) - job.created_at);
         done(new Error("error"));
       });
       jobs.promote(1);
