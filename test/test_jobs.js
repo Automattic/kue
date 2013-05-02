@@ -1,6 +1,7 @@
 var kue = require('../')
   , jobs = kue.createQueue();
 var should = require('should');
+jobs.promote(1);
 
 
 arraysAlmostEql = function(obj1, obj2) {
@@ -46,13 +47,13 @@ describe('Jobs', function(){
   })
 
   it('should be processed', function(done){
-      jobData = {
+      var jobData = {
           title: 'welcome email for tj'
         , to: 'tj@learnboost.com'
         , template: 'welcome-email'
       };
       jobs.create('email', jobData).priority('high').save();
-      processedJobsData = []
+      var processedJobsData = []
       jobs.process('email', function(job, done){
         processedJobsData.push(job.data);
       });
@@ -64,8 +65,8 @@ describe('Jobs', function(){
   })
 
   it('should retry on failure if attempts is set', function(done){
-      jobs.create('failure-attempts', jobData).attempts(5).save();
-      attempts = 0
+      jobs.create('failure-attempts', {}).attempts(5).save();
+      var attempts = 0
       jobs.process('failure-attempts', function(job, done){
         attempts += 1;
         done(new Error("error"));
@@ -80,7 +81,7 @@ describe('Jobs', function(){
   it('should delay retries on failure if attempts and delay is set', function(done){
       this.timeout(20000);
       jobs.create('failure-attempts-delay', {}).delay(1000).attempts(5).attemptsDelay(100).save();
-      delays = []
+      var delays = []
       jobs.process('failure-attempts-delay', function(job, done){
         delays.push((new Date()) - job.created_at);
         done(new Error("error"));
@@ -94,8 +95,8 @@ describe('Jobs', function(){
 
   it('should fire up retries right away on failure if attemptsDelay is nil', function(done){
       this.timeout(20000);
-      jobs.create('failure-attempts-without-delay', jobData).delay(1000).attempts(5).save();
-      delays = []
+      jobs.create('failure-attempts-without-delay', {}).delay(1000).attempts(5).save();
+      var delays = []
       jobs.process('failure-attempts-without-delay', function(job, done){
         delays.push((new Date()) - job.created_at);
         done(new Error("error"));
@@ -108,6 +109,38 @@ describe('Jobs', function(){
       },1500);
   })
 
+  it.only('should fire all events properly', function(done){
+      this.timeout(60000);
+      var job = jobs.create('failure-attempts-delay-change-on-event', {}).attempts(5).attemptsDelay(100);
+      var delays = [];
+      var completes = [];
+      var failed = [];
+      job.save();
+      var start = new Date();
+
+
+      job.on('complete', function(){
+        completes.push((new Date()) - start);
+      }).on('failed', function(){
+        failed.push((new Date()) - start);
+
+      });
+      jobs.process('failure-attempts-delay-change-on-event', function(job, done){
+        delays.push((new Date()) - start);
+        if (delays.length==4) {
+          done()
+        } else {
+          done(new Error("error"));
+        }
+        job.attemptsDelay(job.attemptsDelay()*2);
+      });
+      jobs.promote(1);
+      setTimeout(function(){
+        delays.should.arraysAlmostEql(failed.concat(completes));
+        delays.should.arraysAlmostEql([10,200, 600,1400]);
+        done();
+      },3000);
+  })
 
 
 });
