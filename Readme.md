@@ -19,6 +19,29 @@
   - full-text search capabilities
   - RESTful JSON API
 
+## Overview
+
+  - [Creating Jobs](#creating-jobs)
+  - [Jobs Priority](#job-priority)
+  - [Failure Attempts](#failure-attempts)
+  - [Job Logs](#job-logs)
+  - [Job Progress](#job-progress)
+  - [Job Events](#job-events)
+  - [Queue Events](#queue-events)
+  - [Delayed Jobs](#delayed-jobs)
+  - [Processing Jobs](#processing-jobs)
+  - [Processing Concurrency](#processing-concurrency)
+  - [Updating Progress](#updating-progress)
+  - [Redis Connection Settings](#redis-connection-settings)
+  - [User-Interface](#user-interface)
+  - [JSON API](#json-api)
+  - [Parallel Processing With Cluster](#parallel-processing-with-cluster)
+  - [Securing Kue](#securing-kue)
+  - [Screencasts](#screencasts)
+  - [License](#license)
+
+
+
 ## Creating Jobs
 
  First create a job `Queue` with `kue.createQueue()`:
