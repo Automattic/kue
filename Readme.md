@@ -378,10 +378,11 @@ if (cluster.isMaster) {
     var pending = 5
       , total = pending;
 
-    setInterval(function(){
+    var interval = setInterval(function(){
       job.log('sending!');
       job.progress(total - pending, total);
       --pending || done();
+      pending || clearInterval(interval);
     }, 1000);
   });
 }
