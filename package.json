@@ -17,5 +17,12 @@
     , "nib": "0.5.0"
     , "reds": "0.1.4"
   }
+  , "devDependencies": {
+      "mocha": "*"
+    , "should": "*"
+  }
+  , "scripts": {
+      "test": "mocha"
+  }
   , "main": "index"
 }

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/RobotsandRockets/kue.png)](https://travis-ci.org/RobotsandRockets/kue)
+
 # Kue
 
   Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
