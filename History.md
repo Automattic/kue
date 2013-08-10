@@ -1,4 +1,18 @@
 
+2013-08-10
+==================
+  * Added "outstanding" jobs search
+  * Added multi-state search
+
+2013-07-13
+==================
+  * Added expiration options
+
+2013-07-12
+==================
+  * Added indexing options
+
+
 0.6.2 / 2013-04-03 
 ==================
 
