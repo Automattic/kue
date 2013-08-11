@@ -1,6 +1,8 @@
 
 2013-08-10
 ==================
+  * Stores outstanding jobs by 'key'
+  * Removes default text indexing
   * Added "outstanding" jobs search
   * Added multi-state search
 
