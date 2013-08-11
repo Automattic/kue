@@ -48,12 +48,17 @@ describe 'kue', ->
       should.not.exist err
       count.should.equal 2
 
-  # it 'Stores data', ->
-  #   theJob = jobs.createJob 'test', { name : 'Brandon' }
-  #   theJob.save (err) ->
-  #     should.not.exist err
-  #     jobs.inactive (results) ->
-  #       console.log results
+  it 'Stores data', ->
+    theJob = jobs.createJob 'test', { name : 'Brandon' }
+    theJobs.push(theJob)
+    theJob.save (err) ->
+      should.not.exist err
+
+  it 'Retrieves jobs by ID', ->
+    jobs.getById 3, (err, job) ->
+      should.not.exist err
+      job.data.name.should.equal 'Brandon'
+
 
   # it 'Does not index data automatically', ->
 
@@ -66,6 +71,14 @@ describe 'kue', ->
     theJob.save (err) ->
       should.not.exist err
 
+  it 'Detects whether jobs are outstanding', ->
+    theJob = jobs.isOutstanding 3, (err, isOutstanding) ->
+      should.not.exist err
+      isOutstanding.should.be.true
+
+      theJob = jobs.isOutstanding { type:"test", key:"ABCDEFG" }, (err, isOutstanding) ->
+        should.not.exist err
+        isOutstanding.should.be.true
 
 
   # it should retry jobs on failures
@@ -81,5 +94,7 @@ describe 'kue', ->
 
 
   # it should handle jobs by concurrency
+
+  # it allows a job to mark itself as complete
 
 

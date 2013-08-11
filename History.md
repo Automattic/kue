@@ -1,6 +1,8 @@
 
 2013-08-10
 ==================
+  * Allows isOutstanding check for jobs
+  * Exposes ability to get job by id
   * Stores outstanding jobs by 'key'
   * Removes default text indexing
   * Added "outstanding" jobs search
