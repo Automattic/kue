@@ -16,7 +16,6 @@
   - job specific logging
   - powered by Redis
   - optional retries
-  - full-text search capabilities
   - RESTful JSON API
 
 ## Overview
@@ -101,9 +100,9 @@ jobs.create('email', {
 
  Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
 
-```js 
+```js
 job.log('$%d sent to %s', amount, user.name);
-``` 
+```
 
 ### Job Progress
 
@@ -143,7 +142,7 @@ job.on('complete', function(){
 ### Queue Events
 
  Queue-level events are currently provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to to apply logic at a "global" level. An example of this is removing completed jobs:
- 
+
 ```js
 jobs.on('job complete', function(id){
   Job.get(id, function(err, job){
@@ -156,11 +155,11 @@ jobs.on('job complete', function(id){
 });
 ```
 
- The events available are the same as mentioned in "Job Events", however prefixed with "job ". 
+ The events available are the same as mentioned in "Job Events", however prefixed with "job ".
 
 ### Delayed Jobs
 
-  Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
+  Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed".
 
 ```js
 var email = jobs.create('email', {
@@ -196,7 +195,7 @@ jobs.process('email', function(job, done){
 ### Processing Concurrency
 
  By default a call to `jobs.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
- 
+
 ```js
 jobs.process('email', 20, function(job, done){
   // ...
@@ -206,7 +205,7 @@ jobs.process('email', 20, function(job, done){
 ### Updating Progress
 
  For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](http://github.com/learnboost/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
- 
+
 ```js
 jobs.create('slideshow pdf', {
     title: user.name + "'s slideshow"
@@ -245,7 +244,7 @@ jobs.process('slideshow pdf', 5, function(job, done){
   ```javascript
   var kue = require('kue')
     , redis = require('redis');
-  
+
   kue.redis.createClient = function() {
     var client = redis.createClient(1234, '192.168.1.2');
     client.auth('password');
@@ -274,14 +273,6 @@ kue.app.set('title', 'My Application');
 
   Along with the UI Kue also exposes a JSON API, which is utilized by the UI.
 
-### GET /job/search?q=
-
-  Query jobs, for example "GET /job/search?q=avi video":
-
-```js
-["5", "7", "10"]
-```
-
 ### GET /stats
 
   Currently responds with state counts, and worker activity time in milliseconds:
@@ -301,7 +292,7 @@ kue.app.set('title', 'My Application');
 ### GET /job/:id/log
 
   Get job `:id`'s log:
-  
+
 ```js
 ['foo', 'bar', 'baz']
 ```
@@ -318,7 +309,7 @@ kue.app.set('title', 'My Application');
 ### GET /jobs/:state/:from..:to/:order?
 
   Same as above, restricting by `:state` which is one of:
-  
+
     - active
     - inactive
     - failed
@@ -331,7 +322,7 @@ kue.app.set('title', 'My Application');
 ### DELETE /job/:id
 
   Delete job `:id`:
-  
+
     $ curl -X DELETE http://local:3000/job/2
     {"message":"job 2 removed"}
 
@@ -358,8 +349,8 @@ kue.app.set('title', 'My Application');
 ## Parallel Processing With Cluster
 
  The example below shows how you may use [Cluster](http://learnboost.github.com/cluster) to spread the job processing load across CPUs. By default cluster will create one worker per CPU, however you can specify this number via `.set('workers', N)`.
- 
- When cluster `.isMaster` the file is being executed in context of the master process, in which case you may perform tasks that you only want once, such as starting the web app bundled with Kue. The logic in the `else` block is executed _per worker_. 
+
+ When cluster `.isMaster` the file is being executed in context of the master process, in which case you may perform tasks that you only want once, such as starting the web app bundled with Kue. The logic in the `else` block is executed _per worker_.
 
 ```js
 var kue = require('kue')
@@ -418,7 +409,7 @@ app.listen(3000);
   - [Introduction](http://www.screenr.com/oyNs) to Kue
   - API [walkthrough](http://nodetuts.com/tutorials/27-kue-jobs.html#video) to Kue
 
-## License 
+## License
 
 (The MIT License)
 
