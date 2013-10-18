@@ -1,7 +1,0 @@
---compilers coffee:coffee-script
---require coffee-script
---reporter spec
---ui bdd
---globals should
---require should
---watch
