@@ -11,11 +11,10 @@
     }
   , "dependencies": {
       "redis": "0.7.2"
-    , "express": "~3.1.1"
-    , "jade": "0.26.3"
+    , "express": "~3.3.4"
+    , "jade": "*"
     , "stylus": "0.27.2"
     , "nib": "0.5.0"
-    , "reds": "0.1.4"
   }
   , "main": "index"
 }
