@@ -416,7 +416,7 @@ app.listen(3000);
 ## Screencasts
 
   - [Introduction](http://www.screenr.com/oyNs) to Kue
-  - API [walkthrough](http://nodetuts.com/tutorials/27-kue-jobs.html#video) to Kue
+  - API [walkthrough](http://vimeo.com/26963384) to Kue
 
 ## License 
 
