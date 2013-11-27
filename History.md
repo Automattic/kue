@@ -1,4 +1,23 @@
 
+0.6.2 / 2013-04-03 
+==================
+
+  * Fix redirection to active for mounted apps
+
+0.6.1 / 2013-03-25 
+==================
+
+  * Fixed issue preventing polling for new jobs. Closes #192
+
+0.6.0 / 2013-03-20
+==================
+
+ * Make pollForJobs actually use ms argument. Closes #158
+ * Support delay over HTTP POST. Closes #165
+ * Fix natural sorting. Closes #174
+ * Update `updated_at` timestamp during `log`, `progress`, `attempt`, or `state` changes. Closes #188
+ * Fix redirection to /active. Closes #190
+
 0.5.0 / 2012-11-16 
 ==================
 

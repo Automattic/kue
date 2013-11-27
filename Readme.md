@@ -19,6 +19,29 @@
   - full-text search capabilities
   - RESTful JSON API
 
+## Overview
+
+  - [Creating Jobs](#creating-jobs)
+  - [Jobs Priority](#job-priority)
+  - [Failure Attempts](#failure-attempts)
+  - [Job Logs](#job-logs)
+  - [Job Progress](#job-progress)
+  - [Job Events](#job-events)
+  - [Queue Events](#queue-events)
+  - [Delayed Jobs](#delayed-jobs)
+  - [Processing Jobs](#processing-jobs)
+  - [Processing Concurrency](#processing-concurrency)
+  - [Updating Progress](#updating-progress)
+  - [Redis Connection Settings](#redis-connection-settings)
+  - [User-Interface](#user-interface)
+  - [JSON API](#json-api)
+  - [Parallel Processing With Cluster](#parallel-processing-with-cluster)
+  - [Securing Kue](#securing-kue)
+  - [Screencasts](#screencasts)
+  - [License](#license)
+
+
+
 ## Creating Jobs
 
  First create a job `Queue` with `kue.createQueue()`:
@@ -215,7 +238,7 @@ jobs.process('slideshow pdf', 5, function(job, done){
 
 ## Redis Connection Settings
 
-  By default, Kue will connect to Redis using the client default settings (port defaults to `6389`, host defaults to `127.0.0.1`).  Redis client connection settings can be set by overriding the `kue.redis.createClient` function.
+  By default, Kue will connect to Redis using the client default settings (port defaults to `6379`, host defaults to `127.0.0.1`).  Redis client connection settings can be set by overriding the `kue.redis.createClient` function.
 
   For example, to create a Redis client that connects to `192.168.1.2` on port `1234` that requires authentication, use the following:
 
@@ -355,10 +378,11 @@ if (cluster.isMaster) {
     var pending = 5
       , total = pending;
 
-    setInterval(function(){
+    var interval = setInterval(function(){
       job.log('sending!');
       job.progress(total - pending, total);
       --pending || done();
+      pending || clearInterval(interval);
     }, 1000);
   });
 }
