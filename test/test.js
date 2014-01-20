@@ -1,36 +1,6 @@
-/*
- var kue = require('../'),
- jobs = kue.createQueue();
- var should = require('should');
- jobs.promote(1);
-
-
- arraysAlmostEql = function (obj1, obj2) {
- if (obj1.length != obj2.length) {
- return false;
- }
- for (var i = 0; i < obj1.length; i++) {
- expected = obj1[i];
- current = obj2[i];
- if (!(
- ((expected - 100) < current) && (current < (expected + 100)))) {
- return false;
- }
- }
- return true;
- }
-
- should.Assertion.prototype.arraysAlmostEql = function (val, desc) {
- this.assert(
- arraysAlmostEql(val, this.obj), function () {
- return 'expected ' + this.inspect + ' to equal ' + (val) + (desc ? " | " + desc : "")
- }, function () {
- return 'expected ' + this.inspect + ' to not equal ' + (val) + (desc ? " | " + desc : "")
- }, val, true);
- return this;
- },
-
- */
+var kue = require('../'),
+    jobs = kue.createQueue();
+jobs.promote(1);
 
 describe('Jobs', function () {
 
@@ -42,28 +12,19 @@ describe('Jobs', function () {
         done();
     });
 
-    it("test setup should be working", function () {
-        true.should.be.ok;
+    it('should be processed', function (done) {
+        var jobData = {
+            title: 'welcome email for tj',
+            to: 'tj@learnboost.com',
+            template: 'welcome-email'
+        };
+        jobs.create('email', jobData).priority('high').save();
+        jobs.process('email', function (job, jdone) {
+            job.data.should.be.eql(jobData);
+            jdone();
+            done();
+        });
     });
-
-    /*it('should be processed', function (done) {
-     var jobData = {
-     title: 'welcome email for tj',
-     to: 'tj@learnboost.com',
-     template: 'welcome-email'
-     };
-     jobs.create('email', jobData).priority('high').save();
-     var processedJobsData = []
-     jobs.process('email', function (job, jdone) {
-     processedJobsData.push(job.data);
-     jdone();
-     });
-     setTimeout(function () {
-     processedJobsData.length.should.be.equal(1);
-     processedJobsData[0].should.be.eql(jobData);
-     done();
-     }, 400);
-     });*/
 
     /*it('should retry on failure if attempts is set', function (done) {
      jobs.create('failure-attempts', {}).attempts(5).save();
