@@ -18,8 +18,8 @@ describe('Jobs', function () {
             to: 'tj@learnboost.com',
             template: 'welcome-email'
         };
-        jobs.create('email', jobData).priority('high').save();
-        jobs.process('email', function (job, jdone) {
+        jobs.create('email-should-be-processed', jobData).priority('high').save();
+        jobs.process('email-should-be-processed', function (job, jdone) {
             job.data.should.be.eql(jobData);
             jdone();
             done();
