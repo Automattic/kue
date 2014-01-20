@@ -167,7 +167,7 @@ var email = jobs.create('email', {
     title: 'Account renewal required'
   , to: 'tj@learnboost.com'
   , template: 'renewal-email'
-}).delay(minute)
+}).delay(milliseconds)
   .priority('high')
   .save();
 ```
@@ -182,7 +182,8 @@ jobs.promote();
 
  Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
 
- In the following example we pass the callback `done` to `email`, if this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
+ In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete.
+ if this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
 
 ```js
 var kue = require('kue')
@@ -214,7 +215,7 @@ jobs.create('slideshow pdf', {
 });
 ```
 
-  We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and process. When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete.
+  We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and process.
 
 ```js
 jobs.process('slideshow pdf', 5, function(job, done){
