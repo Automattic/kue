@@ -25,7 +25,8 @@
     "main": "index",
     "devDependencies": {
         "should": "*",
-        "mocha": "~1.17.0"
+        "mocha": "~1.17.0",
+        "coffee-script": "~1.6.3"
     },
     "scripts": {
         "test": "make test-all"

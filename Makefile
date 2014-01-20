@@ -1,5 +1,12 @@
 REPORTER = spec
 
+all: build
+
+build:
+        @./node_modules/coffee-script/bin/coffee \
+            -c \
+            -o lib src
+
 test-tdd:
 		@./node_modules/.bin/mocha \
 			--reporter $(REPORTER) \
@@ -9,9 +16,19 @@ test-tdd:
 test-bdd:
 		@./node_modules/.bin/mocha \
 			--reporter $(REPORTER) \
+			--require should \
 			--ui bdd \
 			test/*.js
 
-test-all: test-bdd test-tdd
+test-bdd-coffee:
+		@./node_modules/.bin/mocha \
+		    --compilers coffee:coffee-script \
+			--reporter $(REPORTER) \
+			--require should \
+			--ui bdd \
+			test/*.coffee
+
+
+test-all: test-bdd test-tdd test-bdd-coffee
 
 .PHONY: test-all
