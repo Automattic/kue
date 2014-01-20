@@ -1,13 +1,13 @@
 extends ../layout
 
 block body
-  h1 #{state}
+    h1 #{state}
 
-  script
-    o(function(){
-      init('#{state}');
+    script
+        o(function(){
+          init('#{state}');
     });
 
 
-  #jobs
-  #loading: canvas(width=50, height=50)
+    #jobs
+    #loading: canvas(width=50, height=50)

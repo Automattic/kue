@@ -24,7 +24,7 @@
     },
     "main": "index",
     "devDependencies": {
-        "should": "*",
+        "should": "~3.0.1",
         "mocha": "~1.17.0",
         "coffee-script": "~1.6.3"
     },
