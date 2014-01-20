@@ -1,6 +1,6 @@
 REPORTER = spec
 
-all: build
+all:    build
 
 build:
         @./node_modules/coffee-script/bin/coffee \
@@ -29,6 +29,6 @@ test-bdd-coffee:
 			test/*.coffee
 
 
-test-all: test-bdd test-tdd test-bdd-coffee
+test-all:   test-bdd test-tdd test-bdd-coffee
 
 .PHONY: test-all
