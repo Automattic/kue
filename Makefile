@@ -29,6 +29,6 @@ test-bdd-coffee:
     test/*.coffee
 
 
-test-all:   test-bdd test-tdd test-bdd-coffee
+test-all:   test-bdd test-bdd-coffee
 
 .PHONY: test-all
