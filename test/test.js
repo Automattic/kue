@@ -26,20 +26,34 @@ describe('Jobs', function () {
         });
     });
 
-    /*it('should retry on failure if attempts is set', function (done) {
-     jobs.create('failure-attempts', {}).attempts(5).save();
-     var attempts = 0
-     jobs.process('failure-attempts', function (job, done) {
-     attempts += 1;
-     done(new Error("error"));
-     });
-     setTimeout(function () {
-     attempts.should.be.equal(5);
-     done();
-     }, 800);
-     })
+    it('should retry on failure if attempts is set', function (done) {
+        var job = jobs.create('failure-attempts', {});
+        job.attempts(5)
+            .on('complete', function(){
+                console.log( "job complete");
+            })
+            .on('failed', function(){
+                console.log( "job failed");
+            })
+            .on('failed attempt', function( attempt ){
+                console.log( "failed attempt ", attempt );
+            })
+            .save();
+        var attempts = 0;
+        jobs.process('failure-attempts', function (job, done) {
+            attempts++;
+            if( attempts == 5 )
+                done();
+            else
+                done(new Error("error"));
+        });
+        setTimeout(function () {
+            attempts.should.be.equal(5);
+            done();
+        }, 1000 );
+    });
 
-
+    /*
      it('should delay retries on failure if attempts and delay is set', function (done) {
      this.timeout(20000);
      jobs.create('failure-attempts-delay', {}).delay(1000).attempts(5).attemptsDelay(100).save();
