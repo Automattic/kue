@@ -142,7 +142,7 @@ job.on('complete', function(){
 
 ### Queue Events
 
- Queue-level events are currently provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to to apply logic at a "global" level. An example of this is removing completed jobs:
+ Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to to apply logic at a "global" level. An example of this is removing completed jobs:
  
 ```js
 jobs.on('job complete', function(id){
