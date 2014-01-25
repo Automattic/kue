@@ -255,6 +255,20 @@ jobs.process('slideshow pdf', 5, function(job, done){
 
   Redis connection settings must be set before calling `kue.createQueue()` or accessing `kue.app`.
 
+### Named Queue
+
+  By default, Kue will use the `q:` prefix for all Redis keys.
+
+  You can change the default prefix with the following code:
+
+  ```js
+  var kue = require('kue');
+  kue.redis.queueName = 'myqueue';
+  ```
+
+  This can be useful if multiple Kue-powered apps are using the same Redis
+  instance or for building and tearing down queues in automated tests.
+
 ## User-Interface
 
  The UI is a small [Express](http://github.com/visionmedia/express) application, to fire it up simply run the following, altering the port etc as desired.
