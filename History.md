@@ -10,8 +10,11 @@
   * Ensure event subscription before job save. Closes #179
   * Fix Queue singleton
   * Fix failed event being called in first attempt. Closes #142
-  * Disabled search by default (Search index memory leaks). See #58 & #218
+  * Disable search (Search index memory leaks). See #58 & #218
   * Emit error events on both kue and job
+  * JS/Coffeescript tests added (Mocha+Should)
+  * Travis support added
+
 
 0.6.2 / 2013-04-03
 ==================

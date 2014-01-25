@@ -10,16 +10,17 @@
 
 ## Features
 
-  - delayed jobs
-  - job event and progress pubsub
-  - rich integrated UI
-  - infinite scrolling
+  - Delayed jobs
+  - Job event and progress pubsub
+  - Rich integrated UI
+  - Infinite scrolling
   - UI progress indication
-  - job specific logging
-  - powered by Redis
-  - optional retries
-  - full-text search capabilities
+  - Job specific logging
+  - Powered by Redis
+  - Optional retries
+  - Full-text search capabilities
   - RESTful JSON API
+  - Graceful workers shutdown
 
 ## Overview
 
@@ -34,6 +35,7 @@
   - [Processing Jobs](#processing-jobs)
   - [Processing Concurrency](#processing-concurrency)
   - [Updating Progress](#updating-progress)
+  - [Graceful Shutdown](#graceful-shutdown)
   - [Redis Connection Settings](#redis-connection-settings)
   - [User-Interface](#user-interface)
   - [JSON API](#json-api)
@@ -119,7 +121,8 @@ job.progress(frames, totalFrames);
 
  Job-specific events are fired on the `Job` instances via Redis pubsub. The following events are currently supported:
 
-    - `failed` the job has failed
+    - `failed` the job has failed and has no remaining attempts
+    - 'failed attempt' the job has failed, but has remaining attempts yet
     - `complete` the job has completed
     - `promotion` the job (when delayed) is now queued
     - `progress` the job's progress ranging from 0-100
@@ -174,7 +177,7 @@ var email = jobs.create('email', {
   .save();
 ```
 
-When using delayed jobs, we must also check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded. This `setInterval` is defined within `Queue#promote(ms)`, defaulting to a check every 5 seconds.
+When using delayed jobs, we must also check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded. This `setInterval` is defined within `Queue#promote(ms,limit)`, defaulting to a check of top 200 jobs every 5 seconds.
 
 ```js
 jobs.promote();
@@ -239,9 +242,40 @@ jobs.process('slideshow pdf', 5, function(job, done){
 });
 ```
 
+### Graceful Shutdown
+
+  As of Kue 0.7.0, a `Queue#shutdown(fn, timeout)` is added which signals all workers to stop processing after
+  their current active job is done. Workers will wait `timeout` milliseconds for their active job's done to be called
+  or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
+
+```javascript
+process.once( 'SIGTERM', function ( sig ) {
+  queue.shutdown(function(err) {
+    console.log( 'Kue is shut down.', err||'' );
+    process.exit( 0 );
+  }, 5000 );
+});
+```
+
 ## Redis Connection Settings
 
-  By default, Kue will connect to Redis using the client default settings (port defaults to `6379`, host defaults to `127.0.0.1`).  Redis client connection settings can be set by overriding the `kue.redis.createClient` function.
+  By default, Kue will connect to Redis using the client default settings (port defaults to `6379`, host defaults to `127.0.0.1`).
+  `Queue#createQueue(options)` accepts redis connection options in `options.redis` key.
+
+  ```javascript
+  var kue = require('kue');
+  q = kue.createQueue({
+    redis: {
+      port: 1234,
+      host: '10.0.50.20'
+      options: {
+        // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
+      }
+    }
+  });
+  ```
+
+  For backward compatibility to `Kue < 0.7.0`, monkey-patch-styled Redis client connection settings can be set by overriding the `kue.redis.createClient` function.
 
   For example, to create a Redis client that connects to `192.168.1.2` on port `1234` that requires authentication, use the following:
 
@@ -283,6 +317,15 @@ kue.app.set('title', 'My Application');
 
 ```js
 ["5", "7", "10"]
+```
+  You may disable search indexes in `Kue >= 0.7.0` for memory optimization or to avoid probable
+  memory leak reported in issue list:
+
+```javascript
+var kue = require('kue');
+q = kue.createQueue({
+    disableSearch: true
+});
 ```
 
 ### GET /stats
