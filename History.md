@@ -1,5 +1,22 @@
 
-0.6.2 / 2013-04-03 
+0.7.0 / 2014-01-24
+==================
+
+  * Suppress "undefined" messages on String errors. Closes #230
+  * Fix cannot read property id of undefined errors. Closes #252
+  * Parameterize limit of jobs checked in promotion cycles. Closes #244
+  * Graceful shutdown
+  * Worker pause/resume ability, Closes #163
+  * Ensure event subscription before job save. Closes #179
+  * Fix Queue singleton
+  * Fix failed event being called in first attempt. Closes #142
+  * Disable search (Search index memory leaks). See #58 & #218
+  * Emit error events on both kue and job
+  * JS/Coffeescript tests added (Mocha+Should)
+  * Travis support added
+
+
+0.6.2 / 2013-04-03
 ==================
 
   * Fix redirection to active for mounted apps

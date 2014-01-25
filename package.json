@@ -1,21 +1,34 @@
 {
-    "name": "kue"
-  , "version": "0.6.2"
-  , "description": "Feature rich priority job queue backed by redis"
-  , "homepage": "http://learnboost.github.com/kue/"
-  , "keywords": ["job", "queue", "worker", "redis"]
-  , "author": "TJ Holowaychuk <tj@learnboost.com>"
-  , "repository":{
-        "type": "git"
-      , "url": "https://github.com/LearnBoost/kue.git"
+    "name": "kue",
+    "version": "0.7.0",
+    "description": "Feature rich priority job queue backed by redis",
+    "homepage": "http://learnboost.github.com/kue/",
+    "keywords": [
+        "job",
+        "queue",
+        "worker",
+        "redis"
+    ],
+    "author": "TJ Holowaychuk <tj@learnboost.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/LearnBoost/kue.git"
+    },
+    "dependencies": {
+        "redis": "0.7.2",
+        "express": "~3.1.1",
+        "jade": "0.26.3",
+        "stylus": "0.27.2",
+        "nib": "0.5.0",
+        "reds": "0.1.4"
+    },
+    "main": "index",
+    "devDependencies": {
+        "should": "~3.0.1",
+        "mocha": "~1.17.0",
+        "coffee-script": "~1.6.3"
+    },
+    "scripts": {
+        "test": "make test-all"
     }
-  , "dependencies": {
-      "redis": "0.7.2"
-    , "express": "~3.1.1"
-    , "jade": "0.26.3"
-    , "stylus": "0.27.2"
-    , "nib": "0.5.0"
-    , "reds": "0.1.4"
-  }
-  , "main": "index"
 }
