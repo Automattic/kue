@@ -1,6 +1,6 @@
 {
   "name": "kue",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://learnboost.github.com/kue/",
   "keywords": [
@@ -15,12 +15,12 @@
     "url": "https://github.com/LearnBoost/kue.git"
   },
   "dependencies": {
-    "redis": "0.7.2",
+    "redis": "~0.10.0",
     "express": "~3.1.1",
     "jade": "0.26.3",
     "stylus": "0.27.2",
     "nib": "0.5.0",
-    "reds": "0.1.4"
+    "reds": "~0.2.4"
   },
   "main": "index",
   "devDependencies": {
