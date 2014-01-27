@@ -1,6 +1,5 @@
-
 var kue = require('../')
-  , express = require('express');
+    , express = require('express');
 
 // create our job queue
 
@@ -14,39 +13,37 @@ var jobs = kue.createQueue();
 // user input etc.
 
 function create() {
-  var name = ['tobi', 'loki', 'jane', 'manny'][Math.random() * 4 | 0];
-  console.log('- creating job for %s', name);
-  jobs.create('video conversion', {
-      title: 'converting ' + name + '\'s to avi'
-    , user: 1
-    , frames: 200
-  }).save();
-  setTimeout(create, Math.random() * 3000 | 0);
+    var name = ['tobi', 'loki', 'jane', 'manny'][Math.random() * 4 | 0];
+    console.log('- creating job for %s', name);
+    jobs.create('video conversion', {
+        title: 'converting ' + name + '\'s to avi', user: 1, frames: 200
+    }).save();
+    setTimeout(create, Math.random() * 3000 | 0);
 }
 
 create();
 
 // process video conversion jobs, 3 at a time.
 
-jobs.process('video conversion', 3, function(job, done){
-  var frames = job.data.frames;
-  console.log("job process %d", job.id);
-  function next(i) {
-    // pretend we are doing some work
-    convertFrame(i, function(err){
-      if (err) return done(err);
-      // report progress, i/frames complete
-      job.progress(i, frames);
-      if (i == frames) done()
-      else next(i + 1);
-    });
-  }
+jobs.process('video conversion', 3, function (job, done) {
+    var frames = job.data.frames;
+    console.log("job process %d", job.id);
+    function next(i) {
+        // pretend we are doing some work
+        convertFrame(i, function (err) {
+            if (err) return done(err);
+            // report progress, i/frames complete
+            job.progress(i, frames);
+            if (i == frames) done()
+            else next(i + 1);
+        });
+    }
 
-  next(0);
+    next(0);
 });
 
 function convertFrame(i, fn) {
-  setTimeout(fn, Math.random() * 100);
+    setTimeout(fn, Math.random() * 100);
 }
 
 // start the UI
