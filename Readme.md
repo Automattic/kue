@@ -251,7 +251,7 @@ jobs.process('slideshow pdf', 5, function(job, done){
 ```javascript
 var queue = require('kue').createQueue();
 
-process.once( 'SIGTERM', function ( sig ) {
+process.on( 'SIGTERM', function ( sig ) {
   queue.shutdown(function(err) {
     console.log( 'Kue is shut down.', err||'' );
     process.exit( 0 );
