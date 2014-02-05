@@ -249,7 +249,9 @@ jobs.process('slideshow pdf', 5, function(job, done){
   or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
 
 ```javascript
-process.once( 'SIGTERM', function ( sig ) {
+var queue = require('kue').createQueue();
+
+process.on( 'SIGTERM', function ( sig ) {
   queue.shutdown(function(err) {
     console.log( 'Kue is shut down.', err||'' );
     process.exit( 0 );
