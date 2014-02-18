@@ -268,6 +268,7 @@ process.once( 'SIGTERM', function ( sig ) {
     redis: {
       port: 1234,
       host: '10.0.50.20'
+      auth: 'auth parameters',
       options: {
         // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
       }
