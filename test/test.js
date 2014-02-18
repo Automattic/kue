@@ -1,5 +1,6 @@
 var kue = require('../'),
     jobs = kue.createQueue();
+
 jobs.promote(1);
 
 describe('Jobs', function () {
@@ -15,12 +16,13 @@ describe('Jobs', function () {
     it('should be processed', function (done) {
         var jobData = {
             title: 'welcome email for tj',
-            to: 'tj@learnboost.com',
+            to: '"TJ" <tj@learnboost.com>',
             template: 'welcome-email'
         };
         jobs.create('email-should-be-processed', jobData).priority('high').save();
         jobs.process('email-should-be-processed', function (job, jdone) {
             job.data.should.be.eql(jobData);
+            job.log( '<p>This is <span style="color: green;">a</span> formatted log<p/>' );
             jdone();
             done();
         });

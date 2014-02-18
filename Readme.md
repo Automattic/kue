@@ -249,6 +249,8 @@ jobs.process('slideshow pdf', 5, function(job, done){
   or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
 
 ```javascript
+var queue = require('kue').createQueue();
+
 process.once( 'SIGTERM', function ( sig ) {
   queue.shutdown(function(err) {
     console.log( 'Kue is shut down.', err||'' );
@@ -267,7 +269,8 @@ process.once( 'SIGTERM', function ( sig ) {
   q = kue.createQueue({
     redis: {
       port: 1234,
-      host: '10.0.50.20'
+      host: '10.0.50.20',
+      auth: 'password',
       options: {
         // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
       }
