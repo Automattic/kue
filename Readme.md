@@ -1,6 +1,6 @@
 # Kue [![Build Status](https://travis-ci.org/LearnBoost/kue.png)](https://travis-ci.org/LearnBoost/kue)
 
-  Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
+Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
 
 ## Installation
 
@@ -48,14 +48,14 @@
 
 ## Creating Jobs
 
- First create a job `Queue` with `kue.createQueue()`:
+First create a job `Queue` with `kue.createQueue()`:
 
 ```js
 var kue = require('kue')
   , jobs = kue.createQueue();
 ```
 
-  Calling `jobs.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong. The `title` key is special-cased, and will display in the job listings within the UI, making it easier to find a specific job.
+Calling `jobs.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong. The `title` key is special-cased, and will display in the job listings within the UI, making it easier to find a specific job.
 
 ```js
 jobs.create('email', {
@@ -67,7 +67,7 @@ jobs.create('email', {
 
 ### Job Priority
 
- To specify the priority of a job, simply invoke the `priority()` method with a number, or priority name, which is mapped to a number.
+To specify the priority of a job, simply invoke the `priority()` method with a number, or priority name, which is mapped to a number.
 
 ```js
 jobs.create('email', {
@@ -77,7 +77,7 @@ jobs.create('email', {
 }).priority('high').save();
 ```
 
-  The default priority map is as follows:
+The default priority map is as follows:
 
 ```js
 {
@@ -91,9 +91,9 @@ jobs.create('email', {
 
 ### Failure Attempts
 
- By default jobs only have _one_ attempt, that is when they fail, they are marked as a failure, and remain that way until you intervene. However, Kue allows you to specify this, which is important for jobs such as transferring an email, which upon failure, may usually retry without issue. To do this invoke the `.attempts()` method with a number.
+By default jobs only have _one_ attempt, that is when they fail, they are marked as a failure, and remain that way until you intervene. However, Kue allows you to specify this, which is important for jobs such as transferring an email, which upon failure, may usually retry without issue. To do this invoke the `.attempts()` method with a number.
 
- ```js
+```js
  jobs.create('email', {
      title: 'welcome email for tj'
    , to: 'tj@learnboost.com'
@@ -103,7 +103,7 @@ jobs.create('email', {
 
 ### Job Logs
 
- Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
+Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
 
 ```js 
 job.log('$%d sent to %s', amount, user.name);
@@ -111,7 +111,7 @@ job.log('$%d sent to %s', amount, user.name);
 
 ### Job Progress
 
- Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total)`:
+Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total)`:
 
 ```js
 job.progress(frames, totalFrames);
@@ -119,7 +119,7 @@ job.progress(frames, totalFrames);
 
 ### Job Events
 
- Job-specific events are fired on the `Job` instances via Redis pubsub. The following events are currently supported:
+Job-specific events are fired on the `Job` instances via Redis pubsub. The following events are currently supported:
 
     - `failed` the job has failed and has no remaining attempts
     - 'failed attempt' the job has failed, but has remaining attempts yet
@@ -127,7 +127,7 @@ job.progress(frames, totalFrames);
     - `promotion` the job (when delayed) is now queued
     - `progress` the job's progress ranging from 0-100
 
- For example this may look something like the following:
+For example this may look something like the following:
 
 ```js
 var job = jobs.create('video conversion', {
@@ -147,7 +147,7 @@ job.on('complete', function(){
 
 ### Queue Events
 
- Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to to apply logic at a "global" level. An example of this is removing completed jobs:
+Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to apply logic at a "global" level. An example of this is removing completed jobs:
  
 ```js
 jobs.on('job complete', function(id){
@@ -161,11 +161,11 @@ jobs.on('job complete', function(id){
 });
 ```
 
- The events available are the same as mentioned in "Job Events", however prefixed with "job ". 
+The events available are the same as mentioned in "Job Events", however prefixed with "job ". 
 
 ### Delayed Jobs
 
-  Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
+Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
 
 ```js
 var email = jobs.create('email', {
@@ -185,10 +185,9 @@ jobs.promote();
 
 ## Processing Jobs
 
- Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
+Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
 
- In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete.
- if this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
+In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
 
 ```js
 var kue = require('kue')
@@ -201,7 +200,7 @@ jobs.process('email', function(job, done){
 
 ### Processing Concurrency
 
- By default a call to `jobs.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
+By default a call to `jobs.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
  
 ```js
 jobs.process('email', 20, function(job, done){
@@ -211,7 +210,7 @@ jobs.process('email', 20, function(job, done){
 
 ### Updating Progress
 
- For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](http://github.com/learnboost/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
+For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](http://github.com/learnboost/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
  
 ```js
 jobs.create('slideshow pdf', {
@@ -220,7 +219,7 @@ jobs.create('slideshow pdf', {
 });
 ```
 
-  We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and process.
+We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and process.
 
 ```js
 jobs.process('slideshow pdf', 5, function(job, done){
@@ -244,9 +243,7 @@ jobs.process('slideshow pdf', 5, function(job, done){
 
 ### Graceful Shutdown
 
-  As of Kue 0.7.0, a `Queue#shutdown(fn, timeout)` is added which signals all workers to stop processing after
-  their current active job is done. Workers will wait `timeout` milliseconds for their active job's done to be called
-  or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
+As of Kue 0.7.0, a `Queue#shutdown(fn, timeout)` is added which signals all workers to stop processing after their current active job is done. Workers will wait `timeout` milliseconds for their active job's done to be called or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
 
 ```javascript
 var queue = require('kue').createQueue();
@@ -261,43 +258,42 @@ process.once( 'SIGTERM', function ( sig ) {
 
 ## Redis Connection Settings
 
-  By default, Kue will connect to Redis using the client default settings (port defaults to `6379`, host defaults to `127.0.0.1`).
-  `Queue#createQueue(options)` accepts redis connection options in `options.redis` key.
+By default, Kue will connect to Redis using the client default settings (port defaults to `6379`, host defaults to `127.0.0.1`). `Queue#createQueue(options)` accepts redis connection options in `options.redis` key.
 
-  ```javascript
-  var kue = require('kue');
-  q = kue.createQueue({
-    redis: {
-      port: 1234,
-      host: '10.0.50.20',
-      auth: 'password',
-      options: {
-        // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
-      }
+```javascript
+var kue = require('kue');
+q = kue.createQueue({
+  redis: {
+    port: 1234,
+    host: '10.0.50.20',
+    auth: 'password',
+    options: {
+      // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
     }
-  });
-  ```
+  }
+});
+```
 
-  For backward compatibility to `Kue < 0.7.0`, monkey-patch-styled Redis client connection settings can be set by overriding the `kue.redis.createClient` function.
+For backward compatibility to `Kue < 0.7.0`, monkey-patch-styled Redis client connection settings can be set by overriding the `kue.redis.createClient` function.
 
-  For example, to create a Redis client that connects to `192.168.1.2` on port `1234` that requires authentication, use the following:
+For example, to create a Redis client that connects to `192.168.1.2` on port `1234` that requires authentication, use the following:
 
-  ```javascript
-  var kue = require('kue')
-    , redis = require('redis');
-  
-  kue.redis.createClient = function() {
-    var client = redis.createClient(1234, '192.168.1.2');
-    client.auth('password');
-    return client;
-  };
-  ```
+```javascript
+var kue = require('kue')
+  , redis = require('redis');
 
-  Redis connection settings must be set before calling `kue.createQueue()` or accessing `kue.app`.
+kue.redis.createClient = function() {
+  var client = redis.createClient(1234, '192.168.1.2');
+  client.auth('password');
+  return client;
+};
+```
+
+Redis connection settings must be set before calling `kue.createQueue()` or accessing `kue.app`.
 
 ## User-Interface
 
- The UI is a small [Express](http://github.com/visionmedia/express) application, to fire it up simply run the following, altering the port etc as desired.
+The UI is a small [Express](http://github.com/visionmedia/express) application, to fire it up simply run the following, altering the port etc as desired.
 
 ```js
 var kue = require('kue');
@@ -312,17 +308,17 @@ kue.app.set('title', 'My Application');
 
 ## JSON API
 
-  Along with the UI Kue also exposes a JSON API, which is utilized by the UI.
+Along with the UI Kue also exposes a JSON API, which is utilized by the UI.
 
 ### GET /job/search?q=
 
-  Query jobs, for example "GET /job/search?q=avi video":
+Query jobs, for example "GET /job/search?q=avi video":
 
 ```js
 ["5", "7", "10"]
 ```
-  You may disable search indexes in `Kue >= 0.7.0` for memory optimization or to avoid probable
-  memory leak reported in issue list:
+
+You may disable search indexes in Kue >= 0.7.0 for memory optimization or to avoid [memory leaks](https://github.com/LearnBoost/kue/search?q=leak&type=Issues) that some have reported:
 
 ```javascript
 var kue = require('kue');
@@ -333,7 +329,7 @@ q = kue.createQueue({
 
 ### GET /stats
 
-  Currently responds with state counts, and worker activity time in milliseconds:
+Currently responds with state counts, and worker activity time in milliseconds:
 
 ```js
 {"inactiveCount":4,"completeCount":69,"activeCount":2,"failedCount":0,"workTime":20892}
@@ -341,7 +337,7 @@ q = kue.createQueue({
 
 ### GET /job/:id
 
-  Get a job by `:id`:
+Get a job by `:id`:
 
 ```js
 {"id":"3","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":"100","state":"complete","attempts":null,"created_at":"1309973155248","updated_at":"1309973155248","duration":"15002"}
@@ -349,7 +345,7 @@ q = kue.createQueue({
 
 ### GET /job/:id/log
 
-  Get job `:id`'s log:
+Get job `:id`'s log:
   
 ```js
 ['foo', 'bar', 'baz']
@@ -357,8 +353,7 @@ q = kue.createQueue({
 
 ### GET /jobs/:from..:to/:order?
 
-  Get jobs with the specified range `:from` to `:to`, for
-  example "/jobs/0..2", where `:order` may be "asc" or "desc":
+Get jobs with the specified range `:from` to `:to`, for example "/jobs/0..2", where `:order` may be "asc" or "desc":
 
 ```js
 [{"id":"12","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309973299293","updated_at":"1309973299293"},{"id":"130","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309975157291","updated_at":"1309975157291"}]
@@ -366,7 +361,7 @@ q = kue.createQueue({
 
 ### GET /jobs/:state/:from..:to/:order?
 
-  Same as above, restricting by `:state` which is one of:
+Same as above, restricting by `:state` which is one of:
   
     - active
     - inactive
@@ -375,18 +370,18 @@ q = kue.createQueue({
 
 ### GET /jobs/:type/:state/:from..:to/:order?
 
-  Same as above, however restricted to `:type` and `:state`.
+Same as above, however restricted to `:type` and `:state`.
 
 ### DELETE /job/:id
 
-  Delete job `:id`:
+Delete job `:id`:
   
     $ curl -X DELETE http://local:3000/job/2
     {"message":"job 2 removed"}
 
 ### POST /job
 
-  Create a job:
+Create a job:
 
     $ curl -H "Content-Type: application/json" -X POST -d \
         '{
@@ -406,9 +401,9 @@ q = kue.createQueue({
 
 ## Parallel Processing With Cluster
 
- The example below shows how you may use [Cluster](http://nodejs.org/api/cluster.html) to spread the job processing load across CPUs. Please see [Cluster module's documentation](http://nodejs.org/api/cluster.html) for more detailed examples on using it.
+The example below shows how you may use [Cluster](http://nodejs.org/api/cluster.html) to spread the job processing load across CPUs. Please see [Cluster module's documentation](http://nodejs.org/api/cluster.html) for more detailed examples on using it.
  
- When cluster `.isMaster` the file is being executed in context of the master process, in which case you may perform tasks that you only want once, such as starting the web app bundled with Kue. The logic in the `else` block is executed _per worker_. 
+When cluster `.isMaster` the file is being executed in context of the master process, in which case you may perform tasks that you only want once, such as starting the web app bundled with Kue. The logic in the `else` block is executed _per worker_. 
 
 ```js
 var kue = require('kue')
@@ -443,7 +438,7 @@ Now when you visit Kue's UI in the browser you'll see that jobs are being proces
 
 ## Securing Kue
 
- Through the use of app mounting you may customize the web application, enabling TLS, or adding additional middleware like Connect's `basicAuth()`.
+Through the use of app mounting you may customize the web application, enabling TLS, or adding additional middleware like Connect's `basicAuth()`.
 
 ```js
 var app = express.createServer({ ... tls options ... });
