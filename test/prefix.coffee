@@ -6,7 +6,6 @@ describe 'Kue - Prefix', ->
       opts =
           redis:
               prefix: queueName
-      console.log "Random queue name: #{opts.redis.prefix}"
       jobs = kue.createQueue opts
       return jobs
 
@@ -14,9 +13,17 @@ describe 'Kue - Prefix', ->
       jobs.shutdown (err) ->
           callback()
 
-  noop = () ->
-      return null
+  # expected redis activity
+  #
+  # 1397744169.196792 "subscribe" "q:events"
+  # 1397744169.196852 "unsubscribe"
+  it 'should use prefix q by default', (done) ->
+      jobs = kue.createQueue()
+      jobs.client.prefix.should.equal 'q'
+      stopJobs jobs, done
 
+  # expected redis activity
+  #
   it 'should accept and store prefix', (done) ->
 
       jobs = makeJobs('testPrefix1')
@@ -31,9 +38,13 @@ describe 'Kue - Prefix', ->
 
   it 'store queued jobs in different prefixes', (testDone) ->
       jobs = makeJobs('jobCompleteTest')
-      jobs.create( 'fakeJob', {} ).save()
-      f = ->
-          jobs.inactiveCount (err, count) ->
-              count.should.equal 1
-              testDone()
-      setTimeout f, 100
+
+      jobs.inactiveCount (err, count) ->
+          prevCount = count
+
+          jobs.create( 'fakeJob', {} ).save()
+          f = ->
+              jobs.inactiveCount (err, count) ->
+                  count.should.equal prevCount + 1
+                  testDone()
+          setTimeout f, 100
