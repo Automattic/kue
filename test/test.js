@@ -1,16 +1,20 @@
-var kue = require('../'),
-    jobs = kue.createQueue();
-
-jobs.promote(1);
+var kue = require('../');
 
 describe('Jobs', function () {
 
+    var jobs = null;
+
     beforeEach(function (done) {
+        jobs = kue.createQueue();
+        jobs.promote(1);
         done();
     });
 
     afterEach(function (done) {
-        done();
+        jobs.shutdown( function( err ){
+          jobs = null;
+          done();
+        }, 100);
     });
 
     it('should be processed', function (done) {
@@ -28,17 +32,17 @@ describe('Jobs', function () {
         });
     });
 
-    it('should retry on failure if attempts is set', function (done) {
+    it('should retry on failure if attempts is set', function (testDone) {
         var job = jobs.create('failure-attempts', {});
+        var failures = 0;
         job.attempts(5)
             .on('complete', function(){
-                console.log( "job complete");
-            })
-            .on('failed', function(){
-                console.log( "job failed");
+                attempts.should.be.equal(5);
+                failures.should.be.equal(4);
+                testDone();
             })
             .on('failed attempt', function( attempt ){
-                console.log( "failed attempt ", attempt );
+                failures++;
             })
             .save();
         var attempts = 0;
@@ -49,10 +53,6 @@ describe('Jobs', function () {
             else
                 done(new Error("error"));
         });
-        setTimeout(function () {
-            attempts.should.be.equal(5);
-            done();
-        }, 1000 );
     });
 
     /*
