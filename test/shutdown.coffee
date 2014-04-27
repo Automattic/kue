@@ -35,3 +35,28 @@ describe 'Kue', ->
         should(jobs.client).be.empty
         should(jobs.promoter).be.empty
         done()
+
+    it 'should fail active job when shutdown timer expires', (testDone) ->
+      jobs = kue.createQueue()
+      jobs.promote 1
+
+      jobId = null
+
+      jobs.process 'long-task', (job, done) ->
+        jobId = job.id
+        fn = ->
+          done()
+        setTimeout fn, 10000
+
+      jobs.create('long-task', {}).save (err) ->
+        should(err).be.empty
+
+        fn = (err) ->
+          kue.Job.get jobId, (err, job) ->
+            job.should.have.property '_state', "failed"
+            job.should.have.property '_error', "Shutdown"
+            testDone()
+
+        # shutdown timer is shorter than job length
+        jobs.shutdown fn, 10
+
