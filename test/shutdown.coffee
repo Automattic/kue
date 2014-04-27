@@ -63,7 +63,7 @@ describe 'Kue', ->
       jobs.workers.should.have.length 2
 
       fn = (err) ->
-          # one of the workers should be shutdown
+          # one of the workers should have been shutdown
           jobs.workers.should.have.length 1
 
           # kue should still be running
@@ -72,7 +72,7 @@ describe 'Kue', ->
 
           jobs.shutdown testDone, 10
 
-      jobs.shutdown fn, 1000, 'shutdownTask'
+      jobs.shutdown fn, 10, 'shutdownTask'
 
 
     it 'should fail active job when shutdown timer expires', (testDone) ->
