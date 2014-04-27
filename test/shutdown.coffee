@@ -36,6 +36,45 @@ describe 'Kue', ->
         should(jobs.promoter).be.empty
         done()
 
+    it 'should not clear properties on single type shutdown', (testDone) ->
+      jobs = kue.createQueue()
+      jobs.promote 1
+
+      fn = (err) ->
+          jobs.promoter.should.not.be.empty
+          jobs.client.should.not.be.empty
+          jobs.shutdown testDone, 10
+
+      jobs.shutdown fn, 10, 'fooJob'
+
+    it 'should shutdown one worker type on single type shutdown', (testDone) ->
+      jobs = kue.createQueue()
+      jobs.promote 1
+
+      # set up two worker types
+      jobs.process 'runningTask', (job, done) ->
+          done()
+
+      jobs.workers.should.have.length 1
+
+      jobs.process 'shutdownTask', (job, done) ->
+          done()
+
+      jobs.workers.should.have.length 2
+
+      fn = (err) ->
+          # one of the workers should be shutdown
+          jobs.workers.should.have.length 1
+
+          # kue should still be running
+          jobs.promoter.should.not.be.empty
+          jobs.client.should.not.be.empty
+
+          jobs.shutdown testDone, 10
+
+      jobs.shutdown fn, 1000, 'shutdownTask'
+
+
     it 'should fail active job when shutdown timer expires', (testDone) ->
       jobs = kue.createQueue()
       jobs.promote 1
