@@ -63,8 +63,13 @@ describe 'Kue', ->
       jobs.workers.should.have.length 2
 
       fn = (err) ->
-          # one of the workers should have been shutdown
-          jobs.workers.should.have.length 1
+          # verify shutdownTask is not running but runningTask is
+          for worker in jobs.workers
+              switch worker.type
+                  when 'shutdownTask'
+                      worker.should.have.property 'running', false
+                  when 'runningTask'
+                      worker.should.have.property 'running', true
 
           # kue should still be running
           jobs.promoter.should.not.be.empty
