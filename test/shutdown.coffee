@@ -82,20 +82,24 @@ describe 'Kue', ->
       jobId = null
 
       jobs.process 'long-task', (job, done) ->
-        jobId = job.id
-        fn = ->
-          done()
-        setTimeout fn, 10000
+          jobId = job.id
+          fn = ->
+            done()
+          setTimeout fn, 10000
 
-      jobs.create('long-task', {}).save (err) ->
-        should(err).be.empty
+      jobs.create('long-task', {}).save()
 
-        fn = (err) ->
-          kue.Job.get jobId, (err, job) ->
-            job.should.have.property '_state', "failed"
-            job.should.have.property '_error', "Shutdown"
-            testDone()
+      # need to make sure long-task has had enough time to get into active state
+      waitForJobToRun = ->
+          fn = (err) ->
+              kue.Job.get jobId, (err, job) ->
+                  job.should.have.property '_state', "failed"
+                  job.should.have.property '_error', "Shutdown"
+                  testDone()
 
-        # shutdown timer is shorter than job length
-        jobs.shutdown fn, 10
+          # shutdown timer is shorter than job length
+          jobs.shutdown fn, 10
+
+      setTimeout waitForJobToRun, 50
+
 
