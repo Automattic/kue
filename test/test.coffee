@@ -1,9 +1,23 @@
 kue = require '../'
-jobs = kue.createQueue()
-Job = kue.Job
-jobs.promote 1
 
 describe 'Kue', ->
+
+  jobs = null
+  Job = null
+
+  beforeEach (done) ->
+    jobs = kue.createQueue()
+    Job = kue.Job
+    jobs.promote 1
+    done()
+
+  afterEach (done) ->
+    onShutdown = (err) ->
+      jobs = null
+      done()
+
+    jobs.shutdown onShutdown, 100
+
   describe 'job-producer', ->
     it 'should save jobs having new id', (done) ->
       job_data =
