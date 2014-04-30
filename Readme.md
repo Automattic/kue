@@ -186,6 +186,7 @@ jobs.promote();
 ## Processing Jobs
 
 Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
+Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. [Support for named queues are also requested](https://github.com/LearnBoost/kue/pull/274)
 
 In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
 
