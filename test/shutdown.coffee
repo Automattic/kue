@@ -50,7 +50,7 @@ describe 'Kue', ->
           done()
         else
           ctx.pause( ()->console.log "paused..." )
-          setTimeout ( -> console.log "resuming..."; ctx.resume()), 2000
+          setTimeout ( -> console.log "resuming..."; ctx.resume()), 500
         job_done()
         
     
