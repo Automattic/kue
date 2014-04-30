@@ -35,7 +35,7 @@ describe 'Kue', ->
         should(jobs.client).be.empty
         should(jobs.promoter).be.empty
         done()
-
+        
     it 'should be able to pause/resume the worker', (done) ->
       jobs = kue.createQueue()
       total_jobs = 3;
@@ -52,6 +52,9 @@ describe 'Kue', ->
           ctx.pause( ()->console.log "paused..." )
           setTimeout ( -> console.log "resuming..."; ctx.resume()), 2000
         job_done()
+        
+    
+
     it 'should not clear properties on single type shutdown', (testDone) ->
       jobs = kue.createQueue()
       jobs.promote 1
