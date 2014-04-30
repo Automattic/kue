@@ -35,3 +35,20 @@ describe 'Kue', ->
         should(jobs.client).be.empty
         should(jobs.promoter).be.empty
         done()
+
+    it 'should be able to pause/resume the worker', (done) ->
+      jobs = kue.createQueue()
+      total_jobs = 3;
+      job_data =
+        title: 'resumable jobs'
+        to: 'tj@learnboost.com'
+      jobs.create('resumable-jobs', job_data).save()
+      jobs.create('resumable-jobs', job_data).save()
+      jobs.create('resumable-jobs', job_data).save()
+      jobs.process 'resumable-jobs', 1, (job, job_done, ctx) ->
+        if( !--total_jobs )
+          done()
+        else
+          ctx.pause( ()->console.log "paused..." )
+          setTimeout ( -> console.log "resuming..."; ctx.resume()), 2000
+        job_done()
