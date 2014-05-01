@@ -35,25 +35,25 @@ describe 'Kue', ->
         should(jobs.client).be.empty
         should(jobs.promoter).be.empty
         done()
-        
+
     it 'should be able to pause/resume the worker', (done) ->
       jobs = kue.createQueue()
-      total_jobs = 3;
+
       job_data =
         title: 'resumable jobs'
         to: 'tj@learnboost.com'
-      jobs.create('resumable-jobs', job_data).save()
-      jobs.create('resumable-jobs', job_data).save()
-      jobs.create('resumable-jobs', job_data).save()
+
+      total_jobs = 3
+      for i in [0...total_jobs]
+        jobs.create('resumable-jobs', job_data).save()
+
       jobs.process 'resumable-jobs', 1, (job, job_done, ctx) ->
         if( !--total_jobs )
-          done()
+          jobs.shutdown done
         else
-          ctx.pause( ()->console.log "paused..." )
-          setTimeout ( -> console.log "resuming..."; ctx.resume()), 500
+          ctx.pause( )
+          setTimeout ctx.resume, 10
         job_done()
-        
-    
 
     it 'should not clear properties on single type shutdown', (testDone) ->
       jobs = kue.createQueue()
