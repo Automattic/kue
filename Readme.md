@@ -264,11 +264,11 @@ By default, Kue will connect to Redis using the client default settings (port de
 ```javascript
 var kue = require('kue');
 q = kue.createQueue({
+  prefix: 'q',
   redis: {
     port: 1234,
     host: '10.0.50.20',
     auth: 'password',
-    prefix: 'q',
     options: {
       // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
     }
@@ -276,7 +276,7 @@ q = kue.createQueue({
 });
 ```
 
-`redis.prefix` controls the key names used in Redis.  By default, this is simply
+`prefix` controls the key names used in Redis.  By default, this is simply
 `q`.  Prefix generally shouldn't be changed unless you need to use one Redis
 instance for multiple apps.  It can also be useful for testing your application
 - for example, using a different prefix for each set of tests to ensure that
