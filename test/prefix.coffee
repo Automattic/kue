@@ -4,8 +4,7 @@ describe 'Kue - Prefix', ->
 
   makeJobs = (queueName) ->
       opts =
-          redis:
-              prefix: queueName
+          prefix: queueName
       jobs = kue.createQueue opts
       jobs.promote 10
       return jobs
@@ -19,7 +18,7 @@ describe 'Kue - Prefix', ->
   # 1397744169.196852 "unsubscribe"
   it 'should use prefix q by default', (done) ->
       jobs = kue.createQueue()
-      jobs.client.prefix.should.equal 'q'
+      jobs.prefix.should.equal 'q'
       stopJobs jobs, done
 
   # expected redis activity
@@ -32,11 +31,11 @@ describe 'Kue - Prefix', ->
 
       jobs = makeJobs('testPrefix1')
 
-      jobs.client.prefix.should.equal 'testPrefix1'
+      jobs.prefix.should.equal 'testPrefix1'
 
       stopJobs jobs, (err) ->
           jobs2 = makeJobs('testPrefix2')
-          jobs2.client.prefix.should.equal 'testPrefix2'
+          jobs2.prefix.should.equal 'testPrefix2'
           stopJobs jobs2, done
 
   it 'should process and complete a job using a prefix', (testDone) ->
