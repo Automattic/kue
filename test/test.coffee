@@ -16,7 +16,7 @@ describe 'Kue', ->
       jobs = null
       done()
 
-    jobs.shutdown onShutdown, 100
+    jobs.shutdown onShutdown, 500
 
   describe 'job-producer', ->
     it 'should save jobs having new id', (done) ->
