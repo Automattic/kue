@@ -14,7 +14,7 @@ describe('Jobs', function () {
         jobs.shutdown( function( err ){
           jobs = null;
           done();
-        }, 100);
+        }, 500 );
     });
 
     it('should be processed', function (done) {

@@ -49,8 +49,8 @@ describe 'Kue', ->
         if( !--total_jobs )
           done()
         else
-          ctx.pause( ()->console.log "paused..." )
-          setTimeout ( -> console.log "resuming..."; ctx.resume()), 500
+          ctx.pause()
+          setTimeout ( -> ctx.resume() ), 500
         job_done()
         
     
