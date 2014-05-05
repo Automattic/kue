@@ -1,6 +1,6 @@
 {
   "name": "kue",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://learnboost.github.com/kue/",
   "keywords": [
@@ -22,12 +22,12 @@
     "nib": "0.5.0",
     "reds": "~0.2.4"
   },
-  "main": "index",
   "devDependencies": {
     "should": "~3.0.1",
     "mocha": "~1.17.0",
     "coffee-script": "~1.6.3"
   },
+  "main": "index",
   "scripts": {
     "test": "make test-all"
   }
