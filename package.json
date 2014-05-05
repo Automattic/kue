@@ -1,6 +1,6 @@
 {
   "name": "kue",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://learnboost.github.com/kue/",
   "keywords": [
