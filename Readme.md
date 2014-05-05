@@ -283,7 +283,7 @@ For example, to create a Redis client that connects to `192.168.1.2` on port `12
 var kue = require('kue')
   , redis = require('redis');
 
-kue.redis.createClient = function() {
+kue.redis.defaultCreateClient = function() {
   var client = redis.createClient(1234, '192.168.1.2');
   client.auth('password');
   return client;
