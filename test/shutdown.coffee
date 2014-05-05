@@ -38,19 +38,19 @@ describe 'Kue', ->
         
     it 'should be able to pause/resume the worker', (done) ->
       jobs = kue.createQueue()
-      total_jobs = 3;
       job_data =
         title: 'resumable jobs'
         to: 'tj@learnboost.com'
-      jobs.create('resumable-jobs', job_data).save()
-      jobs.create('resumable-jobs', job_data).save()
-      jobs.create('resumable-jobs', job_data).save()
+      total_jobs = 3
+      for i in [0...total_jobs]
+        jobs.create('resumable-jobs', job_data).save()
+
       jobs.process 'resumable-jobs', 1, (job, job_done, ctx) ->
         if( !--total_jobs )
-          done()
+          jobs.shutdown done
         else
           ctx.pause()
-          setTimeout ( -> ctx.resume() ), 500
+          setTimeout ctx.resume, 200
         job_done()
         
     
