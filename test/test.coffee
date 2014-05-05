@@ -1,3 +1,4 @@
+assert = require 'assert'
 kue = require '../'
 
 describe 'Kue', ->
@@ -40,6 +41,22 @@ describe 'Kue', ->
       jobs.create('email-to-be-completed', job_data)
       .on 'complete', ->
           done()
+      .save()
+
+    it 'should handle custom events', (done) ->
+      jobdata = {pt: null};
+      jobs.process 'email-with-custom-event', (job, done) ->
+        job.send("result", {processingTime: 120})
+        done()
+      job_data =
+        title: 'Test Email Job'
+        to: 'tj@learnboost.com'
+      jobs.create('email-with-custom-event', job_data)
+      .on 'result', (obj) ->
+        jobdata.pt = obj.processingTime
+      .on 'complete', ->
+        assert.equal(jobdata.pt, 120);
+        done()
       .save()
 
 
