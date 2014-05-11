@@ -354,7 +354,7 @@ Get job `:id`'s log:
 
 ### GET /jobs/:from..:to/:order?
 
-Get jobs with the specified range `:from` to `:to`, for example "/jobs/0..2", where `:order` may be "asc" or "desc":
+Get jobs with the specified range `:from` to `:to`, for example "/jobs/0..2", where `:order` may be "asc", "desc", "byId:asc" or "byId:desc":
 
 ```js
 [{"id":"12","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309973299293","updated_at":"1309973299293"},{"id":"130","type":"email","data":{"title":"welcome email for tj","to":"tj@learnboost.com","template":"welcome-email"},"priority":-10,"progress":0,"state":"active","attempts":null,"created_at":"1309975157291","updated_at":"1309975157291"}]
