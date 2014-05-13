@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/learnboost/kue.png?label=ready&title=Ready)](https://waffle.io/learnboost/kue)
 # Kue [![Build Status](https://travis-ci.org/LearnBoost/kue.png)](https://travis-ci.org/LearnBoost/kue)
 
 Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
