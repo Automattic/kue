@@ -397,8 +397,36 @@ Create a job:
              "priority": "high"
            }
          }' http://localhost:3000/job
-    {"message":"job 3 created"}
+    {"message": "job created", "id": 3}
 
+Create jobs:
+
+    $ curl -H "Content-Type: application/json" -X POST -d \
+        '[{
+           "type": "email",
+           "data": {
+             "title": "welcome email for tj",
+             "to": "tj@learnboost.com",
+             "template": "welcome-email"
+           },
+           "options" : {
+             "attempts": 5,
+             "priority": "high"
+           }
+         },
+         {
+           "type": "email",
+           "data": {
+             "title": "welcome email for yulun",
+             "to": "shih@yulun.me",
+             "template": "welcome-email"
+           },
+           "options" : {
+             "attempts": 5,
+             "priority": "high"
+           }
+         }]' http://localhost:3000/job
+    {"message": "job created", "id": [3, 4]}
 
 ## Parallel Processing With Cluster
 
