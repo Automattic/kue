@@ -27,9 +27,10 @@
     "async": "~0.8.0"
   },
   "devDependencies": {
-    "should": "~3.0.1",
+    "coffee-script": "~1.6.3",
     "mocha": "~1.17.0",
-    "coffee-script": "~1.6.3"
+    "should": "~3.0.1",
+    "supertest": "^0.12.1"
   },
   "main": "index",
   "scripts": {
