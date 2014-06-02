@@ -50,7 +50,7 @@ describe 'Kue', ->
           jobs.shutdown done
         else
           ctx.pause()
-          setTimeout ctx.resume, 200
+          setTimeout ctx.resume, 300
         job_done()
         
     
