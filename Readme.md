@@ -151,7 +151,7 @@ Queue-level events provide access to the job-level events previously mentioned, 
  
 ```js
 jobs.on('job complete', function(id){
-  Job.get(id, function(err, job){
+  kue.Job.get(id, function(err, job){
     if (err) return;
     job.remove(function(err){
       if (err) throw err;
