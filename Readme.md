@@ -17,7 +17,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - UI progress indication
   - Job specific logging
   - Powered by Redis
-  - Optional retries
+  - Optional retries with backoff
   - Full-text search capabilities
   - RESTful JSON API
   - Graceful workers shutdown
@@ -27,6 +27,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Creating Jobs](#creating-jobs)
   - [Jobs Priority](#job-priority)
   - [Failure Attempts](#failure-attempts)
+  - [Failure Backoff](#failure-backoff)
   - [Job Logs](#job-logs)
   - [Job Progress](#job-progress)
   - [Job Events](#job-events)
@@ -101,6 +102,23 @@ By default jobs only have _one_ attempt, that is when they fail, they are marked
  }).priority('high').attempts(5).save();
 ```
 
+### Failure Backoff
+Job retry attempts are done as soon as they fail, with no delay, even if your job had a delay set via `Job#delay`. If you want to delay job re-attempts upon failures (known as backoff) you can use `Job#backoff` method in different ways:
+
+```js
+    // Kue will honor job's original delay at each attempt. (works as fixed delay by default)
+    job.attempts(3).backoff( true )
+
+    // Kue will use specified delay for next attempts. (overrides original job delay)
+    job.attempts(3).backoff( {delay: 60*1000, type:'fixed'} )
+
+    // Kue will use job's original delay but calculates each attempt delay exponentially
+    job.attempts(3).backoff( {type:'exponential'} )
+
+    // Kue calls user's provided function after each failure attempt and uses the returned number as current attempt delay
+    job.attempts(3).backoff( function( attempts, delay ){ return my_customized_calculated_delay; } )
+```
+
 ### Job Logs
 
 Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
@@ -136,8 +154,8 @@ var job = jobs.create('video conversion', {
   , frames: 200
 });
 
-job.on('complete', function(){
-  console.log("Job complete");
+job.on('complete', function(result){
+  console.log("Job completed with data ", result);
 }).on('failed', function(){
   console.log("Job failed");
 }).on('progress', function(progress){
@@ -145,12 +163,14 @@ job.on('complete', function(){
 });
 ```
 
+Note that Job level events are not guaranteed to be received upon worker process restarts, since the process will lose the reference to the specific Job object. If you want a more reliable event handler look for [Queue Events](#queue-events).
+
 ### Queue Events
 
 Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to apply logic at a "global" level. An example of this is removing completed jobs:
  
 ```js
-jobs.on('job complete', function(id){
+jobs.on('job complete', function(id,result){
   Job.get(id, function(err, job){
     if (err) return;
     job.remove(function(err){
@@ -189,6 +209,7 @@ Processing jobs is simple with Kue. First create a `Queue` instance much like we
 Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. [Support for named queues are also requested](https://github.com/LearnBoost/kue/pull/274)
 
 In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
+Workers can pass job result as the second parameter to done `done(null,result)` to store that in `Job.result` key. `result` is also passed through `complete` event handlers so that job producers can receive it if they like to.
 
 ```js
 var kue = require('kue')
@@ -319,7 +340,19 @@ Query jobs, for example "GET /job/search?q=avi video":
 ["5", "7", "10"]
 ```
 
-You may disable search indexes in Kue >= 0.7.0 for memory optimization or to avoid [memory leaks](https://github.com/LearnBoost/kue/search?q=leak&type=Issues) that some have reported:
+By default kue indexes the whole Job data object for searching, but this can be customized via calling `Job#searchKeys` to tell kue which keys on Job data to create index for.
+
+```javascript
+var kue = require('kue');
+jobs = kue.createQueue();
+jobs.create('email', {
+    title: 'welcome email for tj'
+  , to: 'tj@learnboost.com'
+  , template: 'welcome-email'
+}).searchKeys( ['to', 'title'] ).save();
+```
+
+You may disable search indexes for memory optimization:
 
 ```javascript
 var kue = require('kue');
