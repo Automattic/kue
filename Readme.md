@@ -38,7 +38,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Delayed Jobs](#delayed-jobs)
   - [Processing Jobs](#processing-jobs)
   - [Processing Concurrency](#processing-concurrency)
-  - [Pause/Resume Processing](#pause-processing)
+  - [Pause/Resume Processing](#pause/resume-processing)
   - [Updating Progress](#updating-progress)
   - [Graceful Shutdown](#graceful-shutdown)
   - [Redis Connection Settings](#redis-connection-settings)
@@ -120,7 +120,9 @@ Job retry attempts are done as soon as they fail, with no delay, even if your jo
     job.attempts(3).backoff( {type:'exponential'} )
 
     // Use a function to get a customized next attempt delay value
-    job.attempts(3).backoff( function( attempts, delay ){ return my_customized_calculated_delay; } )
+    job.attempts(3).backoff( function( attempts, delay ){
+      return my_customized_calculated_delay;
+    })
 ```
 
 In the last scenario, provided function will be called on each re-attempt to get current attempt delay value.
