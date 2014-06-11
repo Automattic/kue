@@ -2,6 +2,8 @@
 
 Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
 
+**PROTIP** This is the latest Kue documentation, Please make sure to read [Changelist](History.md) for compatibility.
+
 ## Installation
 
     $ npm install kue
@@ -35,6 +37,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Delayed Jobs](#delayed-jobs)
   - [Processing Jobs](#processing-jobs)
   - [Processing Concurrency](#processing-concurrency)
+  - [Pause/Resume Processing](#processing-concurrency)
   - [Updating Progress](#updating-progress)
   - [Graceful Shutdown](#graceful-shutdown)
   - [Redis Connection Settings](#redis-connection-settings)
@@ -230,6 +233,19 @@ jobs.process('email', 20, function(job, done){
 });
 ```
 
+### Pause/Resume Processing
+
+Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as [Graceful Shutdown](#graceful-shutdown)
+
+```js
+jobs.process('email', function(job, done, ctx){
+  ctx.pause( function(err){
+    console.log("Worker is paused... ");
+    setTimeout( function(){ ctx.resume(); }, 10000 );
+  }, 5000);
+});
+```
+
 ### Updating Progress
 
 For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](http://github.com/learnboost/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
@@ -303,24 +319,7 @@ instance for multiple apps.  It can also be useful for testing your application
 - for example, using a different prefix for each set of tests to ensure that
   previous runs don't accidentally pollute current runs.
 
-For backward compatibility to `Kue < 0.7.0`, monkey-patch-styled Redis client connection settings can be set by overriding the `kue.redis.createClient` function.
-
-For example, to create a Redis client that connects to `192.168.1.2` on port `1234` that requires authentication, use the following:
-
-```javascript
-var kue = require('kue')
-  , redis = require('redis');
-
-kue.redis.createClient = function() {
-  var client = redis.createClient(1234, '192.168.1.2');
-  client.auth('password');
-  return client;
-};
-```
-
-Redis connection settings must be set before calling `kue.createQueue()` or accessing `kue.app`.
-
-
+**NOTE** that all `<0.8.x` client codes should be refactored to pass redis options to `Queue#createQueue` instead of monkey patched style overriding of `redis#createClient` or they will be broken from Kue `0.8.x`.
 
 ## User-Interface
 
@@ -336,6 +335,8 @@ The title defaults to "Kue", to alter this invoke:
 ```js
 kue.app.set('title', 'My Application');
 ```
+
+Note that if you are using non-default Kue options, `kue.createQueue(...)` must be called before accessing `kue.app`.
 
 ## JSON API
 

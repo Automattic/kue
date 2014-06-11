@@ -6,9 +6,10 @@
   * Allow passing back worker results via done to event handlers #170
   * Allow job producer to specify which keys of `job.data` to be indexed for search #284
   * Waffle.io Badge #332
+  * Dropping monkey-patch style redis client connections
   * Update docs: Worker Pause/Resume-ability
-  * Update docs: Dropping monkey-patch style redis client connection
   * Update docs: Reliability of Queue event handlers over Job event handlers
+  *
 
 0.7.9 / 2014-06-01
 ==================
@@ -19,7 +20,7 @@
 0.7.6 / 2014-05-02
 ==================
 
-  * Fixed broken monkey-patch style #323
+  * Fixed broken monkey-patch style redis connections #323
 
 0.7.0 / 2014-01-24
 ==================
