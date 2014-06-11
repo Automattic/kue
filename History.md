@@ -9,7 +9,6 @@
   * Dropping monkey-patch style redis client connections
   * Update docs: Worker Pause/Resume-ability
   * Update docs: Reliability of Queue event handlers over Job event handlers
-  *
 
 0.7.9 / 2014-06-01
 ==================

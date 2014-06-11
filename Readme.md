@@ -2,7 +2,8 @@
 
 Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
 
-**PROTIP** This is the latest Kue documentation, Please make sure to read [Changelist](History.md) for compatibility.
+
+**PROTIP** This is the latest Kue documentation, make sure to read the [changelist](History.md) for compatibility.
 
 ## Installation
 
@@ -37,7 +38,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Delayed Jobs](#delayed-jobs)
   - [Processing Jobs](#processing-jobs)
   - [Processing Concurrency](#processing-concurrency)
-  - [Pause/Resume Processing](#processing-concurrency)
+  - [Pause/Resume Processing](#pause-processing)
   - [Updating Progress](#updating-progress)
   - [Graceful Shutdown](#graceful-shutdown)
   - [Redis Connection Settings](#redis-connection-settings)
@@ -109,18 +110,20 @@ By default jobs only have _one_ attempt, that is when they fail, they are marked
 Job retry attempts are done as soon as they fail, with no delay, even if your job had a delay set via `Job#delay`. If you want to delay job re-attempts upon failures (known as backoff) you can use `Job#backoff` method in different ways:
 
 ```js
-    // Kue will honor job's original delay at each attempt. (works as fixed delay by default)
+    // Honor job's original delay (if set) at each attempt, defaults to fixed backoff
     job.attempts(3).backoff( true )
 
-    // Kue will use specified delay for next attempts. (overrides original job delay)
+    // Override delay value, fixed backoff
     job.attempts(3).backoff( {delay: 60*1000, type:'fixed'} )
 
-    // Kue will use job's original delay but calculates each attempt delay exponentially
+    // Enable exponential backoff using original delay (if set)
     job.attempts(3).backoff( {type:'exponential'} )
 
-    // Kue calls user's provided function after each failure attempt and uses the returned number as current attempt delay
+    // Use a function to get a customized next attempt delay value
     job.attempts(3).backoff( function( attempts, delay ){ return my_customized_calculated_delay; } )
 ```
+
+In the last scenario, provided function will be called on each re-attempt to get current attempt delay value.
 
 ### Job Logs
 
@@ -166,7 +169,7 @@ job.on('complete', function(result){
 });
 ```
 
-Note that Job level events are not guaranteed to be received upon worker process restarts, since the process will lose the reference to the specific Job object. If you want a more reliable event handler look for [Queue Events](#queue-events).
+**Note** that Job level events are not guaranteed to be received upon worker process restarts, since the process will lose the reference to the specific Job object. If you want a more reliable event handler look for [Queue Events](#queue-events).
 
 ### Queue Events
 
@@ -212,7 +215,6 @@ Processing jobs is simple with Kue. First create a `Queue` instance much like we
 Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. [Support for named queues are also requested](https://github.com/LearnBoost/kue/pull/274)
 
 In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
-Workers can pass job result as the second parameter to done `done(null,result)` to store that in `Job.result` key. `result` is also passed through `complete` event handlers so that job producers can receive it if they like to.
 
 ```js
 var kue = require('kue')
@@ -222,6 +224,8 @@ jobs.process('email', function(job, done){
   email(job.data.to, done);
 });
 ```
+
+Workers can pass job result as the second parameter to done `done(null,result)` to store that in `Job.result` key. `result` is also passed through `complete` event handlers so that job producers can receive it if they like to.
 
 ### Processing Concurrency
 
@@ -235,7 +239,7 @@ jobs.process('email', 20, function(job, done){
 
 ### Pause/Resume Processing
 
-Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as [Graceful Shutdown](#graceful-shutdown)
+Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as `shutdown` method in [Graceful Shutdown](#graceful-shutdown).
 
 ```js
 jobs.process('email', function(job, done, ctx){
@@ -315,11 +319,10 @@ q = kue.createQueue({
 
 `prefix` controls the key names used in Redis.  By default, this is simply
 `q`.  Prefix generally shouldn't be changed unless you need to use one Redis
-instance for multiple apps.  It can also be useful for testing your application
-- for example, using a different prefix for each set of tests to ensure that
-  previous runs don't accidentally pollute current runs.
+instance for multiple apps.  It can also be useful for testing your application.
+for example, using a different prefix for each set of tests to ensure that previous runs don't accidentally pollute current runs.
 
-**NOTE** that all `<0.8.x` client codes should be refactored to pass redis options to `Queue#createQueue` instead of monkey patched style overriding of `redis#createClient` or they will be broken from Kue `0.8.x`.
+**Note** *that all `<0.8.x` client codes should be refactored to pass redis options to `Queue#createQueue` instead of monkey patched style overriding of `redis#createClient` or they will be broken from Kue `0.8.x`.*
 
 ## User-Interface
 
@@ -336,7 +339,7 @@ The title defaults to "Kue", to alter this invoke:
 kue.app.set('title', 'My Application');
 ```
 
-Note that if you are using non-default Kue options, `kue.createQueue(...)` must be called before accessing `kue.app`.
+**Note** *that if you are using non-default Kue options, `kue.createQueue(...)` must be called before accessing `kue.app`.*
 
 ## JSON API
 
@@ -350,7 +353,7 @@ Query jobs, for example "GET /job/search?q=avi video":
 ["5", "7", "10"]
 ```
 
-By default kue indexes the whole Job data object for searching, but this can be customized via calling `Job#searchKeys` to tell kue which keys on Job data to create index for.
+By default kue indexes the whole Job data object for searching, but this can be customized via calling `Job#searchKeys` to tell kue which keys on Job data to create index for:
 
 ```javascript
 var kue = require('kue');
@@ -362,7 +365,7 @@ jobs.create('email', {
 }).searchKeys( ['to', 'title'] ).save();
 ```
 
-You may disable search indexes for memory optimization:
+You may also fully disable search indexes for redis memory optimization:
 
 ```javascript
 var kue = require('kue');
