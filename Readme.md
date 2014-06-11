@@ -38,7 +38,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Delayed Jobs](#delayed-jobs)
   - [Processing Jobs](#processing-jobs)
   - [Processing Concurrency](#processing-concurrency)
-  - [Pause/Resume Processing](#pause/resume-processing)
+  - [Pause Processing](#pause-processing)
   - [Updating Progress](#updating-progress)
   - [Graceful Shutdown](#graceful-shutdown)
   - [Redis Connection Settings](#redis-connection-settings)
@@ -239,7 +239,7 @@ jobs.process('email', 20, function(job, done){
 });
 ```
 
-### Pause/Resume Processing
+### Pause Processing
 
 Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as `shutdown` method in [Graceful Shutdown](#graceful-shutdown).
 
