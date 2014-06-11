@@ -1,5 +1,5 @@
 
-0.8.0 / 2014-06-03
+0.8.0 / 2014-06-11
 ==================
 
   * Implement backoff on failure retries #300
