@@ -96,3 +96,15 @@ describe 'Kue', ->
       jobs.failed (err, ids) ->
         totalJobs.failed = ids.length
         removeJobById id, 'failed', done for id in ids
+
+    it 'should receive job result in complete event', (done) ->
+      jobs.process 'email-with-results-2', (job, done)->
+        done( null, {finalResult:123} )
+      job_data =
+        title: 'Test Email Job With Results'
+        to: 'tj@learnboost.com'
+      jobs.on 'job complete', (id, result) ->
+        Number(id).should.be.a.Number
+        result.finalResult.should.be.equal 123
+        done()
+      jobs.create('email-with-results-2', job_data).save()
