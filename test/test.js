@@ -1,4 +1,5 @@
 var kue = require('../');
+var redis = require('../lib/redis');
 
 describe('Jobs', function () {
 
@@ -52,6 +53,42 @@ describe('Jobs', function () {
                 done();
             else
                 done(new Error("error"));
+        });
+    });
+
+    it('should be saved', function (done) {
+        var job = jobs.create('save-test');
+        job.save(function (err) {
+            (err === null).should.be.true;
+            job.id.should.be.a.Number;
+            job._state.should.be.equal('inactive');
+
+            var client = redis.client();
+
+            var type = client.type(client.getKey('job:' + job.id), function (err, type) {
+                (err === null).should.be.true;
+                type.should.be.equal('hash');
+
+                done();
+            });
+        });
+    });
+
+    it('should be removed', function (done) {
+        var job = jobs.create('remove-test');
+        job.save(function (err) {
+            job.remove(function (err) {
+                (err === null).should.be.true;
+
+                var client = redis.client();
+
+                client.type(client.getKey('job:' + job.id), function (err, type) {
+                    (err === null).should.be.true;
+                    type.should.be.equal('none');
+
+                    done();
+                });
+            });
         });
     });
 
