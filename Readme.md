@@ -319,6 +319,22 @@ q = kue.createQueue({
 });
 ```
 
+To connect using Linux sockets:
+
+```javascript
+var kue = require('kue');
+q = kue.createQueue({
+  prefix: 'q',
+  redis: {
+    socket: '/data/sockets/redis.sock',
+    auth: 'password',
+    options: {
+      // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
+    }
+  }
+});
+```
+
 `prefix` controls the key names used in Redis.  By default, this is simply
 `q`.  Prefix generally shouldn't be changed unless you need to use one Redis
 instance for multiple apps.  It can also be useful for testing your application.
