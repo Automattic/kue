@@ -14,6 +14,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
 ## Features
 
   - Delayed jobs
+  - Distribution of parallel work load
   - Job event and progress pubsub
   - Rich integrated UI
   - Infinite scrolling
@@ -316,7 +317,7 @@ var q = kue.createQueue({
     auth: 'password',
     db: 3, // if provided select a non-default redis db
     options: {
-      // see [node_redis](https://github.com/mranney/node_redis)
+      // see https://github.com/mranney/node_redis#rediscreateclientport-host-options
     }
   }
 });
@@ -336,7 +337,7 @@ var q = kue.createQueue({
     socket: '/data/sockets/redis.sock',
     auth: 'password',
     options: {
-     // see [node_redis](https://github.com/mranney/node_redis)
+      // see https://github.com/mranney/node_redis#rediscreateclientport-host-options
     }
   }
 });
