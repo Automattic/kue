@@ -1,4 +1,26 @@
 
+0.8.3 / 2014-07-13
+==================
+
+  * Inject other Redis clients compatible with node_redis #344
+  * Add support to connect to Redis using Linux sockets #362
+  * Add .save callback sample code in documentation #367
+
+0.8.2 / 2014-07-08
+==================
+
+  * Fix broken failure backoff #360
+  * Merge web console redirection fix #357
+  * Add db selection option to redis configuration #354
+  * Get number of jobs with given state and type #349
+  * Add Queue.prototype.delayed function #351
+
+0.8.1 / 2014-06-13
+==================
+
+  * Fix wrong parameter orders in complete event #343s
+  * Graceful shutdown bug fix #328
+
 0.8.0 / 2014-06-11
 ==================
 
