@@ -63,11 +63,13 @@ var kue = require('kue')
 Calling `jobs.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong. The `title` key is special-cased, and will display in the job listings within the UI, making it easier to find a specific job.
 
 ```js
-jobs.create('email', {
+var job = jobs.create('email', {
     title: 'welcome email for tj'
   , to: 'tj@learnboost.com'
   , template: 'welcome-email'
-}).save();
+}).save( function(err){
+   if( !err ) console.log( job.id );
+});
 ```
 
 ### Job Priority
@@ -214,7 +216,7 @@ jobs.promote();
 ## Processing Jobs
 
 Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
-Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. [Support for named queues are also requested](https://github.com/LearnBoost/kue/pull/274)
+Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. So you can configure and use only a single `Queue` object within your node.js process.
 
 In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
 
@@ -306,23 +308,64 @@ By default, Kue will connect to Redis using the client default settings (port de
 
 ```javascript
 var kue = require('kue');
-q = kue.createQueue({
+var q = kue.createQueue({
   prefix: 'q',
   redis: {
     port: 1234,
     host: '10.0.50.20',
     auth: 'password',
+    db: 3, // if provided select a non-default redis db
     options: {
-      // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
+      // for available options see [node_redis](https://github.com/mranney/node_redis)
     }
   }
 });
 ```
 
-`prefix` controls the key names used in Redis.  By default, this is simply
-`q`.  Prefix generally shouldn't be changed unless you need to use one Redis
-instance for multiple apps.  It can also be useful for testing your application.
-for example, using a different prefix for each set of tests to ensure that previous runs don't accidentally pollute current runs.
+`prefix` controls the key names used in Redis.  By default, this is simply `q`. Prefix generally shouldn't be changed unless you need to use one Redis instance for multiple apps. It can also be useful for providing an isolated testbed across your main application.
+
+#### Connecting using Unix Domain Sockets
+
+Since [node_redis](https://github.com/mranney/node_redis) supports Unix Domain Sockets, you can also tell Kue to do so. See [unix-domain-socket](https://github.com/mranney/node_redis#unix-domain-socket) for your redis server configuration
+
+```javascript
+var kue = require('kue');
+var q = kue.createQueue({
+  prefix: 'q',
+  redis: {
+    socket: '/data/sockets/redis.sock',
+    auth: 'password',
+    options: {
+     // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
+    }
+  }
+});
+```
+
+#### Replacing Redis Client Module
+
+Any node.js redis client library that conforms (or when adapted) to  [node_redis](https://github.com/mranney/node_redis) API can be injected into Kue. You should only provide a `createClientFactory` function as a redis connection factory instead of providing node_redis connection options.
+Below is a sample code to enable [redis-sentinel](https://github.com/ortoo/node-redis-sentinel) to use [Redis Sentinel](http://redis.io/topics/sentinel) for automatic master/slave failover.
+
+```javascript
+var kue = require('kue');
+var Sentinel = require('redis-sentinel');
+var endpoints = [
+  {host: '192.168.1.10', port: 6379},
+  {host: '192.168.1.11', port: 6379}
+];
+var opts = options || {}; // Standard node_redis client options
+var masterName = 'mymaster';
+var sentinel = Sentinel.Sentinel(endpoints);
+
+var q = kue.createQueue({
+   redis: {
+      createClientFactory: function(){
+         return sentinel.createClient(masterName, opts);
+      }
+   }
+});
+```
 
 **Note** *that all `<0.8.x` client codes should be refactored to pass redis options to `Queue#createQueue` instead of monkey patched style overriding of `redis#createClient` or they will be broken from Kue `0.8.x`.*
 
