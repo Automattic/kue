@@ -316,7 +316,7 @@ var q = kue.createQueue({
     auth: 'password',
     db: 3, // if provided select a non-default redis db
     options: {
-      // for available options see [node_redis](https://github.com/mranney/node_redis)
+      // see [node_redis](https://github.com/mranney/node_redis)
     }
   }
 });
@@ -326,7 +326,7 @@ var q = kue.createQueue({
 
 #### Connecting using Unix Domain Sockets
 
-Since [node_redis](https://github.com/mranney/node_redis) supports Unix Domain Sockets, you can also tell Kue to do so. See [unix-domain-socket](https://github.com/mranney/node_redis#unix-domain-socket) for your redis server configuration
+Since [node_redis](https://github.com/mranney/node_redis) supports Unix Domain Sockets, you can also tell Kue to do so. See [unix-domain-socket](https://github.com/mranney/node_redis#unix-domain-socket) for your redis server configuration.
 
 ```javascript
 var kue = require('kue');
@@ -336,7 +336,7 @@ var q = kue.createQueue({
     socket: '/data/sockets/redis.sock',
     auth: 'password',
     options: {
-     // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
+     // see [node_redis](https://github.com/mranney/node_redis)
     }
   }
 });
@@ -345,7 +345,8 @@ var q = kue.createQueue({
 #### Replacing Redis Client Module
 
 Any node.js redis client library that conforms (or when adapted) to  [node_redis](https://github.com/mranney/node_redis) API can be injected into Kue. You should only provide a `createClientFactory` function as a redis connection factory instead of providing node_redis connection options.
-Below is a sample code to enable [redis-sentinel](https://github.com/ortoo/node-redis-sentinel) to use [Redis Sentinel](http://redis.io/topics/sentinel) for automatic master/slave failover.
+
+Below is a sample code to enable [redis-sentinel](https://github.com/ortoo/node-redis-sentinel) to connect to [Redis Sentinel](http://redis.io/topics/sentinel) for automatic master/slave failover.
 
 ```javascript
 var kue = require('kue');
@@ -375,6 +376,7 @@ The UI is a small [Express](http://github.com/visionmedia/express) application, 
 
 ```js
 var kue = require('kue');
+kue.createQueue(...);
 kue.app.listen(3000);
 ```
 
