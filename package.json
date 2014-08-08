@@ -9,6 +9,7 @@
     "worker",
     "redis"
   ],
+  "license": "MIT",
   "author": "TJ Holowaychuk <tj@learnboost.com>",
   "repository": {
     "type": "git",
