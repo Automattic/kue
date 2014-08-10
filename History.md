@@ -1,4 +1,17 @@
+0.8.5 / 2014-08-08
+==================
 
+  * Fix typo in removeOnComplete
+  
+0.8.4 / 2014-08-08
+==================
+
+  * Emit event 'job failed attempt' after job successfully updated, closes #377
+  * Fix delaying jobs when failed, closes #384
+  * Implement `job.removeOnComplete`, closes #383
+  * Make searchKeys chainable, closes #379
+  * Add extra job options to JSON API, closes #378
+  
 0.8.3 / 2014-07-13
 ==================
 
