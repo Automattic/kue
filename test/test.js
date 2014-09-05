@@ -32,6 +32,18 @@ describe('Jobs', function () {
         });
     });
 
+    it('should catch uncatched exception and mark job as failed', function(testDone) {
+        jobs.create('failedJob', {}).on('complete', function() {
+            throw new Error('Job should be marked as failed and not complete');
+        }).on('failed', function() {
+            testDone();
+        }).save();
+
+        jobs.process('failedJob', 1, function() {
+            throw new Error('toto');
+        });
+    });
+
     it('should retry on failure if attempts is set', function (testDone) {
         var job = jobs.create('failure-attempts', {});
         var failures = 0;
