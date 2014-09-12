@@ -6,15 +6,15 @@ describe('Jobs', function () {
 
     beforeEach(function (done) {
         jobs = kue.createQueue();
-        jobs.promote(1);
+        jobs.promote(200);
         done();
     });
 
     afterEach(function (done) {
-        jobs.shutdown( function( err ){
-          jobs = null;
+//        jobs.shutdown( function( err ){
+//          jobs = null;
           done();
-        }, 500 );
+//        }, 500 );
     });
 
     it('should be processed', function (done) {

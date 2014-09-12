@@ -46,12 +46,12 @@ describe 'Kue', ->
         jobs.create('resumable-jobs', job_data).save()
 
       jobs.process 'resumable-jobs', 1, (job, job_done, ctx) ->
+        job_done()
         if( !--total_jobs )
-          jobs.shutdown done
+          jobs.shutdown done, 1000
         else
           ctx.pause()
-          setTimeout ctx.resume, 300
-        job_done()
+          setTimeout ctx.resume, 100
         
     
 
