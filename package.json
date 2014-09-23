@@ -1,6 +1,6 @@
 {
   "name": "kue",
-  "version": "0.7.7",
+  "version": "0.8.8",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://learnboost.github.com/kue/",
   "keywords": [
@@ -9,6 +9,7 @@
     "worker",
     "redis"
   ],
+  "license": "MIT",
   "author": "TJ Holowaychuk <tj@learnboost.com>",
   "repository": {
     "type": "git",
@@ -19,14 +20,17 @@
     "express": "~3.1.1",
     "jade": "1.1.5",
     "stylus": "0.42.2",
+    "lodash": "^2.4.1",
+    "lodash-deep": "^1.1.0",
     "nib": "0.5.0",
     "reds": "~0.2.4",
     "async": "~0.8.0"
   },
   "devDependencies": {
-    "should": "~3.0.1",
+    "coffee-script": "~1.6.3",
     "mocha": "~1.17.0",
-    "coffee-script": "~1.6.3"
+    "should": "~3.0.1",
+    "supertest": "^0.12.1"
   },
   "main": "index",
   "scripts": {

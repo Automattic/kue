@@ -1,6 +1,8 @@
-# Kue [![Build Status](https://travis-ci.org/LearnBoost/kue.png)](https://travis-ci.org/LearnBoost/kue)
+# Kue [![Build Status](https://travis-ci.org/LearnBoost/kue.png)](https://travis-ci.org/LearnBoost/kue) [![NPM version](https://badge.fury.io/js/kue.png)](http://badge.fury.io/js/kue) [![Stories in Ready](https://badge.waffle.io/learnboost/kue.png?label=ready&title=Ready)](https://waffle.io/learnboost/kue)
 
 Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
+
+**PROTIP** This is the latest Kue documentation, make sure to read the [changelist](History.md) for compatibility.
 
 ## Installation
 
@@ -11,13 +13,14 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
 ## Features
 
   - Delayed jobs
+  - Distribution of parallel work load
   - Job event and progress pubsub
   - Rich integrated UI
   - Infinite scrolling
   - UI progress indication
   - Job specific logging
   - Powered by Redis
-  - Optional retries
+  - Optional retries with backoff
   - Full-text search capabilities
   - RESTful JSON API
   - Graceful workers shutdown
@@ -27,6 +30,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Creating Jobs](#creating-jobs)
   - [Jobs Priority](#job-priority)
   - [Failure Attempts](#failure-attempts)
+  - [Failure Backoff](#failure-backoff)
   - [Job Logs](#job-logs)
   - [Job Progress](#job-progress)
   - [Job Events](#job-events)
@@ -34,6 +38,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Delayed Jobs](#delayed-jobs)
   - [Processing Jobs](#processing-jobs)
   - [Processing Concurrency](#processing-concurrency)
+  - [Pause Processing](#pause-processing)
   - [Updating Progress](#updating-progress)
   - [Graceful Shutdown](#graceful-shutdown)
   - [Redis Connection Settings](#redis-connection-settings)
@@ -58,11 +63,13 @@ var kue = require('kue')
 Calling `jobs.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong. The `title` key is special-cased, and will display in the job listings within the UI, making it easier to find a specific job.
 
 ```js
-jobs.create('email', {
+var job = jobs.create('email', {
     title: 'welcome email for tj'
   , to: 'tj@learnboost.com'
   , template: 'welcome-email'
-}).save();
+}).save( function(err){
+   if( !err ) console.log( job.id );
+});
 ```
 
 ### Job Priority
@@ -101,6 +108,27 @@ By default jobs only have _one_ attempt, that is when they fail, they are marked
  }).priority('high').attempts(5).save();
 ```
 
+### Failure Backoff
+Job retry attempts are done as soon as they fail, with no delay, even if your job had a delay set via `Job#delay`. If you want to delay job re-attempts upon failures (known as backoff) you can use `Job#backoff` method in different ways:
+
+```js
+    // Honor job's original delay (if set) at each attempt, defaults to fixed backoff
+    job.attempts(3).backoff( true )
+
+    // Override delay value, fixed backoff
+    job.attempts(3).backoff( {delay: 60*1000, type:'fixed'} )
+
+    // Enable exponential backoff using original delay (if set)
+    job.attempts(3).backoff( {type:'exponential'} )
+
+    // Use a function to get a customized next attempt delay value
+    job.attempts(3).backoff( function( attempts, delay ){
+      return my_customized_calculated_delay;
+    })
+```
+
+In the last scenario, provided function will be called on each re-attempt to get current attempt delay value.
+
 ### Job Logs
 
 Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
@@ -136,8 +164,8 @@ var job = jobs.create('video conversion', {
   , frames: 200
 });
 
-job.on('complete', function(){
-  console.log("Job complete");
+job.on('complete', function(result){
+  console.log("Job completed with data ", result);
 }).on('failed', function(){
   console.log("Job failed");
 }).on('progress', function(progress){
@@ -145,13 +173,15 @@ job.on('complete', function(){
 });
 ```
 
+**Note** that Job level events are not guaranteed to be received upon worker process restarts, since the process will lose the reference to the specific Job object. If you want a more reliable event handler look for [Queue Events](#queue-events).
+
 ### Queue Events
 
 Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to apply logic at a "global" level. An example of this is removing completed jobs:
  
 ```js
-jobs.on('job complete', function(id){
-  Job.get(id, function(err, job){
+jobs.on('job complete', function(id,result){
+  kue.Job.get(id, function(err, job){
     if (err) return;
     job.remove(function(err){
       if (err) throw err;
@@ -186,7 +216,7 @@ jobs.promote();
 ## Processing Jobs
 
 Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
-Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. [Support for named queues are also requested](https://github.com/LearnBoost/kue/pull/274)
+Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. So you can configure and use only a single `Queue` object within your node.js process.
 
 In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
 
@@ -199,6 +229,8 @@ jobs.process('email', function(job, done){
 });
 ```
 
+Workers can pass job result as the second parameter to done `done(null,result)` to store that in `Job.result` key. `result` is also passed through `complete` event handlers so that job producers can receive it if they like to.
+
 ### Processing Concurrency
 
 By default a call to `jobs.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
@@ -206,6 +238,19 @@ By default a call to `jobs.process()` will only accept one job at a time for pro
 ```js
 jobs.process('email', 20, function(job, done){
   // ...
+});
+```
+
+### Pause Processing
+
+Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as `shutdown` method in [Graceful Shutdown](#graceful-shutdown).
+
+```js
+jobs.process('email', function(job, done, ctx){
+  ctx.pause( function(err){
+    console.log("Worker is paused... ");
+    setTimeout( function(){ ctx.resume(); }, 10000 );
+  }, 5000);
 });
 ```
 
@@ -259,38 +304,71 @@ process.once( 'SIGTERM', function ( sig ) {
 
 ## Redis Connection Settings
 
-By default, Kue will connect to Redis using the client default settings (port defaults to `6379`, host defaults to `127.0.0.1`). `Queue#createQueue(options)` accepts redis connection options in `options.redis` key.
+By default, Kue will connect to Redis using the client default settings (port defaults to `6379`, host defaults to `127.0.0.1`, prefix defaults to `q`). `Queue#createQueue(options)` accepts redis connection options in `options.redis` key.
 
 ```javascript
 var kue = require('kue');
-q = kue.createQueue({
+var q = kue.createQueue({
+  prefix: 'q',
   redis: {
     port: 1234,
     host: '10.0.50.20',
     auth: 'password',
+    db: 3, // if provided select a non-default redis db
     options: {
-      // look for more redis options in [node_redis](https://github.com/mranney/node_redis)
+      // see https://github.com/mranney/node_redis#rediscreateclientport-host-options
     }
   }
 });
 ```
 
-For backward compatibility to `Kue < 0.7.0`, monkey-patch-styled Redis client connection settings can be set by overriding the `kue.redis.createClient` function.
+`prefix` controls the key names used in Redis.  By default, this is simply `q`. Prefix generally shouldn't be changed unless you need to use one Redis instance for multiple apps. It can also be useful for providing an isolated testbed across your main application.
 
-For example, to create a Redis client that connects to `192.168.1.2` on port `1234` that requires authentication, use the following:
+#### Connecting using Unix Domain Sockets
+
+Since [node_redis](https://github.com/mranney/node_redis) supports Unix Domain Sockets, you can also tell Kue to do so. See [unix-domain-socket](https://github.com/mranney/node_redis#unix-domain-socket) for your redis server configuration.
 
 ```javascript
-var kue = require('kue')
-  , redis = require('redis');
-
-kue.redis.createClient = function() {
-  var client = redis.createClient(1234, '192.168.1.2');
-  client.auth('password');
-  return client;
-};
+var kue = require('kue');
+var q = kue.createQueue({
+  prefix: 'q',
+  redis: {
+    socket: '/data/sockets/redis.sock',
+    auth: 'password',
+    options: {
+      // see https://github.com/mranney/node_redis#rediscreateclientport-host-options
+    }
+  }
+});
 ```
 
-Redis connection settings must be set before calling `kue.createQueue()` or accessing `kue.app`.
+#### Replacing Redis Client Module
+
+Any node.js redis client library that conforms (or when adapted) to  [node_redis](https://github.com/mranney/node_redis) API can be injected into Kue. You should only provide a `createClientFactory` function as a redis connection factory instead of providing node_redis connection options.
+
+Below is a sample code to enable [redis-sentinel](https://github.com/ortoo/node-redis-sentinel) to connect to [Redis Sentinel](http://redis.io/topics/sentinel) for automatic master/slave failover.
+
+```javascript
+var kue = require('kue');
+var Sentinel = require('redis-sentinel');
+var endpoints = [
+  {host: '192.168.1.10', port: 6379},
+  {host: '192.168.1.11', port: 6379}
+];
+var opts = options || {}; // Standard node_redis client options
+var masterName = 'mymaster';
+var sentinel = Sentinel.Sentinel(endpoints);
+
+var q = kue.createQueue({
+   redis: {
+      createClientFactory: function(){
+         return sentinel.createClient(masterName, opts);
+      }
+   }
+});
+```
+
+**Note** *that all `<0.8.x` client codes should be refactored to pass redis options to `Queue#createQueue` instead of monkey patched style overriding of `redis#createClient` or they will be broken from Kue `0.8.x`.*
 
 ## User-Interface
 
@@ -298,6 +376,7 @@ The UI is a small [Express](http://github.com/visionmedia/express) application, 
 
 ```js
 var kue = require('kue');
+kue.createQueue(...);
 kue.app.listen(3000);
 ```
 
@@ -306,6 +385,8 @@ The title defaults to "Kue", to alter this invoke:
 ```js
 kue.app.set('title', 'My Application');
 ```
+
+**Note** *that if you are using non-default Kue options, `kue.createQueue(...)` must be called before accessing `kue.app`.*
 
 ## JSON API
 
@@ -319,7 +400,19 @@ Query jobs, for example "GET /job/search?q=avi video":
 ["5", "7", "10"]
 ```
 
-You may disable search indexes in Kue >= 0.7.0 for memory optimization or to avoid [memory leaks](https://github.com/LearnBoost/kue/search?q=leak&type=Issues) that some have reported:
+By default kue indexes the whole Job data object for searching, but this can be customized via calling `Job#searchKeys` to tell kue which keys on Job data to create index for:
+
+```javascript
+var kue = require('kue');
+jobs = kue.createQueue();
+jobs.create('email', {
+    title: 'welcome email for tj'
+  , to: 'tj@learnboost.com'
+  , template: 'welcome-email'
+}).searchKeys( ['to', 'title'] ).save();
+```
+
+You may also fully disable search indexes for redis memory optimization:
 
 ```javascript
 var kue = require('kue');
