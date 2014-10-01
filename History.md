@@ -1,4 +1,26 @@
-0.8.5 / 2014-08-08
+0.8.9 / 2014-10-01
+==================
+
+  * Properly update status flags on resume, Closes #423
+
+0.8.8 / 2014-09-12
+==================
+
+  * Fix tests to limited shutdown timeouts
+  * Add a redis lua watchdog to fix stuck inactive jobs, fixes #130
+  * Stuck inactive jobs watchdog, Closes #130
+
+0.8.7 / 2014-09-12
+==================
+
+  * Shutdown timeout problems and races, fixes #406
+
+0.8.6 / 2014-08-30
+==================
+
+  * Quit redis connections on shutdown & let the process exit, closes #398
+
+0.8.5 / 2014-08-10
 ==================
 
   * Fix typo in removeOnComplete
