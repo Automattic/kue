@@ -215,7 +215,7 @@ var email = jobs.create('email', {
   .save();
 ```
 
-When using delayed jobs, we must also check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded. This `setInterval` is defined within `Queue#promote(ms,limit)`, defaulting to a check of top 200 jobs every 5 seconds. If you have a cluster of kue processes, you must call `.promote` just in the one (preferably master) process or promotion race would happen.
+When using delayed jobs, we must also check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded. This `setInterval` is defined within `Queue#promote(ms,limit)`, defaulting to a check of top 200 jobs every 5 seconds. If you have a cluster of kue processes, you must call `.promote` in just one (preferably master) process or promotion race can happen.
 
 ```js
 jobs.promote();
