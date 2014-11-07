@@ -151,11 +151,13 @@ job.progress(frames, totalFrames);
 
 Job-specific events are fired on the `Job` instances via Redis pubsub. The following events are currently supported:
 
-    - `failed` the job has failed and has no remaining attempts
-    - 'failed attempt' the job has failed, but has remaining attempts yet
-    - `complete` the job has completed
-    - `promotion` the job (when delayed) is now queued
+    - `enqueue` the job is now queued
+    - `promotion` the job is promoted from delayed state to queued
     - `progress` the job's progress ranging from 0-100
+    - 'failed attempt' the job has failed, but has remaining attempts yet
+    - `failed` the job has failed and has no remaining attempts
+    - `complete` the job has completed
+
 
 For example this may look something like the following:
 
@@ -182,6 +184,10 @@ job.on('complete', function(result){
 Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to apply logic at a "global" level. An example of this is removing completed jobs:
  
 ```js
+jobs.on('job enqueue', function(id,type){
+  console.log( 'job %s got queued', id );
+});
+
 jobs.on('job complete', function(id,result){
   kue.Job.get(id, function(err, job){
     if (err) return;

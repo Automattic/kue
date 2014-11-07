@@ -172,7 +172,23 @@ describe 'Kue Tests', ->
           jdone( new Error('reaattempt') )
 
 
-  describe 'Kue Management', ->
+  describe 'Kue Core', ->
+    it 'should receive job enqueue event', (done) ->
+      id = null
+      jobs.on 'job enqueue', (id, type)->
+        if( type == 'email-to-be-enqueued' )
+          id.should.be.equal( job.id )
+          done()
+
+      jobs.process 'email-to-be-enqueued', (job, jdone) ->
+        jdone()
+      job_data =
+        title: 'Test Email Job'
+        to: 'tj@learnboost.com'
+      job = jobs.create('email-to-be-enqueued', job_data).save()
+
+
+  describe 'Kue Job Removal', ->
 
     beforeEach (done) ->
       jobs = kue.createQueue()
