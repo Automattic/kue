@@ -218,7 +218,7 @@ jobs.promote();
 Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
 Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. So you can configure and use only a single `Queue` object within your node.js process.
 
-In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure.
+In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure. The error object passed to done, should be of standard type `Error`.
 
 ```js
 var kue = require('kue')
@@ -227,9 +227,18 @@ var kue = require('kue')
 jobs.process('email', function(job, done){
   email(job.data.to, done);
 });
+
+function email(address, done) {
+  if(!isValidEmail(address)) {
+    //done('invalid to address') is possible but discouraged
+    return done(new Error('invalid to address'));
+  }
+  // email send stuff...
+  done();
+}
 ```
 
-Workers can pass job result as the second parameter to done `done(null,result)` to store that in `Job.result` key. `result` is also passed through `complete` event handlers so that job producers can receive it if they like to.
+Workers can also pass job result as the second parameter to done `done(null,result)` to store that in `Job.result` key. `result` is also passed through `complete` event handlers so that job producers can receive it if they like to.
 
 ### Processing Concurrency
 
