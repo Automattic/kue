@@ -127,7 +127,9 @@ Job retry attempts are done as soon as they fail, with no delay, even if your jo
     })
 ```
 
-In the last scenario, provided function will be called on each re-attempt to get current attempt delay value.
+In the last scenario, provided function will be executed (via eval) on each re-attempt to get next attempt delay value, meaning that you can't reference external/context variables within it.
+
+**Note** that backoff feature depends on `.delay` under the covers and therefore `.promote()` needs to be called if used.
 
 ### Job Logs
 
