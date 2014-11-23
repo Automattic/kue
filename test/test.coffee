@@ -76,6 +76,20 @@ describe 'Kue Tests', ->
           done()
       .save()
 
+    it 'should receive job progress event with extra data', (done) ->
+      jobs.process 'email-to-be-progressed', (job, done)->
+        job.progress 1, 2, 
+          notifyTime : "2014-11-22"
+        done()
+      job_data =
+        title: 'Test Email Job'
+        to: 'tj@learnboost.com'
+      jobs.create('email-to-be-progressed', job_data)
+      .on 'progress', (progress, extraData)->
+          progress.should.be.equal 50
+          extraData.notifyTime.should.be.equal "2014-11-22"
+          done()
+      .save()
 
     it 'should receive job failed attempt events', (done) ->
       total = 2
