@@ -1,24 +1,34 @@
-{{#jobs-filter type=type}}
+{{#jobs-filter type=type state=state page=page}}
 <div class="table jobs">
   <div class="heading">
       <div class="col">id</div>
       <div class="col">type</div>
       <div class="col">state</div>
-      <div class="col">data</div>
       <div class="col">created_at</div>
       <div class="col">updated_at</div>
       <div class="col">attempts</div>
   </div>
     {{#each job in model}}
-      <div class="table-row job">
+      <div class="table-row job" {{action "showDetail" job}}>
         <div class="col">{{job.id}}</div>
         <div class="col">{{job.type}}</div>
         <div class="col">{{job.state}}</div>
-        <div class="col"> <button>Log</button> </div>
         <div class="col">{{job.created_at}}</div>
         <div class="col">{{job.updated_at}}</div>
         <div class="col">{{job.attempts.made}} ({{job.attempts.remaining}}) </div>
       </div>
+      {{#if job.showDetail}}
+        <div class="table-row detail">
+          <div class="col">
+            <div class="">id:{{job.id}}</div>
+            <div class="">type:{{job.type}}</div>
+            <div class="">state:{{job.state}}</div>
+            <div class="">created_at:{{job.created_at}}</div>
+            <div class="">updated_at:{{job.updated_at}}</div>
+            <div class="">{{job.attempts.made}} ({{job.attempts.remaining}}) </div>
+          </div>
+        </div>
+      {{/if}}
     {{/each}}
 </div>
 {{/jobs-filter}}

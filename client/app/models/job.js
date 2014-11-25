@@ -50,7 +50,7 @@ Job.reopenClass({ // Class methods
      * @return {Object}      Promise
      */
     find: function(opts) {
-        var size = Number(opts.size) || 10;
+        var size = Number(opts.size) || 20;
         var page = Number(opts.page) || 1;
         var from = (page - 1) * size;
         var to = page * size ;
