@@ -1,4 +1,11 @@
-html, body {margin: 0 auto; }
+.main { position: absolute; margin-left: 250px;}
 
-.menu-tabs { float: left; width: 20%;}
-.main { float: left; width: 80%;}
+.menu { position: absolute; width: 250px; height: 100%; background: #262626;}
+.menu .logo { height: 75px;line-height: 75px; text-align: center;}
+.menu .logo a { font-family: Montserrat-Regular; font-size: 24px; color: white; text-decoration: none;}
+.menu-list a {
+    font-family: 'Montserrat', sans-serif; font-size: 12px; color: #AAAAAA; text-decoration: none; line-height: 43px;
+    width: 250px; display: block; height: 43px; padding-left: 10px;
+}
+.menu-list a.active {color: white; background: #CF553E;}
+
