@@ -1,5 +1,5 @@
 <div class="menu-list">
     {{#each type in types}}
-        {{#link-to "jobs.type" type}} {{type}}  {{/link-to}}
+        {{#link-to "jobs.type" type replace=true}} {{type}}  {{/link-to}}
     {{/each}}
 </div>

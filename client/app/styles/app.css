@@ -1,5 +1,6 @@
-.main { position: absolute; margin-left: 250px;}
+.main { margin-left: 250px;}
 
+/* Menu */
 .menu { position: absolute; width: 250px; height: 100%; background: #262626;}
 .menu .logo { height: 75px;line-height: 75px; text-align: center;}
 .menu .logo a { font-family: Montserrat-Regular; font-size: 24px; color: white; text-decoration: none;}
@@ -9,3 +10,23 @@
 }
 .menu-list a.active {color: white; background: #CF553E;}
 
+.top-bar { height: 75px; line-height:75px; font-family: 'Open Sans', sans-serif; font-size: 14px; padding-left: 20px;}
+.top-bar > * {display: inline;}
+.top-bar .right {float: right;}
+
+.jobs {width:100%;}
+.job, .jobs .heading{
+    font-family: 'Open Sans', sans-serif; padding: 0px 10px; font-size: 12px;
+    height: 40px; padding-left: 10px; line-height: 40px;
+}
+.jobs .heading {font-weight: bold; background: #ededed; color: #646464; text-transform: uppercase; font-size: 12px;}
+.job:nth-child(odd) {background: #F8F8F8}
+.job:nth-child(even) {background: white}
+.job td {padding: 0px 10px;}
+.jobs th {text-align: left; padding-left: 10px;}
+
+/* shit html table */
+.table{ display:table; border-collapse: collapse; }
+.heading{display:table-row;text-align: center;}
+.table-row{display:table-row;text-align: center;}
+.col{display:table-cell;}
