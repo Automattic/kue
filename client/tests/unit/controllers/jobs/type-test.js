@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-moduleFor('controller:delayed', 'DelayedController', {
+moduleFor('controller:jobs/type', 'JobsTypeController', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });

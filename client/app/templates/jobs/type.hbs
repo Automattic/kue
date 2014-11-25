@@ -1,8 +1,4 @@
-{{outlet}}
-
-<h3>Failed jobs</h3>
+<h4>active jobs</h4>
 {{#each job in model}}
     {{job-detail job=job}}
 {{/each}}
-
-{{jobs-paging page=page}}

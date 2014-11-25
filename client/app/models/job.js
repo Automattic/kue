@@ -1,6 +1,19 @@
 import Ember from "ember";
 import config from '../config/environment';
 
+// '/stats'
+// '/job/search'
+// '/jobs/:from..:to/:order?'
+// '/jobs/:type/:state/:from..:to/:order?'
+// '/jobs/:state/:from..:to/:order?'
+// '/job/types'
+// '/job/:id'
+// '/job/:id/log'
+// '/job/:id/state/:state'
+// '/job/:id/priority/:priority'
+// '/job/:id'
+// '/job'
+
 /**
  * Job model
  * @class Encapsulates the JSON API for `/jobs`
@@ -26,13 +39,7 @@ Job.reopenClass({ // Class methods
                 data: opts.data,
                 type: opts.method
             })
-            .success( data => {
-                if (Ember.isArray(data)) {
-                    resolve(data.map( obj => Job.create(obj) ));
-                } else {
-                    resolve(Job.create(data));
-                }
-            })
+            .success(resolve)
             .fail(reject);
         });
     },
@@ -48,12 +55,27 @@ Job.reopenClass({ // Class methods
         var from = (page - 1) * size;
         var to = page * size ;
 
-        var url = `${config.apiURL}/jobs/${opts.state}/${from}..${to}`;
+        var url = `${config.apiURL}/${from}..${to}`;
 
+        if(opts.type && opts.state) {
+            url = `${config.apiURL}/jobs/${opts.type}/${opts.state}/${from}..${to}`;
+        } else if(opts.type) {
+            url = `${config.apiURL}/jobs/${opts.type}/${from}..${to}`;
+        } else if(opts.state) {
+            url = `${config.apiURL}/jobs/${opts.state}/${from}..${to}`;
+        }
+        console.log('fucking url', url);
         return this._request({
             data: opts.data || {},
             method: 'GET',
             url: url
+        })
+        .then( data => {
+            if (Ember.isArray(data)) {
+                return data.map( obj => Job.create(obj) );
+            } else {
+                return Job.create(data);
+            }
         });
     },
 
@@ -67,6 +89,17 @@ Job.reopenClass({ // Class methods
             url: `${config.apiURL}/stats`
         });
     },
+
+    /**
+     * Return all the job types
+     * @return {Object} Promise
+     */
+    types: function() {
+        return this._request({
+            method: 'GET',
+            url: `${config.apiURL}/job/types/`
+        });
+    }
 
 });
 

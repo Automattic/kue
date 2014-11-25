@@ -6,11 +6,9 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-    this.route('active');
-    this.route('inactive');
-    this.route('failed');
-    this.route('complete');
-    this.route('delayed');
+    this.route('jobs', function() {
+        this.route('type', { path: "type/:type" });
+    });
 });
 
 export default Router;
