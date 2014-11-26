@@ -5,7 +5,13 @@ export default Ember.Route.extend({
 
     model: function() {
         var self = this;
-        return Job.types().then(function(types) {
+        return Job.stats().then(function(stats) {
+            return self.controllerFor('jobs.index').set('stats', stats);
+        })
+        .then(function() {
+            return Job.types();
+        })
+        .then(function(types) {
             var promises = types.map(type =>  self.getAllStates(type));
             return Ember.RSVP.Promise.all(promises).then(_.flatten);
         });

@@ -9,7 +9,7 @@
       <div class="col">attempts</div>
   </div>
     {{#each job in model}}
-      <div class="table-row job" {{action "showDetail" job}}>
+      <div {{bind-attr class=":table-row :job job.active:active"}} {{action "showDetail" job}}>
         <div class="col">{{job.id}}</div>
         <div class="col">{{job.type}}</div>
         <div class="col">{{job.state}}</div>
@@ -17,9 +17,14 @@
         <div class="col">{{format-date job.updated_at}}</div>
         <div class="col">{{job.attempts.made}} ({{job.attempts.remaining}}) </div>
       </div>
+      {{else}}
+        Empty
     {{/each}}
 </div>
 {{/jobs-filter}}
 <div class="panel-right">
-  {{job-detail job=selectedJob}}
+  {{#if selectedJob}}
+    {{job-detail job=selectedJob}}
+  {{else}}
+  {{/if}}
 </div>

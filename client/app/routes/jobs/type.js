@@ -11,8 +11,12 @@ export default Ember.Route.extend(JobsRoute, {
             type: params.type,
             state: params.state,
             page: params.page,
-            sort: params.sort
         });
     },
+
+    activate: function() {
+        this._super();
+        window.scrollTo(0,0);
+    }
 
 });

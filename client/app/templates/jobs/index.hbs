@@ -1,13 +1,23 @@
-<h3>Stats</h3>
-{{!-- activeCount: {{model.activeCount}} <br>
-completeCount: {{model.completeCount}} <br>
-delayedCount: {{model.delayedCount}} <br>
-failedCount: {{model.failedCount}} <br>
-inactiveCount: {{model.inactiveCount}} <br>
- --}}
+<div class="route-jobs-index">
+    <div class="stats-panel">
+        <div class="title">General Stats</div>
+        <div class="field">Active: {{stats.activeCount}}</div>
+        <div class="field">Complete: {{stats.completeCount}}</div>
+        <div class="field">Delayed: {{stats.delayedCount}}</div>
+        <div class="field">Failed: {{stats.failedCount}}</div>
+        <div class="field">Inactive: {{stats.inactiveCount}}</div>
+    </div>
+    <br>
+    <br>
+    <div class="stats-panel">
+        <div class="title">Breakdown</div>
+        {{#each stat in model}}
+            <div class="field">
+            {{#link-to 'jobs.type' stat.type (query-params state=stat.state)}}
+                {{stat.type}} > {{stat.state}}: {{stat.count}}
+            {{/link-to}}
+            </div>
+        {{/each}}
+    </div>
 
-{{#each stat in model}}
-    type: {{stat.type}} <br>
-    state: {{stat.state}} <br>
-    count: {{stat.count}}  <br> <br>
-{{/each}}
+</div>
