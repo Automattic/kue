@@ -13,21 +13,28 @@ import config from '../config/environment';
 // '/job/:id/priority/:priority'
 // '/job/:id'
 // '/job'
-
+// http://localhost:3000/kue/job/3/state/delayed
 /**
  * Job model
  * @class Encapsulates the JSON API for `/jobs`
  */
 var Job = Ember.Object.extend({ // Instance methods
 
-    dataJSON: function() {
-        return JSON.stringify(this.get('data'), null, 4);
-    }.property('data')
+    updateState: function(state) {
+        var id = this.get('id');
+        var state = state || this.get('state');
+
+        return Job._request({
+            method: 'PUT',
+            url: `${config.apiURL}/job/${id}/state/${state}`
+        });
+    },
+
 });
 
 Job.reopenClass({ // Class methods
 
-    STATES: ['active', 'complete', 'delayed', 'failed', 'inactive'],
+    STATES: Ember.A(['active', 'complete', 'delayed', 'failed', 'inactive']),
 
     /**
      * Request method
@@ -91,9 +98,9 @@ Job.reopenClass({ // Class methods
         var url = '';
 
         if (!Ember.empty(type) && !Ember.empty(state)) {
-            url = `${config.apiURL}/jobs/${type}/${state}/stats`
+            url = `${config.apiURL}/jobs/${type}/${state}/stats`;
         } else {
-            url = `${config.apiURL}/stats`
+            url = `${config.apiURL}/stats`;
         }
 
         return this._request({
@@ -112,8 +119,6 @@ Job.reopenClass({ // Class methods
             url: `${config.apiURL}/job/types/`
         });
     },
-
-
 
 });
 

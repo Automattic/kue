@@ -14,7 +14,7 @@ export default Ember.Route.extend({
     getAllStates: function(type) {
         var promises = Job.STATES.map(function(state) {
             var query = { type: type, state: state };
-            return Job.stats(query).then( res => _.extend(res, query) )
+            return Job.stats(query).then( res => _.extend(res, query) );
         });
         return Ember.RSVP.Promise.all(promises);
     }
