@@ -27,6 +27,8 @@ var Job = Ember.Object.extend({ // Instance methods
 
 Job.reopenClass({ // Class methods
 
+    STATES: ['active', 'complete', 'delayed', 'failed', 'inactive'],
+
     /**
      * Request method
      * @param  {Object} opts Options
@@ -83,10 +85,20 @@ Job.reopenClass({ // Class methods
      * Fetch stats from the Jobs
      * @return {Object} Promise
      */
-    stats: function() {
+    stats: function(opts={}) {
+        var type = opts.type;
+        var state = opts.state;
+        var url = '';
+
+        if (!Ember.empty(type) && !Ember.empty(state)) {
+            url = `${config.apiURL}/jobs/${type}/${state}/stats`
+        } else {
+            url = `${config.apiURL}/stats`
+        }
+
         return this._request({
             method: 'GET',
-            url: `${config.apiURL}/stats`
+            url: url
         });
     },
 
@@ -99,7 +111,9 @@ Job.reopenClass({ // Class methods
             method: 'GET',
             url: `${config.apiURL}/job/types/`
         });
-    }
+    },
+
+
 
 });
 

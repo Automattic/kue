@@ -1,6 +1,13 @@
 <h3>Stats</h3>
-activeCount: {{model.activeCount}} <br>
+{{!-- activeCount: {{model.activeCount}} <br>
 completeCount: {{model.completeCount}} <br>
 delayedCount: {{model.delayedCount}} <br>
 failedCount: {{model.failedCount}} <br>
 inactiveCount: {{model.inactiveCount}} <br>
+ --}}
+
+{{#each stat in model}}
+    type: {{stat.type}} <br>
+    state: {{stat.state}} <br>
+    count: {{stat.count}}  <br> <br>
+{{/each}}

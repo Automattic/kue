@@ -6,6 +6,7 @@ var app = new EmberApp();
 
 app.import('app/styles/reset.css');
 app.import('bower_components/moment/moment.js');
+app.import('bower_components/lodash/dist/lodash.js');
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
