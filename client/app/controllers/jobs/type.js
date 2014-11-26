@@ -2,7 +2,10 @@ import Ember from 'ember';
 import JobsController from '../../mixins/jobs-controller';
 
 export default Ember.Controller.extend(JobsController, {
+    selectedJob: null,
     actions: {
-        showDetail: job => job.set('showDetail', true),
+        showDetail: function(job) {
+            this.set('selectedJob', job);
+        }
     }
 });

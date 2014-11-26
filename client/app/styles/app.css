@@ -1,4 +1,4 @@
-.main { margin-left: 250px;}
+.main { margin-left: 250px;  margin-right: 300px;}
 
 /* Menu */
 .menu { position: absolute; width: 250px; height: 100%; background: #262626;}
@@ -14,7 +14,7 @@
 .top-bar > * {display: inline;}
 .top-bar .right {float: right;}
 
-.jobs {width:100%;}
+.jobs {width:100%; }
 .job, .jobs .heading{
     font-family: 'Open Sans', sans-serif; padding: 0px 10px; font-size: 12px;
     height: 40px; padding-left: 10px; line-height: 40px;

@@ -5,6 +5,7 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var app = new EmberApp();
 
 app.import('app/styles/reset.css');
+app.import('bower_components/moment/moment.js');
 
 // Use `app.import` to add additional libraries to the generated
 // output files.

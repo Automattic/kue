@@ -3,10 +3,12 @@
     <div class="dropdown">
         {{view Ember.Select content=selections selection=selectedState}}
     </div>
-    <div class="dropdown right">sort by</div>
+    <div class="dropdown right">
+        sort by {{view Ember.Select content=sorts selection=sort}}
+    </div>
 </div>
 
 {{yield}}
 
-{{jobs-paging page=page}}
+{{!-- {{jobs-paging page=page}} --}}
 
