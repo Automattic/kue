@@ -22,7 +22,7 @@ var Job = Ember.Object.extend({ // Instance methods
 
     updateState: function(state) {
         var id = this.get('id');
-        var state = state || this.get('state');
+        state = state || this.get('state');
 
         return Job._request({
             method: 'PUT',
@@ -41,7 +41,7 @@ Job.reopenClass({ // Class methods
      * @param  {Object} opts Options
      * @return {Object}      Promise
      */
-    _request: function(opts) {
+    _request: function(opts={}) {
         return new Ember.RSVP.Promise((resolve, reject) => {
             Ember.$.ajax({
                 url: opts.url,
@@ -58,7 +58,7 @@ Job.reopenClass({ // Class methods
      * @param  {Object} opts Options
      * @return {Object}      Promise
      */
-    find: function(opts) {
+    find: function(opts={}) {
         var size = Number(opts.size) || 20;
         var page = Number(opts.page) || 1;
         var from = (page - 1) * size;

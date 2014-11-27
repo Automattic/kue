@@ -1,5 +1,12 @@
 <div class="menu-list">
-    {{#each type in types}}
-        {{#link-to "jobs.type" type replace=true}} {{type}}  {{/link-to}}
+  {{#each item in items}}
+    {{#link-to "jobs.type" item.type replace=true class='item'}}
+      {{item.type}} <span class="item-count">{{item.count}}</span>
+    {{/link-to}}
+    {{#each subItem in item.subItems}}
+      {{#link-to "jobs.type" subItem.type (query-params state=subItem.state) replace=true class="sub-item"}}
+        {{subItem.state}} <span class="sub-item-count">{{subItem.count}}</span>
+      {{/link-to}}
     {{/each}}
+  {{/each}}
 </div>

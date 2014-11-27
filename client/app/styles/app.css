@@ -8,12 +8,19 @@
 .menu { position: fixed; width: 250px; height: 100%; background: #262626;}
 .menu .logo { height: 75px;line-height: 75px; text-align: center;}
 .menu .logo a { font-family: Montserrat-Regular; font-size: 24px; color: white; text-decoration: none;}
-.menu-list a {
+.menu-list a.item {
     font-family: 'Montserrat', sans-serif; font-size: 12px; color: #AAAAAA; text-decoration: none; line-height: 43px;
     width: 250px; display: block; height: 43px; padding-left: 10px;
 }
+.menu-list a.sub-item {
+    font-family: 'Montserrat', sans-serif; font-size: 12px; color: #AAAAAA; text-decoration: none; line-height: 43px;
+    width: 250px; display: block; height: 43px; padding-left: 30px;
+}
 .menu-list a:hover {background: #373737;color: white;}
-.menu-list a.active {color: white; background: #CF553E;}
+.menu-list a.item.active {color: white; background: #CF553E;}
+.menu-list a.sub-item.active {color: white; }
+.menu-list .item-count{  float: right; background: #fafafa; border-radius: 22px; text-align: center; height: 26px; line-height: 26px; padding: 0 10px; margin-top: 7px; margin-right: 10px; color:black;}
+.menu-list .sub-item-count{  float: right; background: #626262; border-radius: 22px; text-align: center; height: 26px; line-height: 26px; padding: 0 10px; margin-top: 7px; margin-right: 10px; color:black;}
 
 .top-bar { height: 75px; line-height:75px; font-family: 'Open Sans', sans-serif; font-size: 14px; padding-left: 20px;}
 .top-bar > * {display: inline;}
@@ -50,9 +57,9 @@
 .paging .btn-paging { display: inline;}
 .btn-paging.next { }
 
-.panel-right { position: fixed; right: 0; top: 0; width: 400px; height: 100%;}
+.panel-right { position: fixed; right: 0; top: 0; width: 400px; height: 100%; overflow-y: scroll;}
 .panel-right .title { height: 75px; line-height: 75px; font-family: 'Open Sans', sans-serif; font-size: 14px; padding-left: 20px;}
-.panel-right .ember-select {position: fixed; right: 10px; top: 27px;}
+/*.panel-right .ember-select {position: fixed; right: 10px; top: 27px;}*/
 .console {background: #252525; margin: 10px; padding: 10px; border-radius: 5px; color: white; font-family: 'Open Sans'; font-size: 13px;}
 
 
