@@ -16,7 +16,6 @@ export default Ember.Component.extend({
                 subItems: subItems
             })
         }
-        console.log(menu)
         return menu;
     }.property('breakdowns', 'breakdowns.[]'),
 

@@ -3,18 +3,17 @@ import Job from '../models/job';
 
 export default Ember.Component.extend({
     selections: Job.STATES,
-    selected: null,
 
-    initSelection: function() {
-        this.set('selected', this.get('job.state'));
-    }.observes('job.id'),
+    setup: function() {
+        this.set('job.selected', this.get('job.state'));
+    }.on('didInsertElement').observes('job.id'),
 
     selectedStateDidChange: function() {
         if (Ember.empty(this.get('job.state'))) return;
 
-        if (this.get('job.state') !== this.get('selected')) {
-            this.set('job.state', this.get('selected'));
+        if (this.get('job.state') !== this.get('job.selected')) {
+            this.set('job.state', this.get('job.selected'));
             this.get('job').updateState();
         }
-    }.observes('selected')
+    }.observes('job.selected')
 });

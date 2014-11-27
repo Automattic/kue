@@ -29,10 +29,10 @@ module.exports = function(environment) {
     ENV.contentSecurityPolicy = {
       'default-src': "'none' ",
       'script-src': "'self' 'unsafe-eval' http://localhost:3000",
-      'font-src': "'self' http://fonts.gstatic.com",
+      'font-src': "'self' https://fonts.gstatic.com",
       'connect-src': "'self' http://localhost:3000",
       'img-src': "'self'",
-      'style-src': "'self' http://fonts.googleapis.com",
+      'style-src': "'self' https://fonts.googleapis.com",
       'media-src': "'self'"
     }
   }
