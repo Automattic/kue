@@ -23,8 +23,7 @@
     "lodash": "^2.4.1",
     "lodash-deep": "^1.1.0",
     "nib": "0.5.0",
-    "reds": "~0.2.4",
-    "ember-cli": "^0.1.2"
+    "reds": "~0.2.4"
   },
   "devDependencies": {
     "should": "~3.0.1",
@@ -33,7 +32,6 @@
   },
   "main": "index",
   "scripts": {
-    "test": "make test-all",
-    "postinstall": "sh scripts/install_client.sh"
+    "test": "make test-all"
   }
 }
