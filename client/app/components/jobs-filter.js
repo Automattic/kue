@@ -8,10 +8,4 @@ export default Ember.Component.extend({
     sorts: Ember.A(['created_at', 'updated_at']),
     selectedSort: null,
 
-    /**
-     * Proxy because state is already used
-     */
-    sendState: function() {
-        this.set('state', this.get('selectedState'));
-    }.observes('selectedState'),
 });
