@@ -73,7 +73,7 @@ Job.reopenClass({ // Class methods
         } else if(opts.state) {
             url = `${config.apiURL}/jobs/${opts.state}/${from}..${to}`;
         }
-        console.log('fucking url', url);
+
         return this._request({
             data: opts.data || {},
             method: 'GET',

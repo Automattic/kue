@@ -4,7 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'client',
     environment: environment,
-    baseURL: '/',
+    baseURL: '/kue/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -25,7 +25,7 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.apiURL = 'http://localhost:3000';
+    ENV.apiURL = 'http://localhost:3000' + ENV.baseURL.slice(0, -1); // remove trailing slash
     ENV.contentSecurityPolicy = {
       'default-src': "'none' ",
       'script-src': "'self' 'unsafe-eval' http://localhost:3000",
@@ -51,7 +51,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.apiURL = ENV.baseURL.slice(0, -1); // remove trailing slash
   }
 
   return ENV;
