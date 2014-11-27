@@ -32,6 +32,7 @@
   },
   "main": "index",
   "scripts": {
-    "test": "make test-all"
+    "test": "make test-all",
+    "postinstall": "sh scripts/install_client.sh"
   }
 }
