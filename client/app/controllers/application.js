@@ -44,4 +44,12 @@ export default Ember.Controller.extend({
         });
     },
 
+    actions: {
+        goToTypeRoute: function(obj) {
+            this.transitionToRoute('jobs.type', obj.type, {queryParams:
+                {state: obj.state || 'active'}
+            });
+        }
+    }
+
 });

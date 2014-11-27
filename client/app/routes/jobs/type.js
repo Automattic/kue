@@ -7,6 +7,8 @@ export default Ember.Route.extend(JobsRoute, {
     model: function(params) {
         this.controllerFor('jobs.type').set('type', params.type);
         this.controllerFor('jobs.type').set('state', params.state);
+        this.controllerFor('application').set('type', params.type);
+        this.controllerFor('application').set('state', params.state);
         return Job.find({
             type: params.type,
             state: params.state,

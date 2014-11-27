@@ -1,12 +1,14 @@
 <div class="menu-list">
   {{#each item in items}}
-    {{#link-to "jobs.type" item.type replace=true class='item'}}
+
+    <a {{action "goToItem" item}} {{bind-attr class=":item item.active:active"}}>
       {{item.type}} <span class="item-count">{{item.count}}</span>
-    {{/link-to}}
-    {{#each subItem in item.subItems}}
-      {{#link-to "jobs.type" subItem.type (query-params state=subItem.state) replace=true class="sub-item"}}
-        {{subItem.state}} <span class="sub-item-count">{{subItem.count}}</span>
-      {{/link-to}}
-    {{/each}}
+    </a>
+      {{#each subItem in item.subItems}}
+         <a {{action "goToItem" subItem}} {{bind-attr class=":sub-item subItem.active:active subItem.hide:hide"}}>
+          {{subItem.state}} <span class="sub-item-count">{{subItem.count}}</span>
+         </a>
+      {{/each}}
+
   {{/each}}
 </div>

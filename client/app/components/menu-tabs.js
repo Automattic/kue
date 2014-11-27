@@ -2,8 +2,16 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     breakdowns: Ember.A([]),
+    selected: null,
+    items: null,
+    menuTree: null,
 
-    items: function() {
+    paramsDidChange: function(){
+        this.updateActiveState();
+        this.rerender();
+    }.observes('typeParam', 'stateParam', 'menuTree', 'menuTree.[]'),
+
+    breakdownsDidLoad: function() {
         var breakdowns = this.get('breakdowns');
         var byType = _.groupBy(breakdowns, 'type');
         var menu = [];
@@ -16,10 +24,39 @@ export default Ember.Component.extend({
                 subItems: subItems
             })
         }
-        return menu;
-    }.property('breakdowns', 'breakdowns.[]'),
+        this.set('menuTree', menu);
+    }.observes('breakdowns', 'breakdowns.[]'),
 
     computeTotal: function(arr) {
         return arr.reduce((acc, obj) => obj.count + acc, 0);
     },
+
+    updateActiveState: function() {
+        var selected = {
+            state: this.get('stateParam'),
+            type: this.get('typeParam'),
+        };
+        var items = this.get('menuTree');
+
+        items = items.map(item => {
+            item.active = item.type === selected.type;
+
+            item.subItems = item.subItems.map(sub => {
+                sub.active = sub.state === selected.state && sub.type === selected.type;
+                sub.hide = !item.active;
+                return sub;
+            });
+            return item;
+        });
+
+
+        this.set('items', items);
+    },
+
+    actions: {
+        goToItem: function(item) {
+            this.sendAction("action", item);
+        },
+
+    }
 });
