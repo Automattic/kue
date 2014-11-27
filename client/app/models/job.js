@@ -30,8 +30,6 @@ var Job = Ember.Object.extend({ // Instance methods
         });
     },
 
-    error:  "Error: [object Object]\n    at Request._callback (/app/image/lib/image.js:58:42)\n    at Request.self.callback (/app/image/node_modules/request/request.js:372:22)\n    at Request.EventEmitter.emit (events.js:98:17)\n    at Request.<anonymous> (/app/image/node_modules/request/request.js:1310:14)\n    at Request.EventEmitter.emit (events.js:117:20)\n    at IncomingMessage.<anonymous> (/app/image/node_modules/request/request.js:1258:12)\n    at IncomingMessage.EventEmitter.emit (events.js:117:20)\n    at _stream_readable.js:920:16\n    at process._tickDomainCallback (node.js:459:13)",
-
 });
 
 Job.reopenClass({ // Class methods

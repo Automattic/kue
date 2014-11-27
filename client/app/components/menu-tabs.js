@@ -1,15 +1,27 @@
 import Ember from 'ember';
+import Job from '../models/job';
 
 export default Ember.Component.extend({
     breakdowns: Ember.A([]),
     selected: null,
     items: null,
     menuTree: null,
+    // jobStates: Ember.A(Job.STATES),
 
     paramsDidChange: function(){
         this.updateActiveState();
-        this.rerender();
     }.observes('typeParam', 'stateParam', 'menuTree', 'menuTree.[]'),
+
+    jobStates: function() {
+        var states = Ember.A(Job.STATES);
+        var stats = this.get('stats');
+        return states.map(function(state) {
+            return {
+                state: state,
+                count: stats[state+'Count']
+            };
+        });
+    }.property('stats', 'stats.[]'),
 
     breakdownsDidLoad: function() {
         var breakdowns = this.get('breakdowns');

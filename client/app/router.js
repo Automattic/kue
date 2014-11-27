@@ -8,6 +8,7 @@ var Router = Ember.Router.extend({
 Router.map(function() {
     this.route('jobs', function() {
         this.route('type', { path: "type/:type" });
+        this.route('state', { path: "state/:stateId" });
     });
   this.route('jobs/new');
 });

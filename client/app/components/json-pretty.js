@@ -4,7 +4,7 @@ export default Ember.Component.extend({
 
     printJSON: function() {
        var data = this.get('data');
-        $("#json").JSONView(JSON.stringify(data));
+        Ember.$("#json").JSONView(JSON.stringify(data));
     },
 
     didInsertElement: function() {

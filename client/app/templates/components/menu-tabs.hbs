@@ -1,4 +1,9 @@
 <div class="menu-list">
+  {{#each s in jobStates}}
+    {{#link-to 'jobs.state' s.state class="item"}}
+      {{s.state}} <span class="item-count">{{s.count}}</span>
+    {{/link-to}}
+  {{/each}}
   {{#each item in items}}
 
     <a {{action "goToItem" item}} {{bind-attr class=":item item.active:active"}}>
