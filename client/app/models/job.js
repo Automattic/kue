@@ -89,6 +89,18 @@ Job.reopenClass({ // Class methods
     },
 
     /**
+     * FindOne Job
+     * @param  {Object} opts={} Options
+     * @return {Object}           Promise
+     */
+    findOne: function(opts={}) {
+        return this._request({
+            method: 'GET',
+            url: `${config.apiURL}/job/${opts.id}`
+        });
+    },
+
+    /**
      * Fetch stats from the Jobs
      * @return {Object} Promise
      */

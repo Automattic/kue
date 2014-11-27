@@ -15,6 +15,7 @@ export default Ember.Component.extend({
     jobStates: function() {
         var states = Ember.A(Job.STATES);
         var stats = this.get('stats');
+        if(Ember.empty(stats)) return;
         return states.map(function(state) {
             return {
                 state: state,
