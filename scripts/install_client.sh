@@ -1,4 +1,4 @@
 cd client
 npm install
-bower install
-ember build --environment production
+./node_modules/ember-cli/node_modules/bower/bin/bower install
+./node_modules/ember-cli/bin/ember build --environment production
