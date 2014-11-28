@@ -10,16 +10,16 @@ test/incomplete
 
 # compiled output
 # client/dist
-client/tmp
+lib/http/client/tmp
 
 # dependencies
-client/node_modules
-client/bower_components
+lib/http/client/node_modules
+lib/http/client/bower_components
 
 # misc
-client/.sass-cache
-client/connect.lock
-client/coverage/*
-client/libpeerconnection.log
-client/npm-debug.log
-client/testem.log
+lib/http/client/.sass-cache
+lib/http/client/connect.lock
+lib/http/client/coverage/*
+lib/http/client/libpeerconnection.log
+lib/http/client/npm-debug.log
+lib/http/client/testem.log
