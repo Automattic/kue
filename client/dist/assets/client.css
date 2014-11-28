@@ -1,0 +1,74 @@
+/* utilities */
+.hide {display: none!important;}
+.show {display: block!important;}
+
+.main { margin-left: 250px;  margin-right: 400px;}
+
+/* Menu */
+.menu { position: fixed; width: 250px; height: 100%; background: #262626;}
+.menu .logo { height: 75px;line-height: 75px; text-align: center;}
+.menu .logo a { font-family: Montserrat-Regular; font-size: 24px; color: white; text-decoration: none;}
+.menu-list a.item {
+    font-family: 'Montserrat', sans-serif; font-size: 12px; color: #AAAAAA; text-decoration: none; line-height: 43px;
+    width: 250px; display: block; height: 43px; padding-left: 10px;
+}
+.menu-list a.sub-item {
+    font-family: 'Montserrat', sans-serif; font-size: 12px; color: #AAAAAA; text-decoration: none; line-height: 43px;
+    width: 250px; display: block; height: 43px; padding-left: 30px;
+}
+.menu-list a:hover {background: #373737;color: white;}
+.menu-list a.item.active {color: white; background: #CF553E;}
+.menu-list a.sub-item.active {color: white; }
+.menu-list .item-count{  float: right; background: #fafafa; border-radius: 22px; text-align: center; height: 26px; line-height: 26px; padding: 0 10px; margin-top: 7px; margin-right: 10px; color:black;}
+.menu-list .sub-item-count{  float: right; background: #626262; border-radius: 22px; text-align: center; height: 26px; line-height: 26px; padding: 0 10px; margin-top: 7px; margin-right: 10px; color:black;}
+
+.top-bar { height: 75px; line-height:75px; font-family: 'Open Sans', sans-serif; font-size: 14px; padding-left: 20px;}
+.top-bar > * {display: inline;}
+.top-bar .right {float: right;}
+
+.jobs {width:100%; }
+.job, .jobs .heading{
+    font-family: 'Open Sans', sans-serif; padding: 0px 10px; font-size: 12px;
+    height: 40px; padding-left: 10px; line-height: 40px;
+}
+.jobs .heading {font-weight: bold; background: #ededed; color: #646464; text-transform: uppercase; font-size: 12px;}
+.job:nth-child(odd) {background: #F8F8F8}
+.job:nth-child(even) {background: white}
+.job.active {background: #CF553E!important; color: white!important; }
+.job:hover {background: #ededed;}
+
+/* shit html table */
+.table{ display:table; border-collapse: collapse; }
+.heading{display:table-row;text-align: center;}
+.table-row{display:table-row;text-align: center;}
+.col{display:table-cell;}
+
+
+/* buttons */
+.btn-paging {border-radius: 5px; background: #f8f8f8; border: 1px solid #979797; padding: 4px 9px; text-transform: uppercase;}
+/*.btn-log{ float: right;margin-right: 10px; margin-top: 21px; padding: 0 10px; height: 30px; line-height: 30px; background: #ededed; font-weight: bold; color: #646464; text-transform: uppercase; font-size: 12px;}*/
+
+/* detail */
+.jobs .detail {
+    background: #3A3A3A; font-family: 'Open Sans'; text-align: left; color: white; font-size: 12px; border-radius: 5px;padding: 10px;
+}
+
+.paging { background: #ededed; height: 40px; line-height: 40px; font-family: 'Open Sans'; padding-left: 10px; font-size: 12px; text-transform: uppercase;}
+.paging .btn-paging { display: inline;}
+.btn-paging.next { }
+
+.panel-right { position: fixed; right: 0; top: 0; width: 400px; height: 100%; overflow-y: scroll;}
+.panel-right .title { height: 75px; line-height: 75px; font-family: 'Open Sans', sans-serif; font-size: 14px; padding-left: 20px;}
+/*.panel-right .ember-select {position: fixed; right: 10px; top: 27px;}*/
+.console pre{ padding: 10px;font-size: 12px;}
+.error .title, .console .title{ height: 30px; line-height: 30px; background: #ededed;font-weight: bold; color: #646464; text-transform: uppercase; font-size: 12px;}
+.error .error-output{ font-family: monospace; white-space: pre-wrap; padding: 10px; font-size: 12px; color: red;}
+
+.route-jobs-index {padding: 20px;}
+.stats-panel {font-family: 'Open Sans';  border: 1px #fafafa solid;}
+.stats-panel a { text-decoration: none; color: black;}
+.stats-panel .title { height: 40px; line-height: 40px; padding-left: 10px; font-weight: bold; background: #ededed; color: #646464; text-transform: uppercase; font-size: 12px;}
+.stats-panel .field{font-size: 13px; padding: 5px 10px;}
+.stats-panel .field:nth-child(odd) {background: #F8F8F8}
+.stats-panel .field:nth-child(even) {background: white}
+.stats-panel .field:hover { background: #ededed;}

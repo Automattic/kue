@@ -10,8 +10,8 @@ Router.map(function() {
         this.route('type', { path: "type/:type" });
         this.route('state', { path: "state/:stateId" });
         this.route('show', { path: ":id" });
+        this.route('new', { path: "/new" });
     });
-  this.route('jobs/new');
 });
 
 export default Router;

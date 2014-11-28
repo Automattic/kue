@@ -35,7 +35,7 @@ export default Ember.Component.extend({
                 type: type,
                 count: this.computeTotal(subItems),
                 subItems: subItems
-            })
+            });
         }
         this.set('menuTree', menu);
     }.observes('breakdowns', 'breakdowns.[]'),
