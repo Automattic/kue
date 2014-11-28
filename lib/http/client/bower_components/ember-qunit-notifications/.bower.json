@@ -1,0 +1,30 @@
+{
+  "name": "ember-qunit-notifications",
+  "version": "0.0.4",
+  "homepage": "https://github.com/dockyard/ember-qunit-notifications",
+  "authors": [
+    "Brian Cardarella <bcardarella@gmail.com>"
+  ],
+  "description": "Tomster-ified qunit-notifications",
+  "main": "index.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "qunit-notifications": "~0.0.3"
+  },
+  "_release": "0.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.4",
+    "commit": "82c897bc2dc923d251362d0b4da39a5eb7fe5c06"
+  },
+  "_source": "git://github.com/dockyard/ember-qunit-notifications.git",
+  "_target": "0.0.4",
+  "_originalSource": "ember-qunit-notifications"
+}
