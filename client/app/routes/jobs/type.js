@@ -1,8 +1,13 @@
 import Ember from 'ember';
 import Job from '../../models/job';
-import JobsRoute from '../../mixins/jobs-route';
 
-export default Ember.Route.extend(JobsRoute, {
+export default Ember.Route.extend({
+
+     queryParams: {
+        page: { refreshModel: true },
+        sort: { refreshModel: true },
+        state: { refreshModel: true }
+    },
 
     model: function(params) {
         this.controllerFor('jobs.type').set('type', params.type);

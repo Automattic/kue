@@ -1,16 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-    queryParams: [ 'page'],
-    page: Ember.computed(function(){return null; }),
+    queryParams: ['page'],
+    page: Ember.computed(function(){return 1;}),
 
-    selectedJob: null,
-    hasSelectedJob: Ember.computed.gt('selectedJob.id.length', 0),
     actions: {
-        showDetail: function(job) {
-            this.set('selectedJob', job);
-            this.get('model').setEach('active', false);
-            job.set('active', true);
+        goToJob: function(job) {
+            this.transitionToRoute('jobs.show', job);
         }
     }
 });

@@ -5,7 +5,7 @@ export default Ember.Component.extend({
     breakdowns: Ember.A([]),
     selected: null,
     items: null,
-    menuTree: null,
+    menuTree: [],
     // jobStates: Ember.A(Job.STATES),
 
     paramsDidChange: function(){

@@ -1,11 +1,21 @@
-<div class="route-jobs-index">
+<div class="route route-jobs-index">
     <div class="stats-panel">
         <div class="title">General Stats</div>
-        <div class="field">Active: {{stats.activeCount}}</div>
-        <div class="field">Complete: {{stats.completeCount}}</div>
-        <div class="field">Delayed: {{stats.delayedCount}}</div>
-        <div class="field">Failed: {{stats.failedCount}}</div>
-        <div class="field">Inactive: {{stats.inactiveCount}}</div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'active'}}Active: {{stats.activeCount}} {{/link-to}}
+        </div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'complete'}}Complete: {{stats.completeCount}} {{/link-to}}
+        </div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'delayed'}}Delayed: {{stats.delayedCount}} {{/link-to}}
+        </div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'failed'}}Failed: {{stats.failedCount}} {{/link-to}}
+        </div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'inactive'}}Inactive: {{stats.inactiveCount}} {{/link-to}}
+        </div>
     </div>
     <br>
     <br>

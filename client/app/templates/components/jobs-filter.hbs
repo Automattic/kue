@@ -1,10 +1,7 @@
 <div class="top-bar">
-    <div class="type">{{type}} ></div>
+    <div class="type">{{type}} <span class="gt">></span></div>
     <div class="dropdown">
         {{view Ember.Select content=selections selection=selectedState}}
-    </div>
-    <div class="dropdown right">
-        {{!-- sort by {{view Ember.Select content=sorts selection=sort}} --}}
     </div>
 </div>
 

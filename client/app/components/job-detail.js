@@ -15,5 +15,11 @@ export default Ember.Component.extend({
             this.set('job.state', this.get('job.selected'));
             this.get('job').updateState();
         }
-    }.observes('job.selected')
+    }.observes('job.selected'),
+
+    actions: {
+        goToJob: function(job) {
+            this.sendAction("action", job);
+        }
+    }
 });
