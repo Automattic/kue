@@ -1,0 +1,67 @@
+/* utilities */
+.hide {display: none!important;}
+.show {display: block!important;}
+
+/* main */
+.jobs {width:100%; }
+
+/* routes */
+.route { margin-left: 250px;  margin-right: 400px;}
+.route.route-jobs-show {margin-right: 0px;}
+.route-jobs-show .btn-more { display: none; }
+.route-jobs-index {padding: 20px;}
+
+/* Menu */
+.menu { position: fixed; width: 250px; height: 100%; background: #262626;}
+.menu .logo { height: 75px;line-height: 75px; text-align: center;}
+.menu .logo a { font-family: Montserrat-Regular; font-size: 24px; color: white; text-decoration: none;}
+.menu-list a.item, .menu-list a.sub-item {
+    font-family: 'Montserrat', sans-serif; font-size: 12px; color: #AAAAAA; text-decoration: none; line-height: 43px;
+    width: 250px; display: block; height: 43px; padding-left: 10px;
+}
+.menu-list a.sub-item {padding-left: 30px;}
+.menu-list a:hover {background: #373737;color: white;}
+.menu-list a.item.active {color: white; background: #CF553E;}
+.menu-list a.sub-item.active {color: white;}
+.menu-list .item-count, .menu-list .sub-item-count{  float: right; background: #fafafa; border-radius: 22px; text-align: center; height: 26px; line-height: 26px; padding: 0 10px; margin-top: 7px; margin-right: 10px; color:black;}
+.menu-list .sub-item-count{background: #626262;}
+
+/* top bar */
+.top-bar { height: 75px; line-height:75px; font-family: 'Open Sans', sans-serif; font-size: 14px; padding-left: 20px;}
+.top-bar > * {display: inline;}
+.top-bar .gt{ }
+
+/* table */
+.table{ display:table; border-collapse: collapse; }
+.heading{display:table-row;text-align: center;}
+.table-row{display:table-row;text-align: center;}
+.col{display:table-cell;}
+.job, .jobs .heading{
+    font-family: 'Open Sans', sans-serif; padding: 0px 10px; font-size: 12px;
+    height: 40px; padding-left: 10px; line-height: 40px;
+}
+.jobs .heading {font-weight: bold; background: #ededed; color: #646464; text-transform: uppercase; font-size: 12px;}
+.jobs .empty { padding: 10px; font-family: 'Open Sans'; font-size: 12px;}
+.job:nth-child(odd) {background: #F8F8F8}
+.job:nth-child(even) {background: white}
+.job.active {background: #CF553E!important; color: white!important; }
+.job:hover {background: #ededed;}
+
+/* right panel */
+.panel-right { position: fixed; right: 0; top: 0; width: 400px; height: 100%; overflow-y: scroll;}
+.job-detail .btn-more{ position: absolute; top: 30px; right: 20px;}
+.job-detail .title { height: 75px; line-height: 75px; font-family: 'Open Sans', sans-serif; font-size: 14px; padding-left: 20px;}
+.error .title, .console .title{ height: 30px; line-height: 30px; background: #ededed;font-weight: bold; color: #646464; text-transform: uppercase; font-size: 12px;}
+.error .error-output{ font-family: monospace; white-space: pre-wrap; padding: 10px; font-size: 12px; color: red;}
+
+/* paging component */
+.paging { background: #ededed; height: 40px; line-height: 40px; font-family: 'Open Sans'; padding-left: 10px; font-size: 12px; text-transform: uppercase;}
+
+/* stats-panel */
+.stats-panel {font-family: 'Open Sans';  border: 1px #fafafa solid;}
+.stats-panel a { text-decoration: none; color: black;}
+.stats-panel .title { height: 40px; line-height: 40px; padding-left: 10px; font-weight: bold; background: #ededed; color: #646464; text-transform: uppercase; font-size: 12px;}
+.stats-panel .field{font-size: 13px; padding: 5px 10px;}
+.stats-panel .field:nth-child(odd) {background: #F8F8F8}
+.stats-panel .field:nth-child(even) {background: white}
+.stats-panel .field:hover { background: #ededed;}

@@ -1,0 +1,34 @@
+<div class="route route-jobs-index">
+    <div class="stats-panel">
+        <div class="title">General Stats</div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'active'}}Active: {{stats.activeCount}} {{/link-to}}
+        </div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'complete'}}Complete: {{stats.completeCount}} {{/link-to}}
+        </div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'delayed'}}Delayed: {{stats.delayedCount}} {{/link-to}}
+        </div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'failed'}}Failed: {{stats.failedCount}} {{/link-to}}
+        </div>
+        <div class="field">
+            {{#link-to 'jobs.state' 'inactive'}}Inactive: {{stats.inactiveCount}} {{/link-to}}
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="stats-panel">
+        <div class="title">Breakdown</div>
+        {{log breakdowns}}
+        {{#each stat in breakdowns}}
+            <div class="field">
+            {{#link-to 'jobs.type' stat.type (query-params state=stat.state)}}
+                {{stat.type}} > {{stat.state}}: {{stat.count}}
+            {{/link-to}}
+            </div>
+        {{/each}}
+    </div>
+
+</div>

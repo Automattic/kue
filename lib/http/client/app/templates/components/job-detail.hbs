@@ -1,0 +1,19 @@
+<div class="job-detail">
+    <div class="title">
+        Job #{{job.id}} {{view Ember.Select content=selections selection=job.selected}}
+        <button class="btn-more" {{action "goToJob" job}}>More</button>
+    </div>
+    <div class="console">
+        <div class="title">Object</div>
+        <pre>{{json-pretty data=job}}</pre>
+    </div>
+    {{#if job.error}}
+    <div class="error">
+        <div class="title">Error</div>
+        <div class="error-output">
+            {{format-error job.error}}
+        </div>
+    </div>
+    {{/if}}
+</div>
+

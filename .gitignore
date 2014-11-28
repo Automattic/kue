@@ -5,3 +5,21 @@ node_modules
 lib/http/public/stylesheets/main.css
 *.rdb
 test/incomplete
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+# client/dist
+lib/http/client/tmp
+
+# dependencies
+lib/http/client/node_modules
+lib/http/client/bower_components
+
+# misc
+lib/http/client/.sass-cache
+lib/http/client/connect.lock
+lib/http/client/coverage/*
+lib/http/client/libpeerconnection.log
+lib/http/client/npm-debug.log
+lib/http/client/testem.log

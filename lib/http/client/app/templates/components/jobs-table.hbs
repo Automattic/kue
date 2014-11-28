@@ -1,0 +1,22 @@
+<div class="table jobs">
+  <div class="heading">
+      <div class="col">id</div>
+      <div class="col">type</div>
+      <div class="col">state</div>
+      <div class="col">created_at</div>
+      <div class="col">updated_at</div>
+      <div class="col">attempts</div>
+  </div>
+    {{#each job in jobs}}
+      <div {{bind-attr class=":table-row :job job.active:active"}} {{action "showDetail" job}}>
+        <div class="col">{{job.id}}</div>
+        <div class="col">{{job.type}}</div>
+        <div class="col">{{job.state}}</div>
+        <div class="col">{{format-date job.created_at}}</div>
+        <div class="col">{{format-date job.updated_at}}</div>
+        <div class="col">{{job.attempts.made}} ({{job.attempts.remaining}}) </div>
+      </div>
+      {{else}}
+        <div class="empty">No results</div>
+    {{/each}}
+</div>

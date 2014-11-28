@@ -1,0 +1,11 @@
+<div class="route route-jobs-state">
+  {{jobs-table jobs=model selectedJob=selectedJob}}
+
+  <div class="panel-right">
+    {{#if selectedJob}}
+      {{job-detail job=selectedJob action="goToJob"}}
+    {{else}}
+    {{/if}}
+  </div>
+  {{jobs-paging page=page}}
+</div>
