@@ -126,4 +126,32 @@ describe 'Kue', ->
 
       setTimeout waitForJobToRun, 50
 
+    it 'should fail active re-attemptable job when shutdown timer expires', (testDone) ->
+      jobs = kue.createQueue()
+      jobs.promote 1
+
+      jobId = null
+
+      jobs.process 'long-task', (job, done) ->
+          jobId = job.id
+          fn = ->
+            done()
+          setTimeout fn, 10000
+
+      jobs.create('long-task', {}).attempts(3).save()
+
+      # need to make sure long-task has had enough time to get into active state
+      waitForJobToRun = ->
+          fn = (err) ->
+              kue.Job.get jobId, (err, job) ->
+                  job.should.have.property '_state', "inactive"
+                  job.should.have.property '_attempts', "1"
+                  job.should.have.property '_error', "Shutdown"
+                  testDone()
+
+          # shutdown timer is shorter than job length
+          jobs.shutdown fn, 10
+
+      setTimeout waitForJobToRun, 50
+
 
