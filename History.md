@@ -1,24 +1,37 @@
+0.8.10 / 2014-11-11
+===================
+
+* Add more tests, Closes #280
+* More atomic job state changes, Closes #411
+* Documentation: error passed to done should be string or standard JS error object, Closes #394
+* Documentation: backoff documentation, Closes #435
+* Documentation: correct `promote` usage, Closes #413
+* Add job enqueue event, Closes #458
+* Watch for errors with non-string err.stack, Closes #426
+* Fix web app redirect path for express 4.0, Closes #393
+
+
 0.8.9 / 2014-10-01
 ==================
 
-  * Properly update status flags on resume, Closes #423
+* Properly update status flags on resume, Closes #423
 
 0.8.8 / 2014-09-12
 ==================
 
-  * Fix tests to limited shutdown timeouts
-  * Add a redis lua watchdog to fix stuck inactive jobs, fixes #130
-  * Stuck inactive jobs watchdog, Closes #130
+* Fix tests to limited shutdown timeouts
+* Add a redis lua watchdog to fix stuck inactive jobs, fixes #130
+* Stuck inactive jobs watchdog, Closes #130
 
 0.8.7 / 2014-09-12
 ==================
 
-  * Shutdown timeout problems and races, fixes #406
+* Shutdown timeout problems and races, fixes #406
 
 0.8.6 / 2014-08-30
 ==================
 
-  * Quit redis connections on shutdown & let the process exit, closes #398
+* Quit redis connections on shutdown & let the process exit, closes #398
 
 0.8.5 / 2014-08-10
 ==================
@@ -100,10 +113,12 @@
 
   * Fix redirection to active for mounted apps
 
-0.6.1 / 2013-03-25 
+
+0.6.1 / 2013-03-25
 ==================
 
   * Fixed issue preventing polling for new jobs. Closes #192
+
 
 0.6.0 / 2013-03-20
 ==================
@@ -114,67 +129,66 @@
  * Update `updated_at` timestamp during `log`, `progress`, `attempt`, or `state` changes. Closes #188
  * Fix redirection to /active. Closes #190
 
-0.5.0 / 2012-11-16 
+0.5.0 / 2012-11-16
 ==================
 
   * add POST /job to create a job
   * fix /job/search hang
 
-0.4.2 / 2012-11-08 
+0.4.2 / 2012-11-08
 ==================
 
   * Revert "Fix delay() not really delaying"
   * Revert "If a job with a delay has more attempts, honor the original delay"
 
-0.4.1 / 2012-09-25 
+0.4.1 / 2012-09-25
 ==================
 
   * fix: if a job with a delay has more attempts, honor the original delay [mathrawka]
 
-0.4.0 / 2012-06-28 
+0.4.0 / 2012-06-28
 ==================
 
   * Added 0.8.0 support
 
-0.3.4 / 2012-02-23 
+0.3.4 / 2012-02-23
 ==================
 
   * Changed: reduce polling by using BLPOP to notify workers of activity [Davide Bertola]
 
-0.3.3 / 2011-11-28 
+0.3.3 / 2011-11-28
 ==================
 
   * Fixed: use relative stats route to support mounting [alexkwolfe]
   * Fixed 0.6.x support
   * Removed empty Makefile
 
-0.3.2 / 2011-10-04 
+0.3.2 / 2011-10-04
 ==================
 
   * Removed unnecessary "pooling"
   * Fixed multiple event emitting. Closes #73
   * Fixed menu styling
 
-0.3.1 / 2011-08-25 
+0.3.1 / 2011-08-25
 ==================
 
   * Fixed auto event subscription. Closes #68
   * Changed: one redis connection for all workers
   * Removed user-select: none from everything. Closes #50
 
-0.3.0 / 2011-08-11 
+0.3.0 / 2011-08-11
 ==================
 
   * Added search capabilities
   * Added `workTime` stat
   * Added removal of stale jobs example
   * Added Queue-level job events, useful for removing stale jobs etc. Closes   * Changed: lazy load reds search [David Wood]
-  * Fixed `Job#error` for modules that throw strings or emit `error` events with strings [guillermo]
-#51
+  * Fixed `Job#error` for modules that throw strings or emit `error` events with strings [guillermo] #51
   * Fixed `Job#remove(fn)`
   * Fixed proxy issue with paths, use relative paths [booo]
 
-0.2.0 / 2011-07-25 
+0.2.0 / 2011-07-25
 ==================
 
   * Added infinite scroll
@@ -188,7 +202,7 @@
   * Fixed z-index for actions
   * Fixed job mapping. Closes #43
 
-0.1.0 / 2011-07-19 
+0.1.0 / 2011-07-19
 ==================
 
   * Added exposing of progress via redis pubsub
@@ -196,7 +210,7 @@
   * Fixed: capping of progress > 100 == 100
   * UI: scroll details into view
 
-0.0.3 / 2011-07-07 
+0.0.3 / 2011-07-07
 ==================
 
   * Added caustic to aid in template management
@@ -209,14 +223,14 @@
   * Fixed: hide "More" on filter
   * Fixed: removed "error" emission, blows up when no one is listening
 
-0.0.2 / 2011-07-05 
+0.0.2 / 2011-07-05
 ==================
 
   * Added support to update state from UI. Closes #26
   * Added support to alter priority in UI. Closes #25
   * Added filtering by type. Closes #20
 
-0.0.1 / 2011-07-04 
+0.0.1 / 2011-07-04
 ==================
 
   * Initial release
