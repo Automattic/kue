@@ -7,6 +7,15 @@ kue = require '../'
 # jobs.promote 1
 
 describe 'Kue', ->
+
+  before (done) ->
+    jobs = kue.createQueue()
+    jobs.client.flushdb done
+
+  after (done) ->
+    jobs = kue.createQueue()
+    jobs.client.flushdb done
+
   describe 'Shutdown', ->
     it 'should return singleton from createQueue', (done) ->
       jobs = kue.createQueue()
@@ -126,4 +135,22 @@ describe 'Kue', ->
 
       setTimeout waitForJobToRun, 50
 
+    it 'should not call graceful shutdown twice on subsequent calls', (testDone) ->
+      jobs = kue.createQueue()
 
+      jobs.process 'test-subsequent-shutdowns', (job, done) ->
+        done()
+        setTimeout ()->
+          jobs.shutdown (err)->
+            should.not.exist(err)
+          , 100
+        , 50
+
+        setTimeout ()->
+          jobs.shutdown (err)->
+            err.should.be.equal "Shutdown already in progress"
+            testDone()
+          , 100
+        , 60
+
+      jobs.create('test-subsequent-shutdowns', {}).save()

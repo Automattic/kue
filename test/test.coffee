@@ -16,6 +16,10 @@ describe 'Kue Tests', ->
       done(err)
     jobs.shutdown onShutdown, 500
 
+  before (done) ->
+    jobs = kue.createQueue()
+    jobs.client.flushdb done
+
   after (done) ->
     jobs = kue.createQueue()
     jobs.client.flushdb done
