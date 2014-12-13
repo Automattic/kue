@@ -1,4 +1,4 @@
-0.8.10 / 2014-11-11
+0.8.10 / 2014-12-13
 ===================
 
 * Add more tests, Closes #280
@@ -9,6 +9,10 @@
 * Add job enqueue event, Closes #458
 * Watch for errors with non-string err.stack, Closes #426
 * Fix web app redirect path for express 4.0, Closes #393
+* `removeBadJob` should do pessimistic job removal from all state ZSETs, Closes #438
+* Add stats json api by type and state, Closes #477
+* Don't let concurrent graceful shutdowns on subsequent`Queue#shutdown`calls, Closes #479
+* Fix `cleanup` global leak, Closes #475
 
 
 0.8.9 / 2014-10-01
