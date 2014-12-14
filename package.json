@@ -16,14 +16,15 @@
     "url": "https://github.com/LearnBoost/kue.git"
   },
   "dependencies": {
-    "redis": "~0.10.0",
-    "express": "~3.1.1",
+    "body-parser": "^1.10.0",
+    "express": "~4.10",
     "jade": "1.1.5",
-    "stylus": "0.42.2",
     "lodash": "^2.4.1",
     "lodash-deep": "^1.1.0",
     "nib": "0.5.0",
-    "reds": "~0.2.4"
+    "redis": "~0.10.0",
+    "reds": "~0.2.4",
+    "stylus": "0.42.2"
   },
   "devDependencies": {
     "should": "~3.0.1",
