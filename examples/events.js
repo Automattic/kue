@@ -55,6 +55,5 @@ function convertFrame(i, fn) {
     setTimeout(fn, Math.random() * 50);
 }
 
-// start the UI
-kue.app.listen(3000);
+kue.app.listen(3000); 
 console.log('UI started on port 3000');
