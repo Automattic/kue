@@ -1,3 +1,12 @@
+0.8.11 / 2014-12-15
+===================
+
+* Fix shutdown on re-attemptable jobs, Closes #469
+* Fix race condition in delaying jobs when re-attempts, Closes #483
+* Make `watchStuckJobs` aware of queue prefix, Closes #452
+* Send along error message when emitting a failed event, Closes #461
+
+
 0.8.10 / 2014-12-13
 ===================
 
