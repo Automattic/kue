@@ -161,7 +161,7 @@ describe 'Kue', ->
 
       jobs.process 'shutdown-reattemptable-jobs', (job, done) ->
         jobId = job.id
-        setTimeout done, 2000
+        setTimeout done, 500
 
       jobs.create('shutdown-reattemptable-jobs', { title: 'shutdown-reattemptable-jobs' }).attempts(2).save()
 
