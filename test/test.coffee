@@ -79,15 +79,19 @@ describe 'Kue Tests', ->
 
     it 'should receive job failed attempt events', (done) ->
       total = 2
+      errorMsg = 'myError'
       jobs.process 'email-to-be-failed', (job, jdone)->
-        jdone 'error'
+        jdone errorMsg
       job_data =
         title: 'Test Email Job'
         to: 'tj@learnboost.com'
       jobs.create('email-to-be-failed', job_data).attempts(2)
-      .on 'failed attempt', ->
+      .on 'failed attempt', (errMsg,doneAttempts) ->
+        errMsg.should.be.equal errorMsg
+        doneAttempts.should.be.equal 1
         total--
-      .on 'failed', ->
+      .on 'failed', (errMsg)->
+        errMsg.should.be.equal errorMsg
         (--total).should.be.equal 0
         done()
       .save()
