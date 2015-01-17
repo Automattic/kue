@@ -107,6 +107,40 @@ describe 'Kue Tests', ->
         (processed - now).should.be.lessThan( 500 )
         jdone()
         done()
+    
+    it 'should have promote_at timestamp', (done) ->
+      now = Date.now()
+      job = jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(300).save()
+      jobs.process 'simple-delayed-job', (job, jdone) ->
+        job.promote_at.should.be.approximately(now + 300, 10)
+        jdone()
+        done()
+      done()
+    
+    it 'should update promote_at after delay change', (done) ->
+      now = Date.now()
+      job = jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(300).save()
+      job.delay(100).save()
+      jobs.process 'simple-delayed-job', (job, jdone) ->
+        job.promote_at.should.be.approximately(now + 100, 10)
+        jdone()
+        done()
+
+    it 'should update promote_at after failure with backoff', (done) ->
+      now = Date.now()
+      job = jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(100).attempts(2).backoff({delay: 100, type: 'fixed'}).save()
+      calls = 0
+      jobs.process 'simple-delayed-job', (job, jdone) ->
+        processed = Date.now()
+        if calls == 1
+          (processed - now).should.be.greaterThan(300)
+          jdone()
+          done()
+        else
+          (processed - now).should.be.greaterThan(100)
+          jdone('error')
+
+        calls++
 
     it 'should be processed at a future date', (done) ->
       now = Date.now()
