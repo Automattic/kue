@@ -100,11 +100,21 @@ describe 'Kue Tests', ->
   describe 'Job', ->
     it 'should be processed after delay', (done) ->
       now = Date.now()
-      jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(300).save()
-      jobs.process 'simple-delayed-job', (job, jdone) ->
+      jobs.create( 'simple-delay-job', { title: 'simple delay job' } ).delay(300).save()
+      jobs.process 'simple-delay-job', (job, jdone) ->
         processed = Date.now()
         (processed - now).should.be.greaterThan( 300 )
         (processed - now).should.be.lessThan( 500 )
+        jdone()
+        done()
+
+    it 'should be processed at a future date', (done) ->
+      now = Date.now()
+      jobs.create( 'future-job', { title: 'future job' } ).delay(new Date(now + 500)).save()
+      jobs.process 'future-job', (job, jdone) ->
+        processed = Date.now()
+        (processed - now).should.be.greaterThan( 500 )
+        (processed - now).should.be.lessThan( 700 )
         jdone()
         done()
 
