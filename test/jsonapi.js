@@ -48,7 +48,9 @@ describe('JSON API', function() {
 				.send(jobsPopulate('insert a job', 1))
 				.expect(200)
 				.expect(function(res) {
-					res.body.id.should.be.an.instanceOf(Number);
+					res.body.message.should.equal('job created');
+					res.body.id.should.be.a.Number;
+					Object.keys(res.body).should.have.lengthOf(2);
 				})
 				.end(done);
 		});
