@@ -203,7 +203,8 @@ The events available are the same as mentioned in "Job Events", however prefixed
 
 ### Delayed Jobs
 
-Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
+Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. Alternatively, you can pass a JavaScript `Date` object with a specific time in the future.
+This automatically flags the `Job` as "delayed". 
 
 ```js
 var email = jobs.create('email', {
