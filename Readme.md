@@ -342,6 +342,14 @@ var q = kue.createQueue({
 
 `prefix` controls the key names used in Redis.  By default, this is simply `q`. Prefix generally shouldn't be changed unless you need to use one Redis instance for multiple apps. It can also be useful for providing an isolated testbed across your main application.
 
+You can also specify the connection information as a URL string.
+
+```js
+var q = kue.createQueue({
+  redis: 'redis://example.com:1234?redis_option=value&redis_option=value'
+});
+```
+
 #### Connecting using Unix Domain Sockets
 
 Since [node_redis](https://github.com/mranney/node_redis) supports Unix Domain Sockets, you can also tell Kue to do so. See [unix-domain-socket](https://github.com/mranney/node_redis#unix-domain-socket) for your redis server configuration.
