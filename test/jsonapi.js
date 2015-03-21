@@ -27,6 +27,7 @@ function jobsPopulate(type, count) {
 
 describe('JSON API', function() {
 
+  
   describe('Create jobs', function() {
     var jobs = null;
 
@@ -43,6 +44,7 @@ describe('JSON API', function() {
       }, 500);
     });
 
+
     it('should insert a job and respond with an id', function(done) {
       request(app)
         .post('/job')
@@ -55,6 +57,7 @@ describe('JSON API', function() {
         })
         .end(done);
     });
+
 
     it('should insert multiple jobs and respond with ids', function(done) {
       var jobCount = Math.floor(Math.random()) * 10 + 2;
@@ -75,6 +78,7 @@ describe('JSON API', function() {
         })
         .end(done);
     });
+
 
     it('should insert jobs including an invaild job, respond with ids and error', function(done) {
       var jobs = jobsPopulate('insert jobs including error', 3);
@@ -101,5 +105,4 @@ describe('JSON API', function() {
         .end(done);
     });
   });
-
 });
