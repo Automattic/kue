@@ -63,7 +63,7 @@ describe('JSON API', function() {
 
     it('should insert multiple jobs and respond with ids', function(done) {
       var jobCount = Math.floor(Math.random()) * 10 + 2;
-      
+
       request(app)
         .post('/job')
         .send(jobsPopulate('insert jobs', jobCount))
@@ -72,6 +72,7 @@ describe('JSON API', function() {
           var created = res.body;
           created.should.be.ok;
           created.length.should.equal(jobCount);
+          
           for (var i = 0; i < jobCount; i++) {
             var job = created[i];
             job.message.should.be.equal('job created')
