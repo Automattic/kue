@@ -4,8 +4,9 @@ var request = require('supertest'),
 
 
 function jobsPopulate(type, count) {
-  var priority = [10, 0, -5, -10, -15];
-  var jobs = [];
+  var priority = [10, 0, -5, -10, -15],
+    jobs = [];
+  
   for (var i = 0; i < count; i++) {
     jobs.push({
       type: type,
@@ -27,7 +28,7 @@ function jobsPopulate(type, count) {
 
 describe('JSON API', function() {
 
-  
+
   describe('Create jobs', function() {
     var jobs = null;
 
