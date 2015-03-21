@@ -55,6 +55,66 @@ describe('Jobs', function () {
         });
     });
 
+    it('should be filterable by data', function (testDone) {
+        var jobsData = [
+            {title: 'testA', _i: 0},
+            {title: 'testB',  _i: 1},
+            {title: 'testC', _i: 2}
+        ], jcnt=0, ids=[];
+
+        jobsData.forEach(function(data){
+            var job =
+            jobs
+            .create('filterByData', data)
+            .save(function(err){
+                if( !err )
+                    ids.push(job.id);
+            })
+            .on('complete', function(){
+                jcnt++;
+                if(jcnt == jobsData.length){
+                    // Not beautiful... Maybe kue should go to promises...
+                    jobs.filterByData('filterByData', 'complete', {title: 'testA'}, function(err, filtered_jobs){
+                        filtered_jobs.should.be.instanceof(Array);
+                        filtered_jobs.should.have.a.lengthOf(1);
+                        filtered_jobs[0].data.should.eql(jobsData[0]);
+
+                        jobs.filterByData('filterByData', 'complete', {title: 'not exists'}, function(err, filtered_jobs){
+                            filtered_jobs.should.be.instanceof(Array);
+                            filtered_jobs.should.have.a.lengthOf(0);
+
+                            jobs.filterByData('filterByData', 'complete', {_i: 2}, function(err, filtered_jobs){
+                                filtered_jobs.should.be.instanceof(Array);
+                                filtered_jobs.should.have.a.lengthOf(1);
+                                filtered_jobs[0].data.should.eql(jobsData[2]);
+
+                                jobs.filterByData('filterByData', 'complete', {title: 'testB',  _i: 1}, function(err, filtered_jobs){
+                                    filtered_jobs.should.be.instanceof(Array);
+                                    filtered_jobs.should.have.a.lengthOf(1);
+                                    filtered_jobs[0].data.should.eql(jobsData[1]);
+                                    // Clear test data
+                                    var rcnt=0;
+                                    ids.forEach(function(id){
+                                        kue.Job.remove(id, function(err){
+                                            if(!err){
+                                                rcnt++;
+                                                if(rcnt == ids.length)
+                                                    testDone();
+                                            }
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+            });
+        });
+        jobs.process('filterByData', function(job, done){
+            done(null, 'OK');
+        });
+    });
+
     /*
      it('should delay retries on failure if attempts and delay is set', function (done) {
      this.timeout(20000);
