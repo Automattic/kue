@@ -72,7 +72,7 @@ describe('JSON API', function() {
           var created = res.body;
           created.should.be.ok;
           created.length.should.equal(jobCount);
-          
+
           for (var i = 0; i < jobCount; i++) {
             var job = created[i];
             job.message.should.be.equal('job created')
