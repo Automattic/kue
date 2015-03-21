@@ -6,7 +6,7 @@ var request = require('supertest'),
 function jobsPopulate(type, count) {
   var priority = [10, 0, -5, -10, -15],
     jobs = [];
-  
+
   for (var i = 0; i < count; i++) {
     jobs.push({
       type: type,
@@ -38,10 +38,11 @@ describe('JSON API', function() {
       done();
     });
 
+
     afterEach(function(done) {
       jobs.shutdown(function(err) {
         jobs = null;
-        done();
+        done(err);
       }, 500);
     });
 
@@ -62,6 +63,7 @@ describe('JSON API', function() {
 
     it('should insert multiple jobs and respond with ids', function(done) {
       var jobCount = Math.floor(Math.random()) * 10 + 2;
+      
       request(app)
         .post('/job')
         .send(jobsPopulate('insert jobs', jobCount))
@@ -84,6 +86,7 @@ describe('JSON API', function() {
     it('should insert jobs including an invaild job, respond with ids and error', function(done) {
       var jobs = jobsPopulate('insert jobs including error', 3);
       delete jobs[1].type;
+
       request(app)
         .post('/job')
         .send(jobs)
