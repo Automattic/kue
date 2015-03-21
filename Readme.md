@@ -203,7 +203,8 @@ The events available are the same as mentioned in "Job Events", however prefixed
 
 ### Delayed Jobs
 
-Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. This automatically flags the `Job` as "delayed". 
+Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. Alternatively, you can pass a JavaScript `Date` object with a specific time in the future.
+This automatically flags the `Job` as "delayed". 
 
 ```js
 var email = jobs.create('email', {
@@ -507,7 +508,42 @@ Create a job:
              "priority": "high"
            }
          }' http://localhost:3000/job
-    {"message":"job 3 created"}
+    {"message": "job created", "id": 3}
+
+You can create multiple jobs at once by passing an array. In this case, the response will be an array too.
+
+    $ curl -H "Content-Type: application/json" -X POST -d \
+        '[{
+           "type": "email",
+           "data": {
+             "title": "welcome email for tj",
+             "to": "tj@learnboost.com",
+             "template": "welcome-email"
+           },
+           "options" : {
+             "attempts": 5,
+             "priority": "high"
+           }
+         },
+         {
+           "type": "email",
+           "data": {
+             "title": "followup email for tj",
+             "to": "tj@learnboost.com",
+             "template": "followup-email",
+             "delay": 86400
+           },
+           "options" : {
+             "attempts": 5,
+             "priority": "high"
+           }
+         }]' http://localhost:3000/job
+    [
+	    {"message": "job created", "id": 4},
+	    {"message": "job created", "id": 5}
+    ]
+
+Note: when inserting multiple jobs in bulk, if one insertion fails Kue will not attempt adding the remaining jobs. The response array will contain the ids of the jobs added successfully, and the last element will be an object describing the error: `{"error": "error reason"}`. It is your responsibility to fix the wrong task and re-submit it and all the subsequent ones.
 
 
 ## Parallel Processing With Cluster
