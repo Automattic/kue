@@ -185,7 +185,7 @@ job.on('complete', function(result){
 });
 ```
 
-**Note** that Job level events are not guaranteed to be received upon worker process restarts, since the process will lose the reference to the specific Job object. If you want a more reliable event handler look for [Queue Events](#queue-events).
+**Note** that Job level events are not guaranteed to be received upon process restarts, since restarted node.js process will lose the reference to the specific Job object. If you want a more reliable event handler look for [Queue Events](#queue-events).
 
 ### Queue Events
 
