@@ -42,6 +42,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Updating Progress](#updating-progress)
   - [Graceful Shutdown](#graceful-shutdown)
   - [Redis Connection Settings](#redis-connection-settings)
+  - [Queue Maintenance](#queue-maintenance)
   - [User-Interface](#user-interface)
   - [JSON API](#json-api)
   - [Parallel Processing With Cluster](#parallel-processing-with-cluster)
@@ -414,6 +415,30 @@ var q = kue.createQueue({
 ```
 
 **Note** *that all `<0.8.x` client codes should be refactored to pass redis options to `Queue#createQueue` instead of monkey patched style overriding of `redis#createClient` or they will be broken from Kue `0.8.x`.*
+
+
+## Queue Maintenance
+
+Jobs data and search indexes eat up redis memory space, so you will need some job-keeping process in real world deployments. Your first chance is using automatic job removal on completion.
+
+```javascript
+jobs.create( ... ).removeOnComplete( true ).save()
+```
+
+But if you eventually/temporally need completed job data, you can setup an on-demand job removal script like below to remove top `n` completed jobs:
+
+```js
+kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
+  jobs.forEach( function( job ) {
+    job.remove( function(){
+      console.log( 'removed ', job.id );
+    });
+  }
+});
+```
+
+**Note** *that you should provide enough time for `.remove` calls on each job object to complete before your process exits, or job indexes will leak*
+
 
 ## User-Interface
 

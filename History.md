@@ -9,6 +9,7 @@
 * Document job event callback arguments, Closes #542
 * Fix typo in documentation, Closes #506
 * Document importance of using Kue `error` listeners, Closes #409
+* Document Queue maintenance and job.removeOnComplete( true ), Closes #439
 
 
 0.8.11 / 2014-12-15
