@@ -312,6 +312,18 @@ jobs.process('slideshow pdf', 5, function(job, done){
 });
 ```
 
+### Error Handling
+
+All errors either in Queue or Workers are emitted to Queue object. You should bind to `error` events to prevent uncaught exceptions or debug your code.
+
+```javascript
+var queue = require('kue').createQueue();
+
+queue.on( 'error', function( err ) {
+  console.log( 'Oops... ', err );
+});
+```
+
 ### Graceful Shutdown
 
 As of Kue 0.7.0, a `Queue#shutdown(fn, timeout)` is added which signals all workers to stop processing after their current active job is done. Workers will wait `timeout` milliseconds for their active job's done to be called or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.

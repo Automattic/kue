@@ -8,6 +8,7 @@
 * Add an extra parameter to the progress method to notify extra contextual data, Closes #466, Closes #427, Closes #313
 * Document job event callback arguments, Closes #542
 * Fix typo in documentation, Closes #506
+* Document importance of using Kue `error` listeners, Closes #409
 
 
 0.8.11 / 2014-12-15
