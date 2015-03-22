@@ -406,6 +406,11 @@ kue.app.set('title', 'My Application');
 
 **Note** *that if you are using non-default Kue options, `kue.createQueue(...)` must be called before accessing `kue.app`.*
 
+### Third-party interfaces
+
+You can also use [Kue-UI](https://github.com/StreetHub/kue-ui) web interface contributed by [Arnaud Bénard](https://github.com/arnaudbenard)
+
+
 ## JSON API
 
 Along with the UI Kue also exposes a JSON API, which is utilized by the UI.
