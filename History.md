@@ -1,3 +1,13 @@
+0.8.12 / 2015-03-22
+===================
+
+* Bulk job create JSON API, Closes #334, Closes #500, Closes #527
+* Add feature to specify redis connection string/url, Closes #540
+* Upgrade to express 4.x, Closes #537
+* Mention kue-ui in readme, Closes #502
+* Add an extra parameter to the progress method to notify extra contextual data, Closes #466, Closes #427, Closes #313
+
+
 0.8.11 / 2014-12-15
 ===================
 
