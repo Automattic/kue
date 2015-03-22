@@ -171,11 +171,17 @@ var job = jobs.create('video conversion', {
 });
 
 job.on('complete', function(result){
-  console.log("Job completed with data ", result);
-}).on('failed', function(){
-  console.log("Job failed");
-}).on('progress', function(progress){
-  process.stdout.write('\r  job #' + job.id + ' ' + progress + '% complete');
+  console.log('Job completed with data ', result);
+
+}).on('failed attempt', function(errorMessage, doneAttempts){
+  console.log('Job failed');
+
+}).on('failed', function(errorMessage){
+  console.log('Job failed');
+
+}).on('progress', function(progress, data){
+  console.log('\r  job #' + job.id + ' ' + progress + '% complete with data ', data );
+
 });
 ```
 
@@ -186,11 +192,10 @@ job.on('complete', function(result){
 Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to apply logic at a "global" level. An example of this is removing completed jobs:
  
 ```js
-jobs.on('job enqueue', function(id,type){
-  console.log( 'job %s got queued', id );
-});
+jobs.on('job enqueue', function(id, type){
+  console.log( 'Job %s got queued of type %s', id, type );
 
-jobs.on('job complete', function(id,result){
+}).on('job complete', function(id, result){
   kue.Job.get(id, function(err, job){
     if (err) return;
     job.remove(function(err){

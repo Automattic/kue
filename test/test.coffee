@@ -111,6 +111,46 @@ describe 'Kue Tests', ->
       .save()
 
 
+    it 'should receive queue level complete event', (done) ->
+      jobs.process 'email-to-be-completed', (job, jdone)->
+        jdone( null, { prop: 'val' } )
+
+      jobs.on 'job complete', (id, result) ->
+        id.should.be.equal testJob.id+''
+        result.prop.should.be.equal 'val'
+        done()
+
+      job_data =
+        title: 'Test Email Job'
+        to: 'tj@learnboost.com'
+
+      testJob = jobs.create('email-to-be-completed', job_data).save()
+
+    it 'should receive queue level failed attempt events', (done) ->
+      total = 2
+      errorMsg = 'myError'
+
+      jobs.process 'email-to-be-failed', (job, jdone)->
+        jdone errorMsg
+
+      job_data =
+        title: 'Test Email Job'
+        to: 'tj@learnboost.com'
+
+      jobs.on 'job failed attempt', (id, errMsg, doneAttempts) ->
+        id.should.be.equal newJob.id+''
+        errMsg.should.be.equal errorMsg
+        doneAttempts.should.be.equal 1
+        total--
+      .on 'job failed', (id, errMsg)->
+        id.should.be.equal newJob.id+''
+        errMsg.should.be.equal errorMsg
+        (--total).should.be.equal 0
+        done()
+
+      newJob = jobs.create('email-to-be-failed', job_data).attempts(2).save()
+
+
   describe 'Job', ->
     it 'should be processed after delay', (done) ->
       now = Date.now()
