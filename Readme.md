@@ -141,11 +141,13 @@ job.log('$%d sent to %s', amount, user.name);
 
 ### Job Progress
 
-Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total)`:
+Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total [, data])`:
 
 ```js
 job.progress(frames, totalFrames);
 ```
+
+data can be used to pass extra information about the job. For example a message or an object with some extra contextual data to the current status.
 
 ### Job Events
 
@@ -295,7 +297,7 @@ jobs.process('slideshow pdf', 5, function(job, done){
     job.log('rendering %dx%d slide', slide.width, slide.height);
     renderSlide(slide, function(err){
       if (err) return done(err);
-      job.progress(i, len);
+      job.progress(i, len, {nextSlide : i == len ? 'itsdone' : i + 1});
       if (i == len) done()
       else next(i + 1);
     });
@@ -334,13 +336,21 @@ var q = kue.createQueue({
     auth: 'password',
     db: 3, // if provided select a non-default redis db
     options: {
-      // see https://github.com/mranney/node_redis#rediscreateclientport-host-options
+      // see https://github.com/mranney/node_redis#rediscreateclient
     }
   }
 });
 ```
 
 `prefix` controls the key names used in Redis.  By default, this is simply `q`. Prefix generally shouldn't be changed unless you need to use one Redis instance for multiple apps. It can also be useful for providing an isolated testbed across your main application.
+
+You can also specify the connection information as a URL string.
+
+```js
+var q = kue.createQueue({
+  redis: 'redis://example.com:1234?redis_option=value&redis_option=value'
+});
+```
 
 #### Connecting using Unix Domain Sockets
 

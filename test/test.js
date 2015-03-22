@@ -11,10 +11,7 @@ describe('Jobs', function () {
     });
 
     afterEach(function (done) {
-//        jobs.shutdown( function( err ){
-//          jobs = null;
           done();
-//        }, 500 );
     });
 
     it('should be processed', function (done) {
@@ -52,6 +49,29 @@ describe('Jobs', function () {
                 done();
             else
                 done(new Error("error"));
+        });
+    });
+
+    it('should accept url strings for redis when making an new queue', function (done) {
+        var jobs = new kue({
+            redis: 'redis://localhost:6379/?foo=bar'
+        });
+
+        jobs.client.connectionOption.port.should.be.eql(6379);
+        jobs.client.connectionOption.host.should.be.eql('localhost');
+        jobs.client.options.foo.should.be.eql('bar');
+
+        var jobData = {
+            title: 'welcome email for tj',
+            to: '"TJ" <tj@learnboost.com>',
+            template: 'welcome-email'
+        };
+        jobs.create('email-should-be-processed-2', jobData).priority('high').save();
+        jobs.process('email-should-be-processed-2', function (job, jdone) {
+            job.data.should.be.eql(jobData);
+            job.log( '<p>This is <span style="color: green;">a</span> formatted log<p/>' );
+            jdone();
+            done();
         });
     });
 
