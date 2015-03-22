@@ -6,6 +6,7 @@
 * Upgrade to express 4.x, Closes #537
 * Mention kue-ui in readme, Closes #502
 * Add an extra parameter to the progress method to notify extra contextual data, Closes #466, Closes #427, Closes #313
+* Document job event callback arguments, Closes #542
 
 
 0.8.11 / 2014-12-15
