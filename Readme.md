@@ -141,11 +141,13 @@ job.log('$%d sent to %s', amount, user.name);
 
 ### Job Progress
 
-Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total)`:
+Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total [, data])`:
 
 ```js
 job.progress(frames, totalFrames);
 ```
+
+data can be used to pass extra information about the job. For example a message or an object with some extra contextual data to the current status.
 
 ### Job Events
 
@@ -295,7 +297,7 @@ jobs.process('slideshow pdf', 5, function(job, done){
     job.log('rendering %dx%d slide', slide.width, slide.height);
     renderSlide(slide, function(err){
       if (err) return done(err);
-      job.progress(i, len);
+      job.progress(i, len, {nextSlide : i == len ? 'itsdone' : i + 1});
       if (i == len) done()
       else next(i + 1);
     });
