@@ -27,18 +27,18 @@ function jobsPopulate(type, count) {
 
 
 describe('JSON API', function() {
-  var jobs = null;
+  var scope = {};
 
 
   before(function(done) {
-    jobs = kue.createQueue();
+    scope.jobs = kue.createQueue();
     done();
   });
 
 
   after(function(done) {
-    jobs.shutdown(function(err) {
-      jobs = null;
+    scope.jobs.shutdown(function(err) {
+      scope.jobs = null;
       done(err);
     }, 500);
   });
@@ -53,6 +53,20 @@ describe('JSON API', function() {
         res.body.message.should.equal('job created');
         res.body.id.should.be.a.Number;
         Object.keys(res.body).should.have.lengthOf(2);
+
+        scope.jobId = res.body.id;
+      })
+      .end(done);
+  });
+
+
+  it('get job by id', function(done) {
+    request(app)
+      .get('/job/' + scope.jobId)
+      .expect(function(res) {
+        res.body.id.should.eql(scope.jobId);
+        res.body.type.should.eql('insert a job');
+        res.body.state.should.eql('inactive');
       })
       .end(done);
   });
@@ -119,11 +133,5 @@ describe('JSON API', function() {
         (res.body.workTime).should.exist;
       })
       .end(done);
-  });
-
-
-  it('get job by id', function(done) {
-    console.log(jobs)
-    done()
   });
 });
