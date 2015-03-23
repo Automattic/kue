@@ -1,4 +1,4 @@
-# Kue [![Build Status](https://travis-ci.org/LearnBoost/kue.png)](https://travis-ci.org/LearnBoost/kue) [![NPM version](https://badge.fury.io/js/kue.png)](http://badge.fury.io/js/kue) [![Stories in Ready](https://badge.waffle.io/learnboost/kue.png?label=ready&title=Ready)](https://waffle.io/learnboost/kue)
+# Kue [![Build Status](https://travis-ci.org/LearnBoost/kue.svg?branch=master)](https://travis-ci.org/LearnBoost/kue.svg?branch=master) [![NPM version](https://badge.fury.io/js/kue.png)](http://badge.fury.io/js/kue) [![Stories in Ready](https://badge.waffle.io/learnboost/kue.png?label=ready&title=Ready)](https://waffle.io/learnboost/kue)
 
 Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
 
