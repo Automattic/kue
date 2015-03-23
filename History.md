@@ -1,3 +1,25 @@
+0.9.0 / 2015-03-23
+===================
+
+* Upgrade to express 4.x, Closes #537
+
+
+0.8.12 / 2015-03-22
+===================
+
+* Bulk job create JSON API, Closes #334, Closes #500, Closes #527
+* Add feature to specify redis connection string/url, Closes #540
+* Mention kue-ui in readme, Closes #502
+* Add an extra parameter to the progress method to notify extra contextual data, Closes #466, Closes #427, Closes #313
+* Document job event callback arguments, Closes #542
+* Fix typo in documentation, Closes #506
+* Document importance of using Kue `error` listeners, Closes #409
+* Document Queue maintenance and job.removeOnComplete( true ), Closes #439
+* Document how to query all the active jobs programmatically, Closes #418
+* Document to explain how "stuck queued jobs" happens, Closes #451
+* Document on proper error handling to prevent stuck jobs, Closes #391
+
+
 0.8.11 / 2014-12-15
 ===================
 
