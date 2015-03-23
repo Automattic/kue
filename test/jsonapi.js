@@ -27,87 +27,103 @@ function jobsPopulate(type, count) {
 
 
 describe('JSON API', function() {
+  var jobs = null;
 
 
-  describe('Create jobs', function() {
-    var jobs = null;
-
-    beforeEach(function(done) {
-      jobs = kue.createQueue();
-      jobs.promote(1);
-      done();
-    });
+  before(function(done) {
+    jobs = kue.createQueue();
+    done();
+  });
 
 
-    afterEach(function(done) {
-      jobs.shutdown(function(err) {
-        jobs = null;
-        done(err);
-      }, 500);
-    });
+  after(function(done) {
+    jobs.shutdown(function(err) {
+      jobs = null;
+      done(err);
+    }, 500);
+  });
 
 
-    it('should insert a job and respond with an id', function(done) {
-      request(app)
-        .post('/job')
-        .send(jobsPopulate('insert a job', 1))
-        .expect(200)
-        .expect(function(res) {
-          res.body.message.should.equal('job created');
-          res.body.id.should.be.a.Number;
-          Object.keys(res.body).should.have.lengthOf(2);
-        })
-        .end(done);
-    });
+  it('should insert a job and respond with an id', function(done) {
+    request(app)
+      .post('/job')
+      .send(jobsPopulate('insert a job', 1))
+      .expect(200)
+      .expect(function(res) {
+        res.body.message.should.equal('job created');
+        res.body.id.should.be.a.Number;
+        Object.keys(res.body).should.have.lengthOf(2);
+      })
+      .end(done);
+  });
 
 
-    it('should insert multiple jobs and respond with ids', function(done) {
-      var jobCount = Math.floor(Math.random()) * 10 + 2;
+  it('should insert multiple jobs and respond with ids', function(done) {
+    var jobCount = Math.floor(Math.random()) * 10 + 2;
 
-      request(app)
-        .post('/job')
-        .send(jobsPopulate('insert jobs', jobCount))
-        .expect(200)
-        .expect(function(res) {
-          var created = res.body;
-          created.should.be.ok;
-          created.length.should.equal(jobCount);
+    request(app)
+      .post('/job')
+      .send(jobsPopulate('insert jobs', jobCount))
+      .expect(200)
+      .expect(function(res) {
+        var created = res.body;
+        created.should.be.ok;
+        created.length.should.equal(jobCount);
 
-          for (var i = 0; i < jobCount; i++) {
-            var job = created[i];
-            job.message.should.be.equal('job created')
-            job.id.should.be.a.Number
-            Object.keys(job).should.have.lengthOf(2);
-          }
-        })
-        .end(done);
-    });
+        for (var i = 0; i < jobCount; i++) {
+          var job = created[i];
+          job.message.should.be.equal('job created');
+          job.id.should.be.a.Number;
+          Object.keys(job).should.have.lengthOf(2);
+        }
+      })
+      .end(done);
+  });
 
 
-    it('should insert jobs including an invaild job, respond with ids and error', function(done) {
-      var jobs = jobsPopulate('insert jobs including error', 3);
-      delete jobs[1].type;
+  it('should insert jobs including an invalid job, respond with ids and error', function(done) {
+    var jobs = jobsPopulate('insert jobs including error', 3);
+    delete jobs[1].type;
 
-      request(app)
-        .post('/job')
-        .send(jobs)
-        .expect(400) // Expect a bad request
-        .expect(function(res) {
-          var created = res.body;
+    request(app)
+      .post('/job')
+      .send(jobs)
+      .expect(400) // Expect a bad request
+      .expect(function(res) {
+        var created = res.body;
 
-          created.should.be.ok;
-          created.length.should.equal(2); // the second one failed
+        created.should.be.ok;
+        created.length.should.equal(2); // the second one failed
 
-          // The first one succeeded
-          created[0].message.should.be.equal('job created');
-          created[0].id.should.be.a.Number;
-          Object.keys(created[0]).should.have.lengthOf(2);
+        // The first one succeeded
+        created[0].message.should.be.equal('job created');
+        created[0].id.should.be.a.Number;
+        Object.keys(created[0]).should.have.lengthOf(2);
 
-          // The second one failed
-          created[1].error.should.equal('Must provide job type');
-          Object.keys(created[1]).should.have.lengthOf(1);
-        })
-        .end(done);
-    });
+        // The second one failed
+        created[1].error.should.equal('Must provide job type');
+        Object.keys(created[1]).should.have.lengthOf(1);
+      })
+      .end(done);
+  });
+
+
+  it('get stats', function(done) {
+    request(app)
+      .get('/stats')
+      .expect(function(res) {
+        (res.body.inactiveCount).should.exist;
+        (res.body.completeCount).should.exist;
+        (res.body.activeCount).should.exist;
+        (res.body.delayedCount).should.exist;
+        (res.body.workTime).should.exist;
+      })
+      .end(done);
+  });
+
+
+  it('get job by id', function(done) {
+    console.log(jobs)
+    done()
   });
 });
