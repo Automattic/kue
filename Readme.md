@@ -64,13 +64,13 @@ First create a job `Queue` with `kue.createQueue()`:
 
 ```js
 var kue = require('kue')
-  , jobs = kue.createQueue();
+  , queue = kue.createQueue();
 ```
 
-Calling `jobs.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong. The `title` key is special-cased, and will display in the job listings within the UI, making it easier to find a specific job.
+Calling `queue.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong. The `title` key is special-cased, and will display in the job listings within the UI, making it easier to find a specific job.
 
 ```js
-var job = jobs.create('email', {
+var job = queue.create('email', {
     title: 'welcome email for tj'
   , to: 'tj@learnboost.com'
   , template: 'welcome-email'
@@ -84,7 +84,7 @@ var job = jobs.create('email', {
 To specify the priority of a job, simply invoke the `priority()` method with a number, or priority name, which is mapped to a number.
 
 ```js
-jobs.create('email', {
+queue.create('email', {
     title: 'welcome email for tj'
   , to: 'tj@learnboost.com'
   , template: 'welcome-email'
@@ -108,7 +108,7 @@ The default priority map is as follows:
 By default jobs only have _one_ attempt, that is when they fail, they are marked as a failure, and remain that way until you intervene. However, Kue allows you to specify this, which is important for jobs such as transferring an email, which upon failure, may usually retry without issue. To do this invoke the `.attempts()` method with a number.
 
 ```js
- jobs.create('email', {
+ queue.create('email', {
      title: 'welcome email for tj'
    , to: 'tj@learnboost.com'
    , template: 'welcome-email'
@@ -171,7 +171,7 @@ Job-specific events are fired on the `Job` instances via Redis pubsub. The follo
 For example this may look something like the following:
 
 ```js
-var job = jobs.create('video conversion', {
+var job = queue.create('video conversion', {
     title: 'converting loki\'s to avi'
   , user: 1
   , frames: 200
@@ -199,7 +199,7 @@ job.on('complete', function(result){
 Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to apply logic at a "global" level. An example of this is removing completed jobs:
  
 ```js
-jobs.on('job enqueue', function(id, type){
+queue.on('job enqueue', function(id, type){
   console.log( 'Job %s got queued of type %s', id, type );
 
 }).on('job complete', function(id, result){
@@ -221,7 +221,7 @@ Delayed jobs may be scheduled to be queued for an arbitrary distance in time by 
 This automatically flags the `Job` as "delayed". 
 
 ```js
-var email = jobs.create('email', {
+var email = queue.create('email', {
     title: 'Account renewal required'
   , to: 'tj@learnboost.com'
   , template: 'renewal-email'
@@ -233,21 +233,21 @@ var email = jobs.create('email', {
 When using delayed jobs, we must also check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded. This `setInterval` is defined within `Queue#promote(ms,limit)`, defaulting to a check of top 200 jobs every 5 seconds. If you have a cluster of kue processes, you must call `.promote` in just one (preferably master) process or promotion race can happen.
 
 ```js
-jobs.promote();
+queue.promote();
 ```
 
 ## Processing Jobs
 
-Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `jobs.process()` with the associated type.
+Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `queue.process()` with the associated type.
 Note that unlike what the name `createQueue` suggests, it currently returns a singleton `Queue` instance. So you can configure and use only a single `Queue` object within your node.js process.
 
 In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure. The error object passed to done, should be of standard type `Error`.
 
 ```js
 var kue = require('kue')
- , jobs = kue.createQueue();
+ , queue = kue.createQueue();
 
-jobs.process('email', function(job, done){
+queue.process('email', function(job, done){
   email(job.data.to, done);
 });
 
@@ -265,10 +265,10 @@ Workers can also pass job result as the second parameter to done `done(null,resu
 
 ### Processing Concurrency
 
-By default a call to `jobs.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
+By default a call to `queue.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
  
 ```js
-jobs.process('email', 20, function(job, done){
+queue.process('email', 20, function(job, done){
   // ...
 });
 ```
@@ -278,7 +278,7 @@ jobs.process('email', 20, function(job, done){
 Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as `shutdown` method in [Graceful Shutdown](#graceful-shutdown).
 
 ```js
-jobs.process('email', function(job, done, ctx){
+queue.process('email', function(job, done, ctx){
   ctx.pause( function(err){
     console.log("Worker is paused... ");
     setTimeout( function(){ ctx.resume(); }, 10000 );
@@ -291,7 +291,7 @@ jobs.process('email', function(job, done, ctx){
 For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](http://github.com/learnboost/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
  
 ```js
-jobs.create('slideshow pdf', {
+queue.create('slideshow pdf', {
     title: user.name + "'s slideshow"
   , slides: [...] // keys to data stored in redis, mongodb, or some other store
 });
@@ -300,7 +300,7 @@ jobs.create('slideshow pdf', {
 We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and process.
 
 ```js
-jobs.process('slideshow pdf', 5, function(job, done){
+queue.process('slideshow pdf', 5, function(job, done){
   var slides = job.data.slides
     , len = slides.length;
 
@@ -351,52 +351,53 @@ queue.on( 'error', function( err ) {
 Kue marks a job complete/failed when `done` is called by your worker, so you should use proper error handling to prevent uncaught exceptions in your worker's code and node.js process exiting before in handle jobs get done.
 This can be achieved in two ways:
 
-* Wrapping your worker's process function in [Domains](https://nodejs.org/api/domain.html)
+1. Wrapping your worker's process function in [Domains](https://nodejs.org/api/domain.html)
 
-```js
-jobs.process('my-error-prone-task', function(job, done){
-  var domain = require('domain').create();
-  domain.on('error', function(err){
-    done(err);
+  ```js
+  queue.process('my-error-prone-task', function(job, done){
+    var domain = require('domain').create();
+    domain.on('error', function(err){
+      done(err);
+    });
+    domain.run(function(){ // your process function
+      throw new Error( 'bad things happen' );
+      done();
+    });
   });
-  domain.run(function(){ // your process function
-    throw new Error( 'bad things happen' );
-    done();
+  ```
+
+  This is the softest and best solution, however is not built-in with Kue. Please refer to [this discussion](https://github.com/kriskowal/q/issues/120). You can comment on this feature in the related open Kue [issue](https://github.com/LearnBoost/kue/pull/403).
+
+  You can also use promises to do something like
+
+  ```js
+  queue.process('my-error-prone-task', function(job, done){
+    Promise.method( function(){ // your process function
+      throw new Error( 'bad things happen' );
+    })().nodeify(done)
   });
-});
-```
+  ```
 
-This is the softest and best solution, however is not built-in with Kue. Please refer to [this discussion](https://github.com/kriskowal/q/issues/120). You can comment on this feature in the related open Kue [issue](https://github.com/LearnBoost/kue/pull/403).
-
-You can also use promises to do something like
-
-```js
-jobs.process('my-error-prone-task', function(job, done){
-  Promise.method( function(){ // your process function
-    throw new Error( 'bad things happen' );
-  })().nodeify(done)
-});
-```
-
-but this won't catch exceptions in your async call stack.
+  but this won't catch exceptions in your async call stack as domains do.
 
 
-* Binding to `uncaughtException` and gracefully shutting down the Kue.
 
-```js
-process.once( 'uncaughtException', function(err){
-  queue.shutdown(function(err2){
-    process.exit( 0 );
-  }, 2000 );
-});
-```
+2. Binding to `uncaughtException` and gracefully shutting down the Kue.
+
+  ```js
+  process.once( 'uncaughtException', function(err){
+    queue.shutdown(function(err2){
+      process.exit( 0 );
+    }, 2000 );
+  });
+  ```
 
 ### Unstable Redis connections
 
 Kue currently uses client side job state management and when redis crashes in the middle of that operations, some stuck jobs or index inconsistencies will happen. If you are facing poor redis connections or an unstable redis service you can start Kue's watchdog to fix stuck inactive jobs (if any) by calling:
 
 ```js
-jobs.watchStuckJobs()
+queue.watchStuckJobs()
 ```
 
 Kue will be refactored to fully atomic job state management from version 1.0 and this will happen by lua scripts and/or BRPOPLPUSH combination. You can read more [here](https://github.com/LearnBoost/kue/issues/130) and [here](https://github.com/LearnBoost/kue/issues/38).
@@ -408,7 +409,7 @@ Kue will be refactored to fully atomic job state management from version 1.0 and
 If you did none of above or your process lost active jobs in any way, you can recover from them when your process is restarted. A blind logic would be to re-queue all stuck jobs:
 
 ```js
-jobs.active( function( err, ids ) {
+queue.active( function( err, ids ) {
   ids.forEach( function( id ) {
     kue.Job.get( id, function( err, job ) {
       // if job is a stuck one
@@ -425,7 +426,7 @@ jobs.active( function( err, ids ) {
 Jobs data and search indexes eat up redis memory space, so you will need some job-keeping process in real world deployments. Your first chance is using automatic job removal on completion.
 
 ```javascript
-jobs.create( ... ).removeOnComplete( true ).save()
+queue.create( ... ).removeOnComplete( true ).save()
 ```
 
 But if you eventually/temporally need completed job data, you can setup an on-demand job removal script like below to remove top `n` completed jobs:
@@ -559,8 +560,8 @@ By default kue indexes the whole Job data object for searching, but this can be 
 
 ```javascript
 var kue = require('kue');
-jobs = kue.createQueue();
-jobs.create('email', {
+queue = kue.createQueue();
+queue.create('email', {
     title: 'welcome email for tj'
   , to: 'tj@learnboost.com'
   , template: 'welcome-email'
@@ -692,7 +693,7 @@ When cluster `.isMaster` the file is being executed in context of the master pro
 ```js
 var kue = require('kue')
   , cluster = require('cluster')
-  , jobs = kue.createQueue();
+  , queue = kue.createQueue();
 
 var clusterWorkerSize = require('os').cpus().length;
 
@@ -702,7 +703,7 @@ if (cluster.isMaster) {
     cluster.fork();
   }
 } else {
-  jobs.process('email', 10, function(job, done){
+  queue.process('email', 10, function(job, done){
     var pending = 5
       , total = pending;
 
