@@ -155,9 +155,9 @@ describe('JSON API', function() {
   describe('range', function() {
     it('range from...to', function(done) {
       request(app)
-        .get('/jobs/0..10')
+        .get('/jobs/0..3')
         .expect(function(res) {
-          res.body.length.should.eql(11);
+          res.body.length.should.eql(4);
         })
         .end(done);
     });
@@ -179,11 +179,10 @@ describe('JSON API', function() {
       request(app)
         .get('/stats')
         .expect(function(res) {
-          (res.body.inactiveCount).should.exist;
-          (res.body.completeCount).should.exist;
-          (res.body.activeCount).should.exist;
-          (res.body.delayedCount).should.exist;
-          (res.body.workTime).should.exist;
+          expect(res.body.inactiveCount).to.exist;
+          expect(res.body.completeCount).to.exist;
+          expect(res.body.activeCount).to.exist;
+          expect(res.body.delayedCount).to.exist;
         })
         .end(done);
     });
