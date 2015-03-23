@@ -27,6 +27,7 @@
     "stylus": "0.42.2"
   },
   "devDependencies": {
+    "chai": "^2.1.2",
     "coffee-script": "~1.6.3",
     "mocha": "~1.17.0",
     "should": "~3.0.1",

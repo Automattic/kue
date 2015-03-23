@@ -1,6 +1,10 @@
 var request = require('supertest'),
   kue = require('../index'),
+  chai = require('chai'),
   app = kue.app;
+
+
+expect = chai.expect;
 
 
 function jobsPopulate(type, count) {
@@ -67,6 +71,16 @@ describe('JSON API', function() {
         res.body.id.should.eql(scope.jobId);
         res.body.type.should.eql('insert a job');
         res.body.state.should.eql('inactive');
+      })
+      .end(done);
+  });
+
+
+  it('delete job by id', function(done) {
+    request(app)
+      .del('/job/' + scope.jobId)
+      .expect(function(res) {
+        expect(res.body.message).to.contain(scope.jobId);
       })
       .end(done);
   });
