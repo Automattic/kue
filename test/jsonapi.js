@@ -8,9 +8,6 @@ var request = require('supertest'),
 
 expect = chai.expect;
 
-/**
- * mock redis because we don't care
- */
 
 function jobsPopulate(count) {
   var priority = [10, 0, -5, -10, -15],
