@@ -8,6 +8,9 @@ var request = require('supertest'),
 
 expect = chai.expect;
 
+/**
+ * mock redis because we don't care
+ */
 
 function jobsPopulate(count) {
   var priority = [10, 0, -5, -10, -15],
@@ -77,7 +80,7 @@ describe('JSON API', function() {
 
 
     it('should insert multiple jobs and respond with ids', function(done) {
-      var jobCount = Math.floor(Math.random()) * 10 + 2;
+      var jobCount = 5;
 
       request(app)
         .post('/job')
@@ -141,8 +144,30 @@ describe('JSON API', function() {
           q: type + ':data'
         })
         .expect(function(res) {
-          // we created 3 jobs, one was deleted, two left
-          res.body.length.should.eql(2);
+          // we created 6 jobs, one was deleted, 5 left
+          res.body.length.should.eql(5);
+        })
+        .end(done);
+    });
+  });
+
+
+  describe('range', function() {
+    it('range from...to', function(done) {
+      request(app)
+        .get('/jobs/0..10')
+        .expect(function(res) {
+          res.body.length.should.eql(11);
+        })
+        .end(done);
+    });
+
+
+    it('range from...to with type and state', function(done) {
+      request(app)
+        .get('/jobs/' + type + '/inactive/0..20/asc')
+        .expect(function(res) {
+          res.body.length.should.eql(5);
         })
         .end(done);
     });
