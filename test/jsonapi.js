@@ -62,7 +62,7 @@ describe('JSON API', function() {
   });
 
 
-  describe('create, get and delete', function() {
+  describe('create, get, update and delete', function() {
     it('should insert a job and respond with an id', function(done) {
       request(app)
         .post('/job')
@@ -102,13 +102,35 @@ describe('JSON API', function() {
     });
 
 
-    it('get job by id', function(done) {
+    it('get job by id: job is inactive', function(done) {
       request(app)
         .get('/job/' + scope.jobId)
         .expect(function(res) {
           res.body.id.should.eql(scope.jobId);
           res.body.type.should.eql(type);
           res.body.state.should.eql('inactive');
+        })
+        .end(done);
+    });
+
+
+    it('change state', function(done) {
+      request(app)
+        .put('/job/' + scope.jobId + '/state/active')
+        .expect(function(res) {
+          expect(res.body.message).to.exist;
+        })
+        .end(done);
+    });
+
+
+    it('get job by id: job is now active', function(done) {
+      request(app)
+        .get('/job/' + scope.jobId)
+        .expect(function(res) {
+          res.body.id.should.eql(scope.jobId);
+          res.body.type.should.eql(type);
+          res.body.state.should.eql('active');
         })
         .end(done);
     });
