@@ -1,8 +1,13 @@
-# Kue [![Build Status](https://travis-ci.org/LearnBoost/kue.svg?branch=master)](https://travis-ci.org/LearnBoost/kue.svg?branch=master) [![NPM version](https://badge.fury.io/js/kue.png)](http://badge.fury.io/js/kue) [![Stories in Ready](https://badge.waffle.io/learnboost/kue.png?label=ready&title=Ready)](https://waffle.io/learnboost/kue)
+# Kue
+
+[![Build Status](https://travis-ci.org/LearnBoost/kue.svg?branch=master)](https://travis-ci.org/LearnBoost/kue.svg?branch=master&style=flat)
+[![Dependency Status](https://img.shields.io/david/learnboost/kue.svg?style=flat)](https://david-dm.org/learnboost/kue)
+[![npm version](https://badge.fury.io/js/kue.svg?style=flat)](http://badge.fury.io/js/kue)
+[![Stories in Ready](https://badge.waffle.io/learnboost/kue.svg?style=flat&label=ready&title=Ready)](https://waffle.io/learnboost/kue)
 
 Kue is a priority job queue backed by [redis](http://redis.io), built for [node.js](http://nodejs.org).
 
-**PROTIP** This is the latest Kue documentation, make sure to read the [changelist](History.md) for compatibility.
+**PROTIP** This is the latest Kue documentation, make sure to also read the [changelist](History.md).
 
 ## Installation
 
@@ -41,8 +46,9 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Pause Processing](#pause-processing)
   - [Updating Progress](#updating-progress)
   - [Graceful Shutdown](#graceful-shutdown)
-  - [Redis Connection Settings](#redis-connection-settings)
+  - [Error Handling](#error-handling)
   - [Queue Maintenance](#queue-maintenance)
+  - [Redis Connection Settings](#redis-connection-settings)
   - [User-Interface](#user-interface)
   - [JSON API](#json-api)
   - [Parallel Processing With Cluster](#parallel-processing-with-cluster)
@@ -313,18 +319,6 @@ jobs.process('slideshow pdf', 5, function(job, done){
 });
 ```
 
-### Error Handling
-
-All errors either in Queue or Workers are emitted to Queue object. You should bind to `error` events to prevent uncaught exceptions or debug your code.
-
-```javascript
-var queue = require('kue').createQueue();
-
-queue.on( 'error', function( err ) {
-  console.log( 'Oops... ', err );
-});
-```
-
 ### Graceful Shutdown
 
 As of Kue 0.7.0, a `Queue#shutdown(fn, timeout)` is added which signals all workers to stop processing after their current active job is done. Workers will wait `timeout` milliseconds for their active job's done to be called or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
@@ -339,6 +333,115 @@ process.once( 'SIGTERM', function ( sig ) {
   }, 5000 );
 });
 ```
+
+## Error Handling
+
+All errors either in Redis client library or Queue are emitted to the `Queue` object. You should bind to `error` events to prevent uncaught exceptions or debug kue errors.
+
+```javascript
+var queue = require('kue').createQueue();
+
+queue.on( 'error', function( err ) {
+  console.log( 'Oops... ', err );
+});
+```
+
+### Prevent from Stuck Active Jobs
+
+Kue marks a job complete/failed when `done` is called by your worker, so you should use proper error handling to prevent uncaught exceptions in your worker's code and node.js process exiting before in handle jobs get done.
+This can be achieved in two ways:
+
+* Wrapping your worker's process function in [Domains](https://nodejs.org/api/domain.html)
+
+```js
+jobs.process('my-error-prone-task', function(job, done){
+  var domain = require('domain').create();
+  domain.on('error', function(err){
+    done(err);
+  });
+  domain.run(function(){ // your process function
+    throw new Error( 'bad things happen' );
+    done();
+  });
+});
+```
+
+This is the softest and best solution, however is not built-in with Kue. Please refer to [this discussion](https://github.com/kriskowal/q/issues/120). You can comment on this feature in the related open Kue [issue](https://github.com/LearnBoost/kue/pull/403).
+
+You can also use promises to do something like
+
+```js
+jobs.process('my-error-prone-task', function(job, done){
+  Promise.method( function(){ // your process function
+    throw new Error( 'bad things happen' );
+  })().nodeify(done)
+});
+```
+
+but this won't catch exceptions in your async call stack.
+
+
+* Binding to `uncaughtException` and gracefully shutting down the Kue.
+
+```js
+process.once( 'uncaughtException', function(err){
+  queue.shutdown(function(err2){
+    process.exit( 0 );
+  }, 2000 );
+});
+```
+
+### Unstable Redis connections
+
+Kue currently uses client side job state management and when redis crashes in the middle of that operations, some stuck jobs or index inconsistencies will happen. If you are facing poor redis connections or an unstable redis service you can start Kue's watchdog to fix stuck inactive jobs (if any) by calling:
+
+```js
+jobs.watchStuckJobs()
+```
+
+Kue will be refactored to fully atomic job state management from version 1.0 and this will happen by lua scripts and/or BRPOPLPUSH combination. You can read more [here](https://github.com/LearnBoost/kue/issues/130) and [here](https://github.com/LearnBoost/kue/issues/38).
+
+## Queue Maintenance
+
+### Programmatic Job Management
+
+If you did none of above or your process lost active jobs in any way, you can recover from them when your process is restarted. A blind logic would be to re-queue all stuck jobs:
+
+```js
+jobs.active( function( err, ids ) {
+  ids.forEach( function( id ) {
+    kue.Job.get( id, function( err, job ) {
+      // if job is a stuck one
+      job.inactive();
+    });
+  });
+});
+```
+
+**Note** *in a clustered deployment your application should be aware not to involve a job that is valid, currently inprocess by other workers.*
+
+### Job Cleanup
+
+Jobs data and search indexes eat up redis memory space, so you will need some job-keeping process in real world deployments. Your first chance is using automatic job removal on completion.
+
+```javascript
+jobs.create( ... ).removeOnComplete( true ).save()
+```
+
+But if you eventually/temporally need completed job data, you can setup an on-demand job removal script like below to remove top `n` completed jobs:
+
+```js
+kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
+  jobs.forEach( function( job ) {
+    job.remove( function(){
+      console.log( 'removed ', job.id );
+    });
+  }
+});
+```
+
+**Note** *that you should provide enough time for `.remove` calls on each job object to complete before your process exits, or job indexes will leak*
+
 
 ## Redis Connection Settings
 
@@ -415,29 +518,6 @@ var q = kue.createQueue({
 ```
 
 **Note** *that all `<0.8.x` client codes should be refactored to pass redis options to `Queue#createQueue` instead of monkey patched style overriding of `redis#createClient` or they will be broken from Kue `0.8.x`.*
-
-
-## Queue Maintenance
-
-Jobs data and search indexes eat up redis memory space, so you will need some job-keeping process in real world deployments. Your first chance is using automatic job removal on completion.
-
-```javascript
-jobs.create( ... ).removeOnComplete( true ).save()
-```
-
-But if you eventually/temporally need completed job data, you can setup an on-demand job removal script like below to remove top `n` completed jobs:
-
-```js
-kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
-  jobs.forEach( function( job ) {
-    job.remove( function(){
-      console.log( 'removed ', job.id );
-    });
-  }
-});
-```
-
-**Note** *that you should provide enough time for `.remove` calls on each job object to complete before your process exits, or job indexes will leak*
 
 
 ## User-Interface

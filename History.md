@@ -15,6 +15,9 @@
 * Fix typo in documentation, Closes #506
 * Document importance of using Kue `error` listeners, Closes #409
 * Document Queue maintenance and job.removeOnComplete( true ), Closes #439
+* Document how to query all the active jobs programmatically, Closes #418
+* Document to explain how "stuck queued jobs" happens, Closes #451
+* Document on proper error handling to prevent stuck jobs, Closes #391
 
 
 0.8.11 / 2014-12-15
