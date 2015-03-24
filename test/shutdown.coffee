@@ -54,7 +54,7 @@ describe 'Kue', ->
       for i in [0...total_jobs]
         jobs.create('resumable-jobs', job_data).save()
 
-      jobs.process 'resumable-jobs', 1, (job, job_done, ctx) ->
+      jobs.process 'resumable-jobs', 1, (job, ctx, job_done) ->
         job_done()
         if( !--total_jobs )
           jobs.shutdown done, 1000

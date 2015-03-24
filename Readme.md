@@ -278,13 +278,15 @@ queue.process('email', 20, function(job, done){
 Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as `shutdown` method in [Graceful Shutdown](#graceful-shutdown).
 
 ```js
-queue.process('email', function(job, done, ctx){
+queue.process('email', function(job, ctx, done){
   ctx.pause( function(err){
     console.log("Worker is paused... ");
     setTimeout( function(){ ctx.resume(); }, 10000 );
   }, 5000);
 });
 ```
+
+**Note** *that the `ctx` parameter from Kue `>=0.9.0` is the second argument of the process callback function and `done` is idiomatically always the last*
 
 ### Updating Progress
 
