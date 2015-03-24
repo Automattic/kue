@@ -11,9 +11,16 @@
   ],
   "license": "MIT",
   "author": "TJ Holowaychuk <tj@learnboost.com>",
+  "contributors": [{
+    "name": "Behrad Zari",
+    "email": "behradz@gmail.com"
+  }],
   "repository": {
     "type": "git",
     "url": "https://github.com/LearnBoost/kue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LearnBoost/kue/issues"
   },
   "dependencies": {
     "body-parser": "^1.12.2",
