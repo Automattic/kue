@@ -52,10 +52,10 @@ describe('JSON API', function() {
 
 
   after(function(done) {
-    scope.queue.shutdown(function(err) {
+    scope.queue.shutdown(500, function(err) {
       scope.queue = null;
       done(err);
-    }, 500);
+    });
   });
 
 

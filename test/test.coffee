@@ -14,7 +14,7 @@ describe 'Kue Tests', ->
   afterEach (done) ->
     onShutdown = (err) ->
       done(err)
-    jobs.shutdown onShutdown, 500
+    jobs.shutdown 500, onShutdown
 
   before (done) ->
     jobs = kue.createQueue()

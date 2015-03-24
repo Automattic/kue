@@ -279,14 +279,16 @@ Workers can temporary pause and resume their activity. It is, after calling `pau
 
 ```js
 queue.process('email', function(job, ctx, done){
-  ctx.pause( function(err){
+  ctx.pause( 5000, function(err){
     console.log("Worker is paused... ");
     setTimeout( function(){ ctx.resume(); }, 10000 );
-  }, 5000);
+  });
 });
 ```
 
 **Note** *that the `ctx` parameter from Kue `>=0.9.0` is the second argument of the process callback function and `done` is idiomatically always the last*
+
+**Note** *that `pause` method signature is changed from Kue `>=0.9.0` to move the callback function to the last.*
 
 ### Updating Progress
 
@@ -323,18 +325,20 @@ queue.process('slideshow pdf', 5, function(job, done){
 
 ### Graceful Shutdown
 
-As of Kue 0.7.0, a `Queue#shutdown(fn, timeout)` is added which signals all workers to stop processing after their current active job is done. Workers will wait `timeout` milliseconds for their active job's done to be called or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
+`Queue#shutdown([timeout,] fn)` signals all workers to stop processing after their current active job is done. Workers will wait `timeout` milliseconds for their active job's done to be called or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
 
 ```javascript
 var queue = require('kue').createQueue();
 
 process.once( 'SIGTERM', function ( sig ) {
-  queue.shutdown(function(err) {
-    console.log( 'Kue is shut down.', err||'' );
+  queue.shutdown( 5000, function(err) {
+    console.log( 'Kue is shut down. ', err||'' );
     process.exit( 0 );
-  }, 5000 );
+  });
 });
 ```
+
+**Note** *that `shutdown` method signature is changed from Kue `>=0.9.0` to move the callback function to the last.*
 
 ## Error Handling
 
@@ -388,9 +392,9 @@ This can be achieved in two ways:
 
   ```js
   process.once( 'uncaughtException', function(err){
-    queue.shutdown(function(err2){
+    queue.shutdown( 1000, function(err2){
       process.exit( 0 );
-    }, 2000 );
+    });
   });
   ```
 
