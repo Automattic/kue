@@ -3,7 +3,7 @@
 
 * Upgrade to express 4.x, Closes #537
 * Move `job.process` done callback to the last, Closes #387, Closes #385
-* 
+* Document Javascript API to query queue state, Closes #455
 
 
 0.8.12 / 2015-03-22

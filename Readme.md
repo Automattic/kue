@@ -406,15 +406,61 @@ Kue will be refactored to fully atomic job state management from version 1.0 and
 
 ## Queue Maintenance
 
+Queue object has two type of methods to tell you about the number of jobs in each state
+
+```js
+queue.inactiveCount( function( err, total ) { // others are activeCount, completeCount, failedCount, delayedCount
+  if( total > 100000 ) {
+    console.log( 'We need some back pressure here' );
+  }
+});
+```
+
+you can also query on an specific job type:
+
+```js
+queue.failedCount( 'my-critical-job', function( err, total ) {
+  if( total > 10000 ) {
+    console.log( 'This is tOoOo bad' );
+  }
+});
+```
+
+and iterating over job ids
+
+```js
+queue.inactive( function( err, ids ) { // others are active, complete, failed, delayed
+  // you may want to fetch each id to get the Job object out of it...
+});
+```
+
+however the second one doesn't scale to large deployments, there you can use more specific `Job` static methods:
+
+```js
+kue.Job.rangeByState( 'failed', 0, n, 'asc', function( err, jobs ) {
+  // you have an array of maximum n Job objects here
+});
+```
+or
+
+```js
+kue.Job.rangeByType( 'my-job-type', 'failed', 0, n, 'asc', function( err, jobs ) {
+  // you have an array of maximum n Job objects here
+});
+```
+
+**Note** *that the last two methods are subject to change in later Kue versions.*
+
+
 ### Programmatic Job Management
 
-If you did none of above or your process lost active jobs in any way, you can recover from them when your process is restarted. A blind logic would be to re-queue all stuck jobs:
+If you did none of above in [Error Handling](#error-handling) section or your process lost active jobs in any way, you can recover from them when your process is restarted. A blind logic would be to re-queue all stuck jobs:
 
 ```js
 queue.active( function( err, ids ) {
   ids.forEach( function( id ) {
     kue.Job.get( id, function( err, job ) {
-      // if job is a stuck one
+      // Your application should check if job is a stuck one
       job.inactive();
     });
   });
