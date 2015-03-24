@@ -3,8 +3,9 @@
 
 * Upgrade to express 4.x, Closes #537
 * Move `job.process` done callback to the last, Closes #387, Closes #385
-* Document Javascript API to query queue state, Closes #455
 * Standardize signature of `.shutdown()` callback, Closes #454
+* Turn off search indexes by default, Closes #412
+* Document Javascript API to query queue state, Closes #455
 
 
 

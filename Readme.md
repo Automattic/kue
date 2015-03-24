@@ -620,12 +620,12 @@ queue.create('email', {
 }).searchKeys( ['to', 'title'] ).save();
 ```
 
-You may also fully disable search indexes for redis memory optimization:
+Search feature is turned off by default from Kue `>=0.9.0`. Read more about this [here](https://github.com/LearnBoost/kue/issues/412). You should enable search indexes in you need to:
 
 ```javascript
 var kue = require('kue');
 q = kue.createQueue({
-    disableSearch: true
+    disableSearch: false
 });
 ```
 
