@@ -1,6 +1,6 @@
 var kue = require('../');
 
-describe('Jobs', function () {
+describe('JOBS', function () {
 
     var jobs = null;
 
