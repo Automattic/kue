@@ -2,6 +2,7 @@ var request = require('supertest'),
   kue = require('../index'),
   async = require('async'),
   chai = require('chai'),
+  queue = kue.createQueue({disableSearch:false}), //customize queue before accessing kue.app
   app = kue.app,
   type = 'test:inserts';
 
@@ -37,13 +38,12 @@ describe('JSON API', function() {
 
 
   before(function(done) {
-    scope.queue = kue.createQueue();
+    scope.queue = queue;
 
     // delete all jobs to get a clean state
     kue.Job.rangeByType(type, 'inactive', 0, 100, 'asc', function(err, jobs) {
       if (err) return done(err);
       if (!jobs.length) return done();
-
       async.each(jobs, function(job, asyncDone) {
         job.remove(asyncDone);
       }, done);
@@ -52,7 +52,7 @@ describe('JSON API', function() {
 
 
   after(function(done) {
-    scope.queue.shutdown(500, function(err) {
+    scope.queue.shutdown(200, function(err) {
       scope.queue = null;
       done(err);
     });

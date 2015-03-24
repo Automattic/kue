@@ -1,12 +1,12 @@
-0.9.0 / 2015-03-23
+0.9.0 / 2015-03-24
 ===================
 
 * Upgrade to express 4.x, Closes #537
 * Move `job.process` done callback to the last, Closes #387, Closes #385
 * Standardize signature of `.shutdown()` callback, Closes #454
 * Turn off search indexes by default, Closes #412
+* Improve delayed job promotion feature, Closes #533, fixes #312, closes #352
 * Document Javascript API to query queue state, Closes #455
-
 
 
 0.8.12 / 2015-03-22
