@@ -700,7 +700,7 @@ Create a job:
          }' http://localhost:3000/job
     {"message": "job created", "id": 3}
 
-You can create multiple jobs at once by passing an array. In this case, the response will be an array too.
+You can create multiple jobs at once by passing an array. In this case, the response will be an array too, preserving the order:
 
     $ curl -H "Content-Type: application/json" -X POST -d \
         '[{
@@ -733,7 +733,7 @@ You can create multiple jobs at once by passing an array. In this case, the resp
 	    {"message": "job created", "id": 5}
     ]
 
-Note: when inserting multiple jobs in bulk, if one insertion fails Kue will not attempt adding the remaining jobs. The response array will contain the ids of the jobs added successfully, and the last element will be an object describing the error: `{"error": "error reason"}`. It is your responsibility to fix the wrong task and re-submit it and all the subsequent ones.
+Note: when inserting multiple jobs in bulk, if one insertion fails Kue will keep processing the remaining jobs in order. The response array will contain the ids of the jobs added successfully, and any failed element will be an object describing the error: `{"error": "error reason"}`.
 
 
 ## Parallel Processing With Cluster

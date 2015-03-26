@@ -209,6 +209,17 @@ describe('JSON API', function() {
 
 
   describe('error cases', function() {
+    it('should return 204 status code when POST /job body is empty', function(done) {
+      request(app)
+        .post('/job')
+        .send([])
+        .expect(204)
+        .expect(function(res) {
+          res.text.should.have.lengthOf(0);
+        })
+        .end(done);
+    });
+    
     it('should insert jobs including an invalid job, respond with ids and error', function(done) {
       var jobs = jobsPopulate(3);
       delete jobs[1].type;
@@ -221,7 +232,7 @@ describe('JSON API', function() {
           var created = res.body;
 
           created.should.be.ok;
-          created.length.should.equal(2); // the second one failed
+          created.length.should.equal(3); // should still have 3 objects in the response
 
           // The first one succeeded
           created[0].message.should.be.equal('job created');
@@ -231,6 +242,11 @@ describe('JSON API', function() {
           // The second one failed
           created[1].error.should.equal('Must provide job type');
           Object.keys(created[1]).should.have.lengthOf(1);
+          
+          // The third one succeeded
+          created[2].message.should.be.equal('job created');
+          created[2].id.should.be.a.Number;
+          Object.keys(created[2]).should.have.lengthOf(2);
         })
         .end(done);
     });
