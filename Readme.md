@@ -9,9 +9,20 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
 
 **PROTIP** This is the latest Kue documentation, make sure to also read the [changelist](History.md).
 
+
+## Requirements
+
+  - Redis >= 2.6.12
+
 ## Installation
 
-    $ npm install kue
+  - Latest release:
+
+        $ npm install kue
+
+  - Master branch:
+
+        $ npm install http://github.com/Automattic/kue/tarball/master
 
 [![NPM](https://nodei.co/npm/kue.png?downloads=true&stars=true)](https://nodei.co/npm/kue/)
 
@@ -136,8 +147,6 @@ Job retry attempts are done as soon as they fail, with no delay, even if your jo
 
 In the last scenario, provided function will be executed (via eval) on each re-attempt to get next attempt delay value, meaning that you can't reference external/context variables within it.
 
-**Note** that backoff feature depends on `.delay` under the covers and therefore `.promote()` needs to be called if used.
-
 ### Job Logs
 
 Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
@@ -230,11 +239,7 @@ var email = queue.create('email', {
   .save();
 ```
 
-When using delayed jobs, we must also check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded. This `setInterval` is defined within `Queue#promote(ms,limit)`, defaulting to a check of top 200 jobs every 5 seconds. If you have a cluster of kue processes, you must call `.promote` in just one (preferably master) process or promotion race can happen.
-
-```js
-queue.promote();
-```
+Kue will check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded, defaulting to a check of top 1000 jobs every second.
 
 ## Processing Jobs
 

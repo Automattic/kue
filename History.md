@@ -6,6 +6,8 @@
 * Standardize signature of `.shutdown()` callback, Closes #454
 * Turn off search indexes by default, Closes #412
 * Improve delayed job promotion feature, Closes #533, fixes #312, closes #352
+* Use a distributed redis lock to hide job promotion from user, Closes #556
+* Deprecate `.promote` and update documentation
 * Document Javascript API to query queue state, Closes #455
 
 

@@ -11,10 +11,12 @@
   ],
   "license": "MIT",
   "author": "TJ Holowaychuk <tj@learnboost.com>",
-  "contributors": [{
-    "name": "Behrad Zari",
-    "email": "behradz@gmail.com"
-  }],
+  "contributors": [
+    {
+      "name": "Behrad Zari",
+      "email": "behradz@gmail.com"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/LearnBoost/kue.git"
@@ -29,6 +31,7 @@
     "lodash": "^2.4.1",
     "lodash-deep": "^1.1.0",
     "nib": "0.5.0",
+    "node-redis-warlock": "^0.1.2",
     "redis": "~0.12.0",
     "reds": "~0.2.4",
     "stylus": "0.42.2"
