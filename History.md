@@ -9,6 +9,7 @@
 * Use a distributed redis lock to hide job promotion from user, Closes #556
 * Deprecate `.promote` and update documentation
 * Document Javascript API to query queue state, Closes #455
+* add jobEvents flag to switch off job events for memory optimization, Closes #401
 
 
 0.8.12 / 2015-03-22
