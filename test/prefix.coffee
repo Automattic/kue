@@ -5,8 +5,9 @@ describe 'Kue - Prefix', ->
   makeJobs = (queueName) ->
       opts =
           prefix: queueName
+          promotion:
+            interval: 10
       jobs = kue.createQueue opts
-      jobs.promote 10
       return jobs
 
   stopJobs = (jobs, callback) ->

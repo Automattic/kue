@@ -5,13 +5,12 @@ describe('JOBS', function () {
     var jobs = null;
 
     beforeEach(function (done) {
-        jobs = kue.createQueue();
-        jobs.promote(200);
+        jobs = kue.createQueue({promotion:{interval:100}});
         done();
     });
 
     afterEach(function (done) {
-          done();
+        jobs.shutdown(50, function(){done()});
     });
 
     it('should be processed', function (done) {
@@ -74,71 +73,4 @@ describe('JOBS', function () {
             done();
         });
     });
-
-    /*
-     it('should delay retries on failure if attempts and delay is set', function (done) {
-     this.timeout(20000);
-     jobs.create('failure-attempts-delay', {}).delay(1000).attempts(5).attemptsDelay(100).save();
-     var delays = []
-     jobs.process('failure-attempts-delay', function (job, done) {
-     delays.push((new Date()) - job.created_at);
-     done(new Error("error"));
-     });
-     jobs.promote(1);
-     setTimeout(function () {
-     delays.should.arraysAlmostEql([1000, 1100, 1200, 1300, 1400]);
-     done();
-     }, 1500);
-     })
-
-     it('should fire up retries right away on failure if attemptsDelay is nil', function (done) {
-     this.timeout(20000);
-     jobs.create('failure-attempts-without-delay', {}).delay(1000).attempts(5).save();
-     var delays = []
-     jobs.process('failure-attempts-without-delay', function (job, done) {
-     delays.push((new Date()) - job.created_at);
-     done(new Error("error"));
-     });
-     jobs.promote(1);
-     setTimeout(function () {
-     delays.should.arraysAlmostEql([1000, 1000, 1000, 1000, 1000]);
-
-     done();
-     }, 1500);
-     })
-
-     it.only('should fire all events properly', function (done) {
-     this.timeout(60000);
-     var job = jobs.create('failure-attempts-delay-change-on-event', {}).attempts(5).attemptsDelay(100);
-     var delays = [];
-     var completes = [];
-     var failed = [];
-     job.save();
-     var start = new Date();
-
-
-     job.on('complete',function () {
-     completes.push((new Date()) - start);
-     }).on('failed', function () {
-     failed.push((new Date()) - start);
-
-     });
-     jobs.process('failure-attempts-delay-change-on-event', function (job, done) {
-     delays.push((new Date()) - start);
-     if (delays.length == 4) {
-     done()
-     } else {
-     done(new Error("error"));
-     }
-     job.attemptsDelay(job.attemptsDelay() * 2);
-     });
-     jobs.promote(1);
-     setTimeout(function () {
-     delays.should.arraysAlmostEql(failed.concat(completes));
-     delays.should.arraysAlmostEql([10, 200, 600, 1400]);
-     done();
-     }, 3000);
-     })*/
-
-
 });

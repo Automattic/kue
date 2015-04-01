@@ -6,27 +6,26 @@ describe 'Kue Tests', ->
   Job = null
 
   beforeEach (done) ->
-    jobs = kue.createQueue()
+    jobs = kue.createQueue({promotion:{interval:30}})
     Job = kue.Job
-    jobs.promote 100
     done()
 
   afterEach (done) ->
     onShutdown = (err) ->
       done(err)
-    jobs.shutdown 500, onShutdown
+    jobs.shutdown 50, onShutdown
 
-  before (done) ->
-    jobs = kue.createQueue()
-    jobs.client.flushdb done
+#  before (done) ->
+#    jobs = kue.createQueue({promotion:{interval:100}})
+#    jobs.client.flushdb done
 
-  after (done) ->
-    jobs = kue.createQueue()
-    jobs.client.flushdb done
+#  after (done) ->
+#    jobs = kue.createQueue({promotion:{interval:100}})
+#    jobs.client.flushdb done
 
 
 
-  describe 'job-producer', ->
+  describe 'Job Producer', ->
     it 'should save jobs having new id', (done) ->
       job_data =
         title: 'Test Email Job'
@@ -157,8 +156,7 @@ describe 'Kue Tests', ->
       jobs.create( 'simple-delay-job', { title: 'simple delay job' } ).delay(300).save()
       jobs.process 'simple-delay-job', (job, jdone) ->
         processed = Date.now()
-        (processed - now).should.be.greaterThan( 300 )
-        (processed - now).should.be.lessThan( 500 )
+        (processed - now).should.be.approximately( 300, 100 )
         jdone()
         done()
 
@@ -166,32 +164,32 @@ describe 'Kue Tests', ->
       now = Date.now()
       job = jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(300).save()
       jobs.process 'simple-delayed-job', (job, jdone) ->
-        job.promote_at.should.be.approximately(now + 300, 10)
+        job.promote_at.should.be.approximately(now + 300, 100)
         jdone()
         done()
       done()
 
     it 'should update promote_at after delay change', (done) ->
       now = Date.now()
-      job = jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(300).save()
+      job = jobs.create( 'simple-delayed-job-1', { title: 'simple delay job' } ).delay(300).save()
       job.delay(100).save()
-      jobs.process 'simple-delayed-job', (job, jdone) ->
-        job.promote_at.should.be.approximately(now + 100, 10)
+      jobs.process 'simple-delayed-job-1', (job, jdone) ->
+        job.promote_at.should.be.approximately(now + 100, 100)
         jdone()
         done()
 
     it 'should update promote_at after failure with backoff', (done) ->
       now = Date.now()
-      job = jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(100).attempts(2).backoff({delay: 100, type: 'fixed'}).save()
+      job = jobs.create( 'simple-delayed-job-2', { title: 'simple delay job' } ).delay(100).attempts(2).backoff({delay: 100, type: 'fixed'}).save()
       calls = 0
-      jobs.process 'simple-delayed-job', (job, jdone) ->
+      jobs.process 'simple-delayed-job-2', (job, jdone) ->
         processed = Date.now()
         if calls == 1
-          (processed - now).should.be.greaterThan(300)
+          (processed - now).should.be.approximately(300, 100)
           jdone()
           done()
         else
-          (processed - now).should.be.greaterThan(100)
+          (processed - now).should.be.approximately(100, 100)
           jdone('error')
 
         calls++
@@ -201,8 +199,7 @@ describe 'Kue Tests', ->
       jobs.create( 'future-job', { title: 'future job' } ).delay(new Date(now + 500)).save()
       jobs.process 'future-job', (job, jdone) ->
         processed = Date.now()
-        (processed - now).should.be.greaterThan( 500 )
-        (processed - now).should.be.lessThan( 700 )
+        (processed - now).should.be.approximately( 500, 100 )
         jdone()
         done()
 
@@ -230,21 +227,18 @@ describe 'Kue Tests', ->
     it 'should honor original delay at fixed backoff', (done) ->
       [total, remaining] = [2,2]
       start = Date.now()
-      jobs.create( 'backoff-fixed-job', { title: 'backoff-fixed-job' } ).delay( 150 ).attempts(total).backoff( true ).save()
+      jobs.create( 'backoff-fixed-job', { title: 'backoff-fixed-job' } ).delay( 200 ).attempts(total).backoff( true ).save()
       jobs.process 'backoff-fixed-job', (job, jdone) ->
-#        job._backoff.type.should.be.equal "fixed"
-#        job._backoff.delay.should.be.equal 150
         if( !--remaining )
           now = Date.now()
-          (now - start).should.be.greaterThan 300
-          (now - start).should.be.lessThan 450
+          (now - start).should.be.approximately(400,100)
           jdone()
           done()
         else
           jdone( new Error('reaattempt') )
 
 
-    it 'should honor original delay at fixed backoff', (done) ->
+    it 'should honor original delay at exponential backoff', (done) ->
       [total, remaining] = [3,3]
       start = Date.now()
       jobs.create( 'backoff-exponential-job', { title: 'backoff-exponential-job' } )
@@ -254,8 +248,7 @@ describe 'Kue Tests', ->
         job._backoff.delay.should.be.equal 100
         now = Date.now()
         if( !--remaining )
-          (now - start).should.be.greaterThan 400
-          (now - start).should.be.lessThan 600
+          (now - start).should.be.approximately(350,100)
           jdone()
           done()
         else
@@ -270,8 +263,7 @@ describe 'Kue Tests', ->
       jobs.process 'backoff-user-job', (job, jdone) ->
         now = Date.now()
         if( !--remaining )
-          (now - start).should.be.greaterThan 300
-          (now - start).should.be.lessThan 500
+          (now - start).should.be.approximately(350, 100)
           jdone()
           done()
         else
@@ -297,7 +289,7 @@ describe 'Kue Tests', ->
   describe 'Kue Job Removal', ->
 
     beforeEach (done) ->
-      jobs = kue.createQueue()
+      jobs = kue.createQueue({promotion:{interval:30}})
       Job = kue.Job
       jobs.create( 'sample-job-to-be-cleaned', {title: 'sample-job-to-be-cleaned', id:id} ).save() for id in [1..10]
       jobs.process 'sample-job-to-be-cleaned', (job, jdone) ->

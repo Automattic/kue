@@ -2,9 +2,6 @@ should = require 'should'
 
 kue = require '../'
 
-# jobs = kue.createQueue()
-# Job = kue.Job
-# jobs.promote 1
 
 describe 'Kue', ->
 
@@ -37,8 +34,7 @@ describe 'Kue', ->
         newJobs.shutdown done
 
     it 'should clear properties on shutdown', (done) ->
-      jobs = kue.createQueue()
-      jobs.promote()
+      jobs = kue.createQueue({promotion:{interval:200}})
       jobs.shutdown (err) ->
         should(jobs.workers).be.empty
         should(jobs.client).be.empty
@@ -66,7 +62,7 @@ describe 'Kue', ->
 
     it 'should not clear properties on single type shutdown', (testDone) ->
       jobs = kue.createQueue()
-      jobs.promote 1
+      
 
       fn = (err) ->
           jobs.promoter.should.not.be.empty
@@ -77,7 +73,7 @@ describe 'Kue', ->
 
     it 'should shutdown one worker type on single type shutdown', (testDone) ->
       jobs = kue.createQueue()
-      jobs.promote 1
+      
 
       # set up two worker types
       jobs.process 'runningTask', (job, done) ->
@@ -110,7 +106,7 @@ describe 'Kue', ->
 
     it 'should fail active job when shutdown timer expires', (testDone) ->
       jobs = kue.createQueue()
-      jobs.promote 1
+      
 
       jobId = null
 
