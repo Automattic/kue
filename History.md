@@ -1,4 +1,4 @@
-0.9.0 / 2015-03-24
+0.9.0 / 2015-04-01
 ===================
 
 * Upgrade to express 4.x, Closes #537
@@ -9,7 +9,8 @@
 * Use a distributed redis lock to hide job promotion from user, Closes #556
 * Deprecate `.promote` and update documentation
 * Document Javascript API to query queue state, Closes #455
-* add jobEvents flag to switch off job events for memory optimization, Closes #401
+* Add jobEvents flag to switch off job events for memory optimization, Closes #401
+* Add idle event to capture unsuccessful zpop's in between of worker get Job, should fix #538
 
 
 0.8.12 / 2015-03-22
