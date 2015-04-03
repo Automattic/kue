@@ -2,9 +2,6 @@ should = require 'should'
 
 kue = require '../'
 
-# jobs = kue.createQueue()
-# Job = kue.Job
-# jobs.promote 1
 
 describe 'Kue', ->
 
@@ -37,8 +34,7 @@ describe 'Kue', ->
         newJobs.shutdown done
 
     it 'should clear properties on shutdown', (done) ->
-      jobs = kue.createQueue()
-      jobs.promote()
+      jobs = kue.createQueue({promotion:{interval:200}})
       jobs.shutdown (err) ->
         should(jobs.workers).be.empty
         should(jobs.client).be.empty
@@ -54,10 +50,10 @@ describe 'Kue', ->
       for i in [0...total_jobs]
         jobs.create('resumable-jobs', job_data).save()
 
-      jobs.process 'resumable-jobs', 1, (job, job_done, ctx) ->
+      jobs.process 'resumable-jobs', 1, (job, ctx, job_done) ->
         job_done()
         if( !--total_jobs )
-          jobs.shutdown done, 1000
+          jobs.shutdown 1000, done
         else
           ctx.pause()
           setTimeout ctx.resume, 100
@@ -66,18 +62,18 @@ describe 'Kue', ->
 
     it 'should not clear properties on single type shutdown', (testDone) ->
       jobs = kue.createQueue()
-      jobs.promote 1
+      
 
       fn = (err) ->
           jobs.promoter.should.not.be.empty
           jobs.client.should.not.be.empty
-          jobs.shutdown testDone, 10
+          jobs.shutdown 10, testDone
 
-      jobs.shutdown fn, 10, 'fooJob'
+      jobs.shutdown 10, 'fooJob', fn
 
     it 'should shutdown one worker type on single type shutdown', (testDone) ->
       jobs = kue.createQueue()
-      jobs.promote 1
+      
 
       # set up two worker types
       jobs.process 'runningTask', (job, done) ->
@@ -103,14 +99,14 @@ describe 'Kue', ->
           jobs.promoter.should.not.be.empty
           jobs.client.should.not.be.empty
 
-          jobs.shutdown testDone, 10
+          jobs.shutdown 10, testDone
 
-      jobs.shutdown fn, 10, 'shutdownTask'
+      jobs.shutdown 10, 'shutdownTask', fn
 
 
     it 'should fail active job when shutdown timer expires', (testDone) ->
       jobs = kue.createQueue()
-      jobs.promote 1
+      
 
       jobId = null
 
@@ -131,7 +127,7 @@ describe 'Kue', ->
                   testDone()
 
           # shutdown timer is shorter than job length
-          jobs.shutdown fn, 10
+          jobs.shutdown 10, fn
 
       setTimeout waitForJobToRun, 50
 
@@ -141,16 +137,14 @@ describe 'Kue', ->
       jobs.process 'test-subsequent-shutdowns', (job, done) ->
         done()
         setTimeout ()->
-          jobs.shutdown (err)->
+          jobs.shutdown 100, (err)->
             should.not.exist(err)
-          , 100
         , 50
 
         setTimeout ()->
-          jobs.shutdown (err)->
+          jobs.shutdown 100, (err)->
             err.should.be.equal "Shutdown already in progress"
             testDone()
-          , 100
         , 60
 
       jobs.create('test-subsequent-shutdowns', {}).save()
@@ -175,6 +169,6 @@ describe 'Kue', ->
             testDone()
 
         # shutdown timer is shorter than job length
-        jobs.shutdown fn, 100
+        jobs.shutdown 100, fn
 
       setTimeout waitForJobToRun, 50
