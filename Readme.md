@@ -789,6 +789,36 @@ app.use(kue.app);
 app.listen(3000);
 ```
 
+## Testing
+
+Enable test mode to push all jobs into a `jobs` array. Make assertions against
+the jobs in that array to ensure code under test is correctly enqueuing jobs.
+
+```js
+queue = require('kue').createQueue();
+
+before(function() {
+    queue.testMode.enter();
+});
+
+afterEach(function() {
+    queue.testMode.clear();
+});
+
+after(function() {
+    queue.testMode.exit()
+});
+
+it('does something cool', function() {
+    queue.createJob('myJob', { foo: 'bar' }).save();
+    queue.createJob('anotherJob', { baz: 'bip' }).save();
+
+    expect(queue.testMode.jobs.length).to.equal(2);
+    expect(queue.testMode.jobs[0].type).to.equal('myJob');
+    expect(queue.testMode.jobs[0].data).to.eql({ foo: 'bar' });
+});
+```
+
 ## Screencasts
 
   - [Introduction](http://www.screenr.com/oyNs) to Kue
