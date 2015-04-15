@@ -306,7 +306,7 @@ queue.create('slideshow pdf', {
 });
 ```
 
-We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and process.
+We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and progress.
 
 ```js
 queue.process('slideshow pdf', 5, function(job, done){
