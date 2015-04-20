@@ -182,7 +182,7 @@ Job-specific events are fired on the `Job` instances via Redis pubsub. The follo
     - `enqueue` the job is now queued
     - `promotion` the job is promoted from delayed state to queued
     - `progress` the job's progress ranging from 0-100
-    - 'failed attempt' the job has failed, but has remaining attempts yet
+    - `failed attempt` the job has failed, but has remaining attempts yet
     - `failed` the job has failed and has no remaining attempts
     - `complete` the job has completed
 
@@ -209,9 +209,15 @@ job.on('complete', function(result){
   console.log('\r  job #' + job.id + ' ' + progress + '% complete with data ', data );
 
 });
-```
+```  
 
 **Note** that Job level events are not guaranteed to be received upon process restarts, since restarted node.js process will lose the reference to the specific Job object. If you want a more reliable event handler look for [Queue Events](#queue-events).
+
+**Note** Kue stores job objects in memory until they are complete/failed to be able to emit events on them. If you have a huge concurrency in uncompleted jobs, turn this feature off and use queue level events for better memory scaling.
+
+ ```js
+ kue.createQueue({jobEvents: false})
+ ```
 
 ### Queue Events
 

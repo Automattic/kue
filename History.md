@@ -11,7 +11,8 @@
 * Document Javascript API to query queue state, Closes #455
 * Add jobEvents flag to switch off job events for memory optimization, Closes #401
 * Add idle event to capture unsuccessful zpop's in between of worker get Job, should fix #538
-* Add TTL for active jobs, Closes #544 
+* Add TTL for active jobs, Closes #544
+* Document `jobEvents` queue config, Closes #557
 
 
 0.8.12 / 2015-03-22
