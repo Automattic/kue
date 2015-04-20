@@ -15,13 +15,13 @@ describe 'Kue Tests', ->
       done(err)
     jobs.shutdown 50, onShutdown
 
-#  before (done) ->
-#    jobs = kue.createQueue({promotion:{interval:100}})
-#    jobs.client.flushdb done
+  #  before (done) ->
+  #    jobs = kue.createQueue({promotion:{interval:100}})
+  #    jobs.client.flushdb done
 
-#  after (done) ->
-#    jobs = kue.createQueue({promotion:{interval:100}})
-#    jobs.client.flushdb done
+  #  after (done) ->
+  #    jobs = kue.createQueue({promotion:{interval:100}})
+  #    jobs.client.flushdb done
 
 
 
@@ -38,6 +38,7 @@ describe 'Kue Tests', ->
         done err
 
 
+
     it 'should receive job complete event', (done) ->
       jobs.process 'email-to-be-completed', (job, done)->
         done()
@@ -46,8 +47,10 @@ describe 'Kue Tests', ->
         to: 'tj@learnboost.com'
       jobs.create('email-to-be-completed', job_data)
       .on 'complete', ->
-          done()
+        done()
       .save()
+
+
 
     it 'should receive job result in complete event', (done) ->
       jobs.process 'email-with-results', (job, done)->
@@ -57,9 +60,10 @@ describe 'Kue Tests', ->
         to: 'tj@learnboost.com'
       jobs.create('email-with-results', job_data)
       .on 'complete', (result)->
-          result.finalResult.should.be.equal 123
-          done()
+        result.finalResult.should.be.equal 123
+        done()
       .save()
+
 
 
     it 'should receive job progress event', (done) ->
@@ -71,13 +75,15 @@ describe 'Kue Tests', ->
         to: 'tj@learnboost.com'
       jobs.create('email-to-be-progressed', job_data)
       .on 'progress', (progress)->
-          progress.should.be.equal 50
-          done()
+        progress.should.be.equal 50
+        done()
       .save()
+
+
 
     it 'should receive job progress event with extra data', (done) ->
       jobs.process 'email-to-be-progressed', (job, done)->
-        job.progress 1, 2, 
+        job.progress 1, 2,
           notifyTime : "2014-11-22"
         done()
       job_data =
@@ -85,10 +91,12 @@ describe 'Kue Tests', ->
         to: 'tj@learnboost.com'
       jobs.create('email-to-be-progressed', job_data)
       .on 'progress', (progress, extraData)->
-          progress.should.be.equal 50
-          extraData.notifyTime.should.be.equal "2014-11-22"
-          done()
+        progress.should.be.equal 50
+        extraData.notifyTime.should.be.equal "2014-11-22"
+        done()
       .save()
+
+
 
     it 'should receive job failed attempt events', (done) ->
       total = 2
@@ -110,32 +118,29 @@ describe 'Kue Tests', ->
       .save()
 
 
+
     it 'should receive queue level complete event', (done) ->
       jobs.process 'email-to-be-completed', (job, jdone)->
         jdone( null, { prop: 'val' } )
-
       jobs.on 'job complete', (id, result) ->
         id.should.be.equal testJob.id+''
         result.prop.should.be.equal 'val'
         done()
-
       job_data =
         title: 'Test Email Job'
         to: 'tj@learnboost.com'
-
       testJob = jobs.create('email-to-be-completed', job_data).save()
+
+
 
     it 'should receive queue level failed attempt events', (done) ->
       total = 2
       errorMsg = 'myError'
-
       jobs.process 'email-to-be-failed', (job, jdone)->
         jdone errorMsg
-
       job_data =
         title: 'Test Email Job'
         to: 'tj@learnboost.com'
-
       jobs.on 'job failed attempt', (id, errMsg, doneAttempts) ->
         id.should.be.equal newJob.id+''
         errMsg.should.be.equal errorMsg
@@ -146,8 +151,9 @@ describe 'Kue Tests', ->
         errMsg.should.be.equal errorMsg
         (--total).should.be.equal 0
         done()
-
       newJob = jobs.create('email-to-be-failed', job_data).attempts(2).save()
+
+
 
 
   describe 'Job', ->
@@ -160,6 +166,8 @@ describe 'Kue Tests', ->
         jdone()
         done()
 
+
+
     it 'should have promote_at timestamp', (done) ->
       now = Date.now()
       job = jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(300).save()
@@ -169,6 +177,8 @@ describe 'Kue Tests', ->
         done()
       done()
 
+
+
     it 'should update promote_at after delay change', (done) ->
       now = Date.now()
       job = jobs.create( 'simple-delayed-job-1', { title: 'simple delay job' } ).delay(300).save()
@@ -177,6 +187,8 @@ describe 'Kue Tests', ->
         job.promote_at.should.be.approximately(now + 100, 100)
         jdone()
         done()
+
+
 
     it 'should update promote_at after failure with backoff', (done) ->
       now = Date.now()
@@ -194,6 +206,8 @@ describe 'Kue Tests', ->
 
         calls++
 
+
+
     it 'should be processed at a future date', (done) ->
       now = Date.now()
       jobs.create( 'future-job', { title: 'future job' } ).delay(new Date(now + 500)).save()
@@ -203,14 +217,19 @@ describe 'Kue Tests', ->
         jdone()
         done()
 
+
+
     it 'should receive promotion event', (done) ->
       job_data =
         title: 'Test Email Job'
         to: 'tj@learnboost.com'
+      jobs.process('email-to-be-promoted', (job,done)-> )
       jobs.create('email-to-be-promoted', job_data).delay(500)
       .on 'promotion', ()->
         done()
       .save()
+
+
 
     it 'should be re tried after failed attempts', (done) ->
       [total, remaining] = [2,2]
@@ -223,6 +242,8 @@ describe 'Kue Tests', ->
           done()
         else
           jdone( new Error('reaattempt') )
+
+
 
     it 'should honor original delay at fixed backoff', (done) ->
       [total, remaining] = [2,2]
@@ -238,11 +259,12 @@ describe 'Kue Tests', ->
           jdone( new Error('reaattempt') )
 
 
+
     it 'should honor original delay at exponential backoff', (done) ->
       [total, remaining] = [3,3]
       start = Date.now()
       jobs.create( 'backoff-exponential-job', { title: 'backoff-exponential-job' } )
-        .delay( 50 ).attempts(total).backoff( {type:'exponential', delay: 100} ).save()
+      .delay( 50 ).attempts(total).backoff( {type:'exponential', delay: 100} ).save()
       jobs.process 'backoff-exponential-job', (job, jdone) ->
         job._backoff.type.should.be.equal "exponential"
         job._backoff.delay.should.be.equal 100
@@ -253,6 +275,7 @@ describe 'Kue Tests', ->
           done()
         else
           jdone( new Error('reaattempt') )
+
 
 
     it 'should honor users backoff function', (done) ->
@@ -268,6 +291,8 @@ describe 'Kue Tests', ->
           done()
         else
           jdone( new Error('reaattempt') )
+
+
 
 
   describe 'Kue Core', ->
@@ -286,6 +311,17 @@ describe 'Kue Tests', ->
       job = jobs.create('email-to-be-enqueued', job_data).save()
 
 
+
+    it 'should fail a job with TTL is exceeded', (done) ->
+      jobs.process('test-job-with-ttl', (job,jdone) ->
+        # do nothing to sample a stuck worker
+      )
+      job = jobs.create('test-job-with-ttl', title: 'a ttl job').ttl(500).on( 'failed', ( err )->
+        err.should.be.equal( 'TTL exceeded' )
+        done()
+      ).save()
+
+
   describe 'Kue Job Removal', ->
 
     beforeEach (done) ->
@@ -295,17 +331,18 @@ describe 'Kue Tests', ->
       jobs.process 'sample-job-to-be-cleaned', (job, jdone) ->
         jdone()
       done()
-
     totalJobs = {}
-
     removeJobById = (id, type, done)->
       Job.remove id, (err) ->
         done() if not --totalJobs[type]
+
 
     it 'should be able to remove completed jobs', (done) ->
       jobs.complete (err, ids) ->
         totalJobs.complete = ids.length
         removeJobById id, 'complete', done for id in ids
+
+
 
     it 'should be able to remove failed jobs', (done) ->
       jobs.failed (err, ids) ->

@@ -2,7 +2,7 @@
 ===================
 
 * Upgrade to express 4.x, Closes #537
-* Move `job.process` done callback to the last, Closes #387, Closes #385
+* Move `job.reprocess` done callback to the last, Closes #387, Closes #385
 * Standardize signature of `.shutdown()` callback, Closes #454
 * Turn off search indexes by default, Closes #412
 * Improve delayed job promotion feature, Closes #533, fixes #312, closes #352
@@ -11,6 +11,7 @@
 * Document Javascript API to query queue state, Closes #455
 * Add jobEvents flag to switch off job events for memory optimization, Closes #401
 * Add idle event to capture unsuccessful zpop's in between of worker get Job, should fix #538
+* Add TTL for active jobs, Closes #544 
 
 
 0.8.12 / 2015-03-22
