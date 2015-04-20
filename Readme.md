@@ -31,15 +31,16 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - Delayed jobs
   - Distribution of parallel work load
   - Job event and progress pubsub
+  - Job TTL
+  - Optional retries with backoff
+  - Graceful workers shutdown
+  - Full-text search capabilities
+  - RESTful JSON API
   - Rich integrated UI
   - Infinite scrolling
   - UI progress indication
   - Job specific logging
-  - Powered by Redis
-  - Optional retries with backoff
-  - Full-text search capabilities
-  - RESTful JSON API
-  - Graceful workers shutdown
+  - Powered by Redis        
 
 ## Overview
 
@@ -47,6 +48,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Jobs Priority](#job-priority)
   - [Failure Attempts](#failure-attempts)
   - [Failure Backoff](#failure-backoff)
+  - [Job TTL](#job-ttl)
   - [Job Logs](#job-logs)
   - [Job Progress](#job-progress)
   - [Job Events](#job-events)
@@ -146,6 +148,14 @@ Job retry attempts are done as soon as they fail, with no delay, even if your jo
 ```
 
 In the last scenario, provided function will be executed (via eval) on each re-attempt to get next attempt delay value, meaning that you can't reference external/context variables within it.
+
+### Job TTL
+
+Job producers can set a expiry value for the time their job can live in active state, so that if workers didn't reply in timely fashion, Kue will fail it with `TTL exceeded` error message preventing that job from being stuck in active state and spoiling concurrency.
+
+```js
+queue.create('email', {title: 'email job with TTL'}).ttl(milliseconds).save();
+```
 
 ### Job Logs
 

@@ -17,21 +17,20 @@ describe 'Kue', ->
     it 'should return singleton from createQueue', (done) ->
       jobs = kue.createQueue()
       jobsToo = kue.createQueue()
-
       jobs.should.equal jobsToo
-
       jobs.shutdown done
+
+
 
     it 'should destroy singleton on shutdown', (done) ->
       jobs = kue.createQueue()
-
       jobs.shutdown (err) ->
-
         # test that new jobs object is a different reference
         newJobs = kue.createQueue()
         newJobs.should.not.equal jobs
-
         newJobs.shutdown done
+
+
 
     it 'should clear properties on shutdown', (done) ->
       jobs = kue.createQueue({promotion:{interval:200}})
@@ -40,7 +39,9 @@ describe 'Kue', ->
         should(jobs.client).be.empty
         should(jobs.promoter).be.empty
         done()
-        
+
+
+
     it 'should be able to pause/resume the worker', (done) ->
       jobs = kue.createQueue()
       job_data =
@@ -57,35 +58,28 @@ describe 'Kue', ->
         else
           ctx.pause()
           setTimeout ctx.resume, 100
-        
-    
+
+
 
     it 'should not clear properties on single type shutdown', (testDone) ->
       jobs = kue.createQueue()
-      
-
       fn = (err) ->
-          jobs.promoter.should.not.be.empty
-          jobs.client.should.not.be.empty
-          jobs.shutdown 10, testDone
+        jobs.client.should.not.be.empty
+        jobs.shutdown 10, testDone
 
       jobs.shutdown 10, 'fooJob', fn
 
+
+
     it 'should shutdown one worker type on single type shutdown', (testDone) ->
       jobs = kue.createQueue()
-      
-
       # set up two worker types
       jobs.process 'runningTask', (job, done) ->
           done()
-
       jobs.workers.should.have.length 1
-
       jobs.process 'shutdownTask', (job, done) ->
           done()
-
       jobs.workers.should.have.length 2
-
       fn = (err) ->
           # verify shutdownTask is not running but runningTask is
           for worker in jobs.workers
@@ -100,16 +94,12 @@ describe 'Kue', ->
           jobs.client.should.not.be.empty
 
           jobs.shutdown 10, testDone
-
       jobs.shutdown 10, 'shutdownTask', fn
 
 
     it 'should fail active job when shutdown timer expires', (testDone) ->
       jobs = kue.createQueue()
-      
-
       jobId = null
-
       jobs.process 'long-task', (job, done) ->
           jobId = job.id
           fn = ->
@@ -117,7 +107,6 @@ describe 'Kue', ->
           setTimeout fn, 10000
 
       jobs.create('long-task', {}).save()
-
       # need to make sure long-task has had enough time to get into active state
       waitForJobToRun = ->
           fn = (err) ->
@@ -131,9 +120,10 @@ describe 'Kue', ->
 
       setTimeout waitForJobToRun, 50
 
+
+
     it 'should not call graceful shutdown twice on subsequent calls', (testDone) ->
       jobs = kue.createQueue()
-
       jobs.process 'test-subsequent-shutdowns', (job, done) ->
         done()
         setTimeout ()->
@@ -149,10 +139,11 @@ describe 'Kue', ->
 
       jobs.create('test-subsequent-shutdowns', {}).save()
 
+
+
     it 'should fail active re-attemptable job when shutdown timer expires', (testDone) ->
       jobs = kue.createQueue()
       jobId = null
-
       jobs.process 'shutdown-reattemptable-jobs', (job, done) ->
         jobId = job.id
         setTimeout done, 500
