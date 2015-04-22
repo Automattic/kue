@@ -354,7 +354,7 @@ var queue = require('kue').createQueue();
 
 process.once( 'SIGTERM', function ( sig ) {
   queue.shutdown( 5000, function(err) {
-    console.log( 'Kue is shut down. ', err||'' );
+    console.log( 'Kue shutdown: ', err||'OK' );
     process.exit( 0 );
   });
 });
@@ -410,11 +410,13 @@ This can be achieved in two ways:
 
 
 
-2. Binding to `uncaughtException` and gracefully shutting down the Kue.
+2. Binding to `uncaughtException` and gracefully shutting down the Kue, however this is not a recommended error handling idiom in javascript since you are losing the error context.
 
   ```js
   process.once( 'uncaughtException', function(err){
+    console.error( 'Something bad happened: ', err );
     queue.shutdown( 1000, function(err2){
+      console.error( 'Kue shutdown result: ', err||'OK' );
       process.exit( 0 );
     });
   });
