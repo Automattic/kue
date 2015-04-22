@@ -66,6 +66,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [JSON API](#json-api)
   - [Parallel Processing With Cluster](#parallel-processing-with-cluster)
   - [Securing Kue](#securing-kue)
+  - [Testing](#testing)
   - [Screencasts](#screencasts)
   - [License](#license)
 
@@ -814,24 +815,23 @@ the jobs in that array to ensure code under test is correctly enqueuing jobs.
 queue = require('kue').createQueue();
 
 before(function() {
-    queue.testMode.enter();
+  queue.testMode.enter();
 });
 
 afterEach(function() {
-    queue.testMode.clear();
+  queue.testMode.clear();
 });
 
 after(function() {
-    queue.testMode.exit()
+  queue.testMode.exit()
 });
 
 it('does something cool', function() {
-    queue.createJob('myJob', { foo: 'bar' }).save();
-    queue.createJob('anotherJob', { baz: 'bip' }).save();
-
-    expect(queue.testMode.jobs.length).to.equal(2);
-    expect(queue.testMode.jobs[0].type).to.equal('myJob');
-    expect(queue.testMode.jobs[0].data).to.eql({ foo: 'bar' });
+  queue.createJob('myJob', { foo: 'bar' }).save();
+  queue.createJob('anotherJob', { baz: 'bip' }).save();
+  expect(queue.testMode.jobs.length).to.equal(2);
+  expect(queue.testMode.jobs[0].type).to.equal('myJob');
+  expect(queue.testMode.jobs[0].data).to.eql({ foo: 'bar' });
 });
 ```
 
