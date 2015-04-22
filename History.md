@@ -13,6 +13,7 @@
 * Add idle event to capture unsuccessful zpop's in between of worker get Job, should fix #538
 * Add TTL for active jobs, Closes #544
 * Document `jobEvents` queue config, Closes #557
+* Bulk job create API now processes all jobs in case of intermediate errors, Closes #552
 
 
 0.8.12 / 2015-03-22
