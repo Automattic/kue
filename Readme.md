@@ -40,7 +40,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - Infinite scrolling
   - UI progress indication
   - Job specific logging
-  - Powered by Redis        
+  - Powered by Redis
 
 ## Overview
 
@@ -152,7 +152,7 @@ In the last scenario, provided function will be executed (via eval) on each re-a
 
 ### Job TTL
 
-Job producers can set a expiry value for the time their job can live in active state, so that if workers didn't reply in timely fashion, Kue will fail it with `TTL exceeded` error message preventing that job from being stuck in active state and spoiling concurrency.
+Job producers can set an expiry value for the time their job can live in active state, so that if workers didn't reply in timely fashion, Kue will fail it with `TTL exceeded` error message preventing that job from being stuck in active state and spoiling concurrency.
 
 ```js
 queue.create('email', {title: 'email job with TTL'}).ttl(milliseconds).save();
@@ -162,9 +162,9 @@ queue.create('email', {title: 'email job with TTL'}).ttl(milliseconds).save();
 
 Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
 
-```js 
+```js
 job.log('$%d sent to %s', amount, user.name);
-``` 
+```
 
 ### Job Progress
 
@@ -210,7 +210,7 @@ job.on('complete', function(result){
   console.log('\r  job #' + job.id + ' ' + progress + '% complete with data ', data );
 
 });
-```  
+```
 
 **Note** that Job level events are not guaranteed to be received upon process restarts, since restarted node.js process will lose the reference to the specific Job object. If you want a more reliable event handler look for [Queue Events](#queue-events).
 
@@ -223,7 +223,7 @@ job.on('complete', function(result){
 ### Queue Events
 
 Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to apply logic at a "global" level. An example of this is removing completed jobs:
- 
+
 ```js
 queue.on('job enqueue', function(id, type){
   console.log( 'Job %s got queued of type %s', id, type );
@@ -239,12 +239,12 @@ queue.on('job enqueue', function(id, type){
 });
 ```
 
-The events available are the same as mentioned in "Job Events", however prefixed with "job ". 
+The events available are the same as mentioned in "Job Events", however prefixed with "job ".
 
 ### Delayed Jobs
 
 Delayed jobs may be scheduled to be queued for an arbitrary distance in time by invoking the `.delay(ms)` method, passing the number of milliseconds relative to _now_. Alternatively, you can pass a JavaScript `Date` object with a specific time in the future.
-This automatically flags the `Job` as "delayed". 
+This automatically flags the `Job` as "delayed".
 
 ```js
 var email = queue.create('email', {
@@ -288,7 +288,7 @@ Workers can also pass job result as the second parameter to done `done(null,resu
 ### Processing Concurrency
 
 By default a call to `queue.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
- 
+
 ```js
 queue.process('email', 20, function(job, done){
   // ...
@@ -315,7 +315,7 @@ queue.process('email', function(job, ctx, done){
 ### Updating Progress
 
 For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](http://github.com/learnboost/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
- 
+
 ```js
 queue.create('slideshow pdf', {
     title: user.name + "'s slideshow"
@@ -672,7 +672,7 @@ Get a job by `:id`:
 ### GET /job/:id/log
 
 Get job `:id`'s log:
-  
+
 ```js
 ['foo', 'bar', 'baz']
 ```
@@ -688,7 +688,7 @@ Get jobs with the specified range `:from` to `:to`, for example "/jobs/0..2", wh
 ### GET /jobs/:state/:from..:to/:order?
 
 Same as above, restricting by `:state` which is one of:
-  
+
     - active
     - inactive
     - failed
@@ -701,7 +701,7 @@ Same as above, however restricted to `:type` and `:state`.
 ### DELETE /job/:id
 
 Delete job `:id`:
-  
+
     $ curl -X DELETE http://local:3000/job/2
     {"message":"job 2 removed"}
 
@@ -763,8 +763,8 @@ Note: when inserting multiple jobs in bulk, if one insertion fails Kue will keep
 ## Parallel Processing With Cluster
 
 The example below shows how you may use [Cluster](http://nodejs.org/api/cluster.html) to spread the job processing load across CPUs. Please see [Cluster module's documentation](http://nodejs.org/api/cluster.html) for more detailed examples on using it.
- 
-When cluster `.isMaster` the file is being executed in context of the master process, in which case you may perform tasks that you only want once, such as starting the web app bundled with Kue. The logic in the `else` block is executed _per worker_. 
+
+When cluster `.isMaster` the file is being executed in context of the master process, in which case you may perform tasks that you only want once, such as starting the web app bundled with Kue. The logic in the `else` block is executed _per worker_.
 
 ```js
 var kue = require('kue')
@@ -842,7 +842,7 @@ it('does something cool', function() {
   - [Introduction](http://www.screenr.com/oyNs) to Kue
   - API [walkthrough](http://vimeo.com/26963384) to Kue
 
-## License 
+## License
 
 (The MIT License)
 
