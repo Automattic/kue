@@ -354,7 +354,7 @@ var queue = require('kue').createQueue();
 
 process.once( 'SIGTERM', function ( sig ) {
   queue.shutdown( 5000, function(err) {
-    console.log( 'Kue shutdown: ', err||'OK' );
+    console.log( 'Kue shutdown: ', err||'' );
     process.exit( 0 );
   });
 });

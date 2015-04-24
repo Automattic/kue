@@ -16,6 +16,7 @@
 * Bulk job create API now processes all jobs in case of intermediate errors, Closes #552
 * Merge `red job remove buttons and tooltips` PR, Closes #566
 * Add a in-memory test Kue mode, Closes #561
+* Update reds package to `0.2.5`
 
 
 0.8.12 / 2015-03-22

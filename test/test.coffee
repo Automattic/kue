@@ -6,7 +6,7 @@ describe 'Kue Tests', ->
   Job = null
 
   beforeEach (done) ->
-    jobs = kue.createQueue({promotion:{interval:30}})
+    jobs = kue.createQueue({promotion:{interval:50}})
     Job = kue.Job
     done()
 
@@ -325,12 +325,13 @@ describe 'Kue Tests', ->
   describe 'Kue Job Removal', ->
 
     beforeEach (done) ->
-      jobs = kue.createQueue({promotion:{interval:30}})
+      jobs = kue.createQueue({promotion:{interval:50}})
       Job = kue.Job
-      jobs.create( 'sample-job-to-be-cleaned', {title: 'sample-job-to-be-cleaned', id:id} ).save() for id in [1..10]
       jobs.process 'sample-job-to-be-cleaned', (job, jdone) ->
         jdone()
+      jobs.create( 'sample-job-to-be-cleaned', {title: 'sample-job-to-be-cleaned', id:id} ).save() for id in [1..10]
       done()
+
     totalJobs = {}
     removeJobById = (id, type, done)->
       Job.remove id, (err) ->
