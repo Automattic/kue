@@ -513,7 +513,7 @@ kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
     job.remove( function(){
       console.log( 'removed ', job.id );
     });
-  }
+  });
 });
 ```
 
