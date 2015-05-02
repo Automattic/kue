@@ -252,7 +252,7 @@ describe 'Kue Tests', ->
       jobs.process 'backoff-fixed-job', (job, jdone) ->
         if( !--remaining )
           now = Date.now()
-          (now - start).should.be.approximately(400,100)
+          (now - start).should.be.approximately(400,120)
           jdone()
           done()
         else
