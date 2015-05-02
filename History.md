@@ -1,4 +1,4 @@
-0.9.0 / 2015-04-20
+0.9.0 / 2015-05-02
 ===================
 
 * Upgrade to express 4.x, Closes #537
@@ -17,6 +17,9 @@
 * Merge `red job remove buttons and tooltips` PR, Closes #566
 * Add a in-memory test Kue mode, Closes #561
 * Update reds package to `0.2.5`
+* Merge PR #594, bad redirect URL in old express versions, fixes #592
+* update dependency to forked warlock repo to fix redis connection cleanup on shutdown, fixes #578
+* Update job hash with the worker ID, Closes #580
 
 
 0.8.12 / 2015-03-22
