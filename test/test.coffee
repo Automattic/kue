@@ -38,6 +38,18 @@ describe 'Kue Tests', ->
         done err
 
 
+    it 'should set worker id on job hash', (done) ->
+      job_data =
+        title: 'Test workerId Job'
+        to: 'tj@learnboost.com'
+      job = jobs.create('worker-id-test', job_data)
+      jobs.process 'worker-id-test', (job, jdone)->
+        jdone()
+        Job.get job.id, (err, j) ->
+          j.toJSON().workerId.should.be.not.null;
+          done()
+      job.save()
+
 
     it 'should receive job complete event', (done) ->
       jobs.process 'email-to-be-completed', (job, done)->
@@ -210,10 +222,10 @@ describe 'Kue Tests', ->
 
     it 'should be processed at a future date', (done) ->
       now = Date.now()
-      jobs.create( 'future-job', { title: 'future job' } ).delay(new Date(now + 500)).save()
+      jobs.create( 'future-job', { title: 'future job' } ).delay(new Date(now + 200)).save()
       jobs.process 'future-job', (job, jdone) ->
         processed = Date.now()
-        (processed - now).should.be.approximately( 500, 100 )
+        (processed - now).should.be.approximately( 200, 100 )
         jdone()
         done()
 
@@ -224,7 +236,7 @@ describe 'Kue Tests', ->
         title: 'Test Email Job'
         to: 'tj@learnboost.com'
       jobs.process('email-to-be-promoted', (job,done)-> )
-      jobs.create('email-to-be-promoted', job_data).delay(500)
+      jobs.create('email-to-be-promoted', job_data).delay(200)
       .on 'promotion', ()->
         done()
       .save()
