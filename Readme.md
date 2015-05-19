@@ -744,10 +744,10 @@ You can create multiple jobs at once by passing an array. In this case, the resp
            "data": {
              "title": "followup email for tj",
              "to": "tj@learnboost.com",
-             "template": "followup-email",
-             "delay": 86400
+             "template": "followup-email"
            },
            "options" : {
+             "delay": 86400,
              "attempts": 5,
              "priority": "high"
            }
