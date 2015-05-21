@@ -567,7 +567,7 @@ var q = kue.createQueue({
     socket: '/data/sockets/redis.sock',
     auth: 'password',
     options: {
-      // see https://github.com/mranney/node_redis#rediscreateclientport-host-options
+      // see https://github.com/mranney/node_redis#rediscreateclient
     }
   }
 });
