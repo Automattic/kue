@@ -39,6 +39,13 @@ describe('Test Mode', function() {
           expect(anotherJob.id).to.equal(1);
         });
 
+        it('sets the timestamps when saving a Job', function() {
+          var job = queue.createJob('myJob', {}).save();
+          expect(job.created_at).to.exist;
+          expect(job.promote_at).to.exist;
+          expect(job.updated_at).to.exist;
+        });
+
         describe('#clear', function() {
             it('resets the list of jobs', function() {
                 queue.createJob('myJob', { foo: 'bar' }).save();
