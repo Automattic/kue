@@ -32,6 +32,13 @@ describe('Test Mode', function() {
             expect(savedJob).to.equal(job);
         });
 
+        it('adds an auto incrementing ID when saving a Job', function() {
+          var job = queue.createJob('myJob', { first: true }).save();
+          var anotherJob = queue.createJob('myJob', { first: false }).save();
+          expect(job.id).to.be.a('number');
+          expect(anotherJob.id).to.be.a('number');
+        });
+
         describe('#clear', function() {
             it('resets the list of jobs', function() {
                 queue.createJob('myJob', { foo: 'bar' }).save();
