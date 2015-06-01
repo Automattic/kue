@@ -29,9 +29,19 @@ describe('Test Mode', function() {
         expect(job.updated_at).to.exist;
       });
 
-      it('emits the `enqueue` event', function(done) {
+      it('emits the `enqueue` event on the job', function(done) {
         var job = queue.createJob('myJob', {});
         job.on('enqueue', function() {
+          done();
+        });
+        job.save();
+      });
+
+      it('emits the `job enqueue` event on the queue', function(done) {
+        var job = queue.createJob('myJob', {});
+        queue.on('job enqueue', function(id, type) {
+          expect(id).to.eq(job.id);
+          expect(type).to.eq('myJob');
           done();
         });
         job.save();
@@ -57,6 +67,94 @@ describe('Test Mode', function() {
 
         var jobs = queue.testMode.jobs;
         expect(jobs.length).to.equal(0);
+      });
+    });
+
+    describe('#process', function() {
+      it('provide the job to the worker', function(done) {
+        var expectedJob = queue.createJob('myJob', { foo: 'bar' });
+
+        queue.process('myJob', function(jobFromQueue, jdone) {
+          expect(jobFromQueue).to.equal(expectedJob);
+          jdone();
+          done();
+        });
+
+        expectedJob.save();
+      });
+
+      it('provides a done function to return a result', function(done) {
+        var job = queue.createJob('myJob', { foo: 'bar' });
+
+        queue.process('myJob', function(jobFromQueue, jdone) {
+          jdone(null, { done: true });
+          expect(job.result.done).to.be.true;
+          done();
+        });
+
+        job.save();
+      });
+
+      it('emits the `complete` event on the job', function(done) {
+        var job = queue.createJob('myJob', { foo: 'bar' });
+
+        job.on('complete', function(result) {
+          expect(result.done).to.be.true;
+          done();
+        });
+
+        queue.process('myJob', function(jobFromQueue, jdone) {
+          jdone(null, { done: true });
+        });
+
+        job.save();
+      });
+
+      it('emits the `job complete` event on the queue', function(done) {
+        var job = queue.createJob('myJob', { foo: 'bar' });
+
+        queue.on('job complete', function(id, result) {
+          expect(id).to.eq(job.id);
+          expect(result.done).to.be.true;
+          done();
+        });
+
+        queue.process('myJob', function(jobFromQueue, jdone) {
+          jdone(null, { done: true });
+        });
+
+        job.save();
+      });
+
+      it('emits the `failed` event on the job', function(done) {
+        var job = queue.createJob('myJob', { foo: 'bar' });
+
+        job.on('failed', function(errorMesage) {
+          expect(errorMesage).to.equal('something went terribly wrong');
+          done();
+        });
+
+        queue.process('myJob', function(jobFromQueue, jdone) {
+          jdone(new Error('something went terribly wrong'));
+        });
+
+        job.save();
+      });
+
+      it('emits the `job failed` event on the job', function(done) {
+        var job = queue.createJob('myJob', { foo: 'bar' });
+
+        queue.on('job failed', function(id, errorMesage) {
+          expect(id).to.equal(job.id);
+          expect(errorMesage).to.equal('something went terribly wrong');
+          done();
+        });
+
+        queue.process('myJob', function(jobFromQueue, jdone) {
+          jdone(new Error('something went terribly wrong'));
+        });
+
+        job.save();
       });
     });
   });
