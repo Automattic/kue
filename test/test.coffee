@@ -304,6 +304,44 @@ describe 'Kue Tests', ->
         else
           jdone( new Error('reaattempt') )
 
+    it 'should log with a sprintf-style string', (done) ->
+      jobs.create( 'log-job', { title: 'simple job' } ).save()
+      jobs.process 'log-job', (job, jdone) ->
+        job.log('this is %s number %d','test',1)
+        Job.log job.id, (err,logs) ->
+          logs[0].should.be.equal('this is test number 1');
+          done()
+        jdone()
+
+    it 'should log objects, errors, arrays, numbers, etc', (done) ->
+      jobs.create( 'log-job', { title: 'simple job' } ).save()
+      jobs.process 'log-job', (job, jdone) ->
+        job.log()
+        job.log(undefined)
+        job.log(null)
+        job.log({test: 'some text'})
+        job.log(new Error('test error'))
+        job.log([1,2,3])
+        job.log(123)
+        job.log(0)
+        job.log(NaN)
+        job.log(true)
+        job.log(false)
+        Job.log job.id, (err,logs) ->
+          logs[0].should.be.equal('undefined');
+          logs[1].should.be.equal('undefined');
+          logs[2].should.be.equal('null');
+          logs[3].should.be.equal('{ test: \'some text\' }');
+          logs[4].should.be.equal('[Error: test error]');
+          logs[5].should.be.equal('[ 1, 2, 3 ]');
+          logs[6].should.be.equal('123');
+          logs[7].should.be.equal('0');
+          logs[8].should.be.equal('NaN');
+          logs[9].should.be.equal('true');
+          logs[10].should.be.equal('false');
+          done()
+        jdone()
+
 
 
 
