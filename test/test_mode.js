@@ -26,6 +26,11 @@ describe('Test Mode', function() {
             expect(job.data).to.eql({ foo: 'bar' });
         });
 
+        it('returns the Job when saving', function() {
+            var job = queue.createJob('myJob', { foo: 'bar' });
+            var savedJob = job.save();
+            expect(savedJob).to.equal(job);
+        });
 
         describe('#clear', function() {
             it('resets the list of jobs', function() {
