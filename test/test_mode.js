@@ -30,6 +30,18 @@ describe('Test Mode', function() {
       });
     });
 
+    describe('#update', function() {
+      it('touches the updated_at timestamps', function(done) {
+        var job = queue.createJob('myJob', {}).save();
+        var oldTimestamp = job.updated_at;
+
+        setTimeout(function () {
+          expect(job.update().updated_at).to.be.greaterThan(oldTimestamp);
+          done();
+        }, 1);
+      });
+    });
+
     describe('#clear', function() {
       it('resets the list of jobs', function() {
         queue.createJob('myJob', { foo: 'bar' }).save();
