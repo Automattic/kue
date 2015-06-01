@@ -28,6 +28,14 @@ describe('Test Mode', function() {
         expect(job.promote_at).to.exist;
         expect(job.updated_at).to.exist;
       });
+
+      it('emits the `enqueue` event', function(done) {
+        var job = queue.createJob('myJob', {});
+        job.on('enqueue', function() {
+          done();
+        });
+        job.save();
+      });
     });
 
     describe('#update', function() {
