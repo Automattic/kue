@@ -1,6 +1,9 @@
 var kue = require('../'),
     _ = require('lodash'),
+    chai    = require( 'chai' ),
     queue = kue.createQueue();
+
+expect = chai.expect;
 
 describe('Test Mode', function() {
     context('when enabled', function() {
