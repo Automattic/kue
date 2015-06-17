@@ -274,7 +274,7 @@ In the following example we pass the callback `done` to `email`, When an error o
 var kue = require('kue')
  , queue = kue.createQueue();
 
-queue.process('email', function(job, done){
+queue.process('email', function(job, ctx, done){
   email(job.data.to, done);
 });
 
@@ -295,7 +295,7 @@ Workers can also pass job result as the second parameter to done `done(null,resu
 By default a call to `queue.process()` will only accept one job at a time for processing. For small tasks like sending emails this is not ideal, so we may specify the maximum active jobs for this type by passing a number:
 
 ```js
-queue.process('email', 20, function(job, done){
+queue.process('email', 20, function(job, ctx, done){
   // ...
 });
 ```
@@ -331,7 +331,7 @@ queue.create('slideshow pdf', {
 We can access this same arbitrary data within a separate process while processing, via the `job.data` property. In the example we render each slide one-by-one, updating the job's log and progress.
 
 ```js
-queue.process('slideshow pdf', 5, function(job, done){
+queue.process('slideshow pdf', 5, function(job, ctx, done){
   var slides = job.data.slides
     , len = slides.length;
 
@@ -387,7 +387,7 @@ This can be achieved in two ways:
 1. Wrapping your worker's process function in [Domains](https://nodejs.org/api/domain.html)
 
   ```js
-  queue.process('my-error-prone-task', function(job, done){
+  queue.process('my-error-prone-task', function(job, ctx, done){
     var domain = require('domain').create();
     domain.on('error', function(err){
       done(err);
@@ -404,7 +404,7 @@ This can be achieved in two ways:
   You can also use promises to do something like
 
   ```js
-  queue.process('my-error-prone-task', function(job, done){
+  queue.process('my-error-prone-task', function(job, ctx, done){
     Promise.method( function(){ // your process function
       throw new Error( 'bad things happen' );
     })().nodeify(done)
@@ -784,7 +784,7 @@ if (cluster.isMaster) {
     cluster.fork();
   }
 } else {
-  queue.process('email', 10, function(job, done){
+  queue.process('email', 10, function(job, ctx, done){
     var pending = 5
       , total = pending;
 
