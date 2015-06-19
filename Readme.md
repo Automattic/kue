@@ -601,6 +601,27 @@ var q = kue.createQueue({
 
 **Note** *that all `<0.8.x` client codes should be refactored to pass redis options to `Queue#createQueue` instead of monkey patched style overriding of `redis#createClient` or they will be broken from Kue `0.8.x`.*
 
+#### Using ioredis client with cluster support
+
+```javascript
+
+var Redis = require('ioredis');
+var kue = require('kue');
+
+// using https://github.com/72squared/vagrant-redis-cluster
+
+var queue = kue.createQueue({
+    redis: {
+      createClientFactory: function () {
+        return new Redis.Cluster([{
+          port: 7000
+        }, {
+          port: 7001
+        }]);
+      }
+    }
+  });
+```
 
 ## User-Interface
 
