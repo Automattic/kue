@@ -191,6 +191,7 @@ Job-specific events are fired on the `Job` instances via Redis pubsub. The follo
     - `failed attempt` the job has failed, but has remaining attempts yet
     - `failed` the job has failed and has no remaining attempts
     - `complete` the job has completed
+    - `remove` the job has been removed
 
 
 For example this may look something like the following:

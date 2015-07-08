@@ -361,3 +361,14 @@ describe 'Kue Tests', ->
       jobs.failed (err, ids) ->
         totalJobs.failed = ids.length
         removeJobById id, 'failed', done for id in ids
+
+
+
+    it 'should receive a job remove event', (done) ->
+      jobs.on 'job remove', (id, type) ->
+        if( type == 'removable-job' )
+          id.should.be.equal( job.id )
+          done()
+      jobs.process 'removable-job', (job, jdone) ->
+        jdone()
+      job = jobs.create('removable-job', {}).save().remove()
