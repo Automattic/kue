@@ -17,7 +17,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
 
 ## Requirements
 
-  - Redis >= 2.6.12
+  - Redis >= 3.0
 
 ## Installation
 
