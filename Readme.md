@@ -1,5 +1,7 @@
 # Kue
 
+[![Join the chat at https://gitter.im/Automattic/kue](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Automattic/kue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/Automattic/kue.svg?branch=master)](https://travis-ci.org/Automattic/kue.svg?branch=master&style=flat)
 [![Dependency Status](https://img.shields.io/david/Automattic/kue.svg?style=flat)](https://david-dm.org/Automattic/kue)
 [![npm version](https://badge.fury.io/js/kue.svg?style=flat)](http://badge.fury.io/js/kue)
