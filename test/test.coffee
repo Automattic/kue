@@ -334,6 +334,61 @@ describe 'Kue Tests', ->
       ).save()
 
 
+
+
+  describe 'Kue Job Concurrency', ->
+
+    it 'should process 2 concurrent jobs at the same time', (done) ->
+      now = Date.now()
+      jobStartTimes = []
+      jobs.process('test-job-parallel', 2, (job,jdone) ->
+        jobStartTimes.push Date.now()
+        if( jobStartTimes.length == 2 )
+          (jobStartTimes[0] - now).should.be.approximately( 0, 100 )
+          (jobStartTimes[1] - now).should.be.approximately( 0, 100 )
+          done()
+        setTimeout(jdone, 500)
+      )
+      jobs.create('test-job-parallel', title: 'concurrent job 1').save()
+      jobs.create('test-job-parallel', title: 'concurrent job 2').save()
+
+    it 'should process non concurrent jobs serially', (done) ->
+      now = Date.now()
+      jobStartTimes = []
+      jobs.process('test-job-serial', 1, (job,jdone) ->
+        jobStartTimes.push Date.now()
+        if( jobStartTimes.length == 2 )
+          (jobStartTimes[0] - now).should.be.approximately( 0, 100 )
+          (jobStartTimes[1] - now).should.be.approximately( 500, 100 )
+          done()
+        setTimeout(jdone, 500)
+      )
+      jobs.create('test-job-serial', title: 'non concurrent job 1').save()
+      jobs.create('test-job-serial', title: 'non concurrent job 2').save()
+
+    it 'should process a new job after a previous one fails with TTL is exceeded', (done) ->
+      failures = 0
+      now = Date.now()
+      jobStartTimes = []
+      jobs.process('test-job-serial-failed', 1, (job,jdone) ->
+        jobStartTimes.push Date.now()
+        if( jobStartTimes.length == 2 )
+          (jobStartTimes[0] - now).should.be.approximately( 0, 100 )
+          (jobStartTimes[1] - now).should.be.approximately( 500, 100 )
+          failures.should.be.equal 1
+          done()
+        # do not call jdone to simulate a stuck worker
+      )
+      jobs.create('test-job-serial-failed', title: 'a ttl job 1').ttl(500).on( 'failed', ()->
+        ++failures
+      ).save()
+      jobs.create('test-job-serial-failed', title: 'a ttl job 2').ttl(500).on( 'failed', ()->
+        ++failures
+      ).save()
+
+
+
+
   describe 'Kue Job Removal', ->
 
     beforeEach (done) ->
