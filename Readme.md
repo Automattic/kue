@@ -822,18 +822,12 @@ Enable test mode to push all jobs into a `jobs` array. Make assertions against
 the jobs in that array to ensure code under test is correctly enqueuing jobs.
 
 ```js
-queue = require('kue').createQueue();
+global.KUE_TEST_MODE = true;
 
-before(function() {
-  queue.testMode.enter();
-});
+queue = require('kue').createQueue();
 
 afterEach(function() {
   queue.testMode.clear();
-});
-
-after(function() {
-  queue.testMode.exit()
 });
 
 it('does something cool', function() {
