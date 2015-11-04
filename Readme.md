@@ -807,11 +807,16 @@ Now when you visit Kue's UI in the browser you'll see that jobs are being proces
 
 ## Securing Kue
 
-Through the use of app mounting you may customize the web application, enabling TLS, or adding additional middleware like Connect's `basicAuth()`.
+Through the use of app mounting you may customize the web application, enabling TLS, or adding additional middleware like `basic-auth-connect`.
+
+```bash
+$ npm install --save basic-auth-connect
+```
 
 ```js
+var basicAuth = require('basic-auth-connect');
 var app = express.createServer({ ... tls options ... });
-app.use(express.basicAuth('foo', 'bar'));
+app.use(basicAuth('foo', 'bar'));
 app.use(kue.app);
 app.listen(3000);
 ```
