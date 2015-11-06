@@ -1,4 +1,7 @@
-var kue = require( '../' );
+var kue  = require( '../' ),
+    chai = require( 'chai' );
+
+expect = chai.expect;
 
 describe('CONNECTION', function(){
 	var jobs = null;
@@ -223,4 +226,21 @@ describe( 'JOBS', function () {
       done();
     } );
   } );
-} );
+
+  it( 'should skip data on complete if passed circular objects', function ( done ) {
+    var job = jobs.create( 'circular-data-should-be-processed' ).priority( 'high' ).save();
+
+    job.on( 'complete', function ( data ) {
+      expect( data ).to.not.exist;
+
+      done();
+    });
+
+    jobs.process( 'circular-data-should-be-processed', function ( job, jdone ) {
+      var circularData = {};
+      circularData.circular = circularData;
+
+      jdone( null, circularData );
+    });
+  });
+});
