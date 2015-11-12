@@ -25,7 +25,7 @@ function create2() {
 
 create2();
 
-// process video conversion jobs, 3 at a time.
+// process video conversion jobs, 2 at a time.
 
 jobs.process( 'video conversion', 2, function ( job, done ) {
   console.log( 'video' );

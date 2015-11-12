@@ -1,3 +1,19 @@
+0.9.5 / 2015-09-16
+===================
+
+* When no ttl is set for jobs, don't let high priorities to conflict, fixes #697
+* Fix redirection issue, closes #685
+* Get progress_data along with other redis fields, PR #642
+* Grab only password from Redis URL, fixes #681
+* Add remove job event, PR #665
+
+
+0.9.4 / 2015-07-17
+===================
+
+* Job that doesn't call done() retries twice, fixes #669
+
+
 0.9.3 / 2015-05-07
 ===================
 

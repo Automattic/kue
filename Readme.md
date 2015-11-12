@@ -1,5 +1,7 @@
 # Kue
 
+[![Join the chat at https://gitter.im/Automattic/kue](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Automattic/kue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/Automattic/kue.svg?branch=master)](https://travis-ci.org/Automattic/kue.svg?branch=master&style=flat)
 [![Dependency Status](https://img.shields.io/david/Automattic/kue.svg?style=flat)](https://david-dm.org/Automattic/kue)
 [![npm version](https://badge.fury.io/js/kue.svg?style=flat)](http://badge.fury.io/js/kue)
@@ -191,6 +193,7 @@ Job-specific events are fired on the `Job` instances via Redis pubsub. The follo
     - `failed attempt` the job has failed, but has remaining attempts yet
     - `failed` the job has failed and has no remaining attempts
     - `complete` the job has completed
+    - `remove` the job has been removed
 
 
 For example this may look something like the following:
@@ -804,11 +807,16 @@ Now when you visit Kue's UI in the browser you'll see that jobs are being proces
 
 ## Securing Kue
 
-Through the use of app mounting you may customize the web application, enabling TLS, or adding additional middleware like Connect's `basicAuth()`.
+Through the use of app mounting you may customize the web application, enabling TLS, or adding additional middleware like `basic-auth-connect`.
+
+```bash
+$ npm install --save basic-auth-connect
+```
 
 ```js
+var basicAuth = require('basic-auth-connect');
 var app = express.createServer({ ... tls options ... });
-app.use(express.basicAuth('foo', 'bar'));
+app.use(basicAuth('foo', 'bar'));
 app.use(kue.app);
 app.listen(3000);
 ```
