@@ -173,6 +173,14 @@ Job-specific logs enable you to expose information to the UI at any point in the
 job.log('$%d sent to %s', amount, user.name);
 ```
 
+or anything else (uses [util.inspect()](https://nodejs.org/api/util.html#util_util_inspect_object_options) internally):
+
+```js
+job.log({key: 'some key', value: 10});
+job.log({[1,2,3,5,8]});
+job.log(10.1);
+```
+
 ### Job Progress
 
 Job progress is extremely useful for long-running jobs such as video conversion. To update the job's progress simply invoke `job.progress(completed, total [, data])`:
