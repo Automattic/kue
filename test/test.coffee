@@ -313,6 +313,8 @@ describe 'Kue Tests', ->
           done()
         jdone()
 
+
+
     it 'should log objects, errors, arrays, numbers, etc', (done) ->
       jobs.create( 'log-job', { title: 'simple job' } ).save()
       jobs.process 'log-job', (job, jdone) ->
@@ -323,6 +325,7 @@ describe 'Kue Tests', ->
         job.log(new Error('test error'))
         job.log([1,2,3])
         job.log(123)
+        job.log(1.23)
         job.log(0)
         job.log(NaN)
         job.log(true)
@@ -335,10 +338,11 @@ describe 'Kue Tests', ->
           logs[4].should.be.equal('[Error: test error]');
           logs[5].should.be.equal('[ 1, 2, 3 ]');
           logs[6].should.be.equal('123');
-          logs[7].should.be.equal('0');
-          logs[8].should.be.equal('NaN');
-          logs[9].should.be.equal('true');
-          logs[10].should.be.equal('false');
+          logs[7].should.be.equal('1.23');
+          logs[8].should.be.equal('0');
+          logs[9].should.be.equal('NaN');
+          logs[10].should.be.equal('true');
+          logs[11].should.be.equal('false');
           done()
         jdone()
 
