@@ -32,7 +32,7 @@
     "lodash-deep": "^1.1.0",
     "nib": "~1.1.0",
     "node-redis-warlock": "^0.1.2",
-    "redis": "^1.0.0",
+    "redis": "^2.3.0",
     "reds": "~0.2.5",
     "stylus": "~0.52.4"
   },
