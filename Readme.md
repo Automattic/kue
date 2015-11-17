@@ -443,8 +443,10 @@ This can be achieved in two ways:
 Kue currently uses client side job state management and when redis crashes in the middle of that operations, some stuck jobs or index inconsistencies will happen. If you are facing poor redis connections or an unstable redis service you can start Kue's watchdog to fix stuck inactive jobs (if any) by calling:
 
 ```js
-queue.watchStuckJobs()
+queue.watchStuckJobs(interval)
 ```
+
+`interval` is in milliseconds and defaults to 1000ms
 
 Kue will be refactored to fully atomic job state management from version 1.0 and this will happen by lua scripts and/or BRPOPLPUSH combination. You can read more [here](https://github.com/LearnBoost/kue/issues/130) and [here](https://github.com/LearnBoost/kue/issues/38).
 
