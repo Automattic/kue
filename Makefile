@@ -25,6 +25,7 @@ test-bdd-coffee:
     --compilers coffee:coffee-script \
     --reporter $(REPORTER) \
     --require should \
+    --require coffee-script/register \
     --ui bdd \
     test/*.coffee
 
