@@ -78,22 +78,20 @@ body {
   font-size: 12px;
 }
 .context-menu li a:hover {
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #00b3e9), color-stop(1, #74dfff));
-  background: -webkit-linear-gradient(bottom, #00b3e9 0%, #74dfff 100%);
-  background: -moz-linear-gradient(bottom, #00b3e9 0%, #74dfff 100%);
-  background: -o-linear-gradient(bottom, #00b3e9 0%, #74dfff 100%);
-  background: -ms-linear-gradient(bottom, #00b3e9 0%, #74dfff 100%);
-  background: linear-gradient(bottom, #00b3e9 0%, #74dfff 100%);
+  background: -webkit-linear-gradient(bottom, #00b3e9, #74dfff);
+  background: -moz-linear-gradient(bottom, #00b3e9, #74dfff);
+  background: -o-linear-gradient(bottom, #00b3e9, #74dfff);
+  background: -ms-linear-gradient(bottom, #00b3e9, #74dfff);
+  background: linear-gradient(to top, #00b3e9, #74dfff);
   color: #fff;
   border: 1px solid #fff;
 }
 .context-menu li a:active {
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #06c5ff), color-stop(1, #83e2ff));
-  background: -webkit-linear-gradient(bottom, #06c5ff 0%, #83e2ff 100%);
-  background: -moz-linear-gradient(bottom, #06c5ff 0%, #83e2ff 100%);
-  background: -o-linear-gradient(bottom, #06c5ff 0%, #83e2ff 100%);
-  background: -ms-linear-gradient(bottom, #06c5ff 0%, #83e2ff 100%);
-  background: linear-gradient(bottom, #06c5ff 0%, #83e2ff 100%);
+  background: -webkit-linear-gradient(bottom, #06c5ff, #83e2ff);
+  background: -moz-linear-gradient(bottom, #06c5ff, #83e2ff);
+  background: -o-linear-gradient(bottom, #06c5ff, #83e2ff);
+  background: -ms-linear-gradient(bottom, #06c5ff, #83e2ff);
+  background: linear-gradient(to top, #06c5ff, #83e2ff);
 }
 #job-template {
   display: none;
@@ -118,32 +116,19 @@ body {
   left: -15px;
   padding: 5px;
   font-size: 10px;
-  -moz-border-radius-topleft: 5px;
   -webkit-border-top-left-radius: 5px;
-  -o-border-top-left-radius: 5px;
-  -ms-border-top-left-radius: 5px;
   border-top-left-radius: 5px;
-  -moz-border-radius-bottomleft: 5px;
   -webkit-border-bottom-left-radius: 5px;
-  -o-border-bottom-left-radius: 5px;
-  -ms-border-bottom-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  -moz-border-radius-topright: 2px;
   -webkit-border-top-right-radius: 2px;
-  -o-border-top-right-radius: 2px;
-  -ms-border-top-right-radius: 2px;
   border-top-right-radius: 2px;
-  -moz-border-radius-bottomright: 2px;
   -webkit-border-bottom-right-radius: 2px;
-  -o-border-bottom-right-radius: 2px;
-  -ms-border-bottom-right-radius: 2px;
   border-bottom-right-radius: 2px;
-  background: -webkit-gradient(linear, left top, right top, color-stop(0, #6b6b6b), color-stop(0.5, #7e7e7e));
-  background: -webkit-linear-gradient(left, #6b6b6b 0%, #7e7e7e 50%);
-  background: -moz-linear-gradient(left, #6b6b6b 0%, #7e7e7e 50%);
-  background: -o-linear-gradient(left, #6b6b6b 0%, #7e7e7e 50%);
-  background: -ms-linear-gradient(left, #6b6b6b 0%, #7e7e7e 50%);
-  background: linear-gradient(left, #6b6b6b 0%, #7e7e7e 50%);
+  background: -webkit-linear-gradient(left, #6b6b6b, #7e7e7e 50%);
+  background: -moz-linear-gradient(left, #6b6b6b, #7e7e7e 50%);
+  background: -o-linear-gradient(left, #6b6b6b, #7e7e7e 50%);
+  background: -ms-linear-gradient(left, #6b6b6b, #7e7e7e 50%);
+  background: linear-gradient(to right, #6b6b6b, #7e7e7e 50%);
   -webkit-box-shadow: -1px 0 1px 1px rgba(0,0,0,0.1);
   box-shadow: -1px 0 1px 1px rgba(0,0,0,0.1);
   color: #fff;
@@ -182,7 +167,7 @@ body {
   position: absolute;
   top: 30px;
   right: -6px;
-  /*background: white*/
+/*background: white*/
   background: #f05151;
   color: #fff;
   display: block;
@@ -202,7 +187,7 @@ body {
   -ms-transition: opacity 200ms, top 300ms;
   transition: opacity 200ms, top 300ms;
   opacity: 0;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
 .job .block .remove:hover {
@@ -215,7 +200,7 @@ body {
   position: absolute;
   top: 30px;
   right: -6px;
-  /*background: white*/
+/*background: white*/
   background: #00e600;
   color: #fff;
   display: block;
@@ -235,7 +220,7 @@ body {
   -ms-transition: opacity 200ms, top 300ms;
   transition: opacity 200ms, top 300ms;
   opacity: 0;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
 .job .block .restart:hover {
@@ -261,15 +246,9 @@ body {
   width: 89%;
   margin-top: -10px;
   margin-left: 35px;
-  -moz-border-radius-bottomleft: 5px;
   -webkit-border-bottom-left-radius: 5px;
-  -o-border-bottom-left-radius: 5px;
-  -ms-border-bottom-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  -moz-border-radius-bottomright: 5px;
   -webkit-border-bottom-right-radius: 5px;
-  -o-border-bottom-right-radius: 5px;
-  -ms-border-bottom-right-radius: 5px;
   border-bottom-right-radius: 5px;
   -webkit-box-shadow: inset 0 1px 10px 0 rgba(0,0,0,0.8);
   box-shadow: inset 0 1px 10px 0 rgba(0,0,0,0.8);
@@ -376,7 +355,7 @@ body {
   -ms-transition: top 500ms, opacity 500ms;
   transition: top 500ms, opacity 500ms;
   opacity: 0;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
   background: rgba(59,59,59,0.2);
   border: 1px solid rgba(59,59,59,0.3);
