@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+var kue = require('kue');
+var argv = require('yargs')
+	.usage('Usage: $0 [options]')
+	.example('$0 -p 3050 -r redis://10.0.0.4:6379')
+	.describe('r', 'Redis url')
+	.describe('p', 'Dashboard port')
+	.default('p', 3000)
+	.default('r', 'redis://127.0.0.1:6379')
+	.help('h')
+    .alias('h', 'help')
+    .argv
+;
+
+kue.createQueue({
+  redis: argv.r
+});
+
+
+kue.app.listen(argv.p);
+console.log("Running on http://127.0.0.1:" + argv.p);
