@@ -69,10 +69,34 @@ bar(color)
       border: 1px solid #eee - 10%
     &:active
       border: 1px solid #eee - 20%
+  .restart
+    absolute: top 30px right -6px
+    /*background: white*/
+    background: #00e600
+    color: white
+    display: block
+    width: size = 20px
+    height: size
+    line-height: size
+    text-align: center
+    font-size: 12px
+    font-weight: bold
+    outline: none
+    border: 1px solid #eee
+    border-radius: size
+    transition: opacity 200ms, top 300ms
+    opacity: 0
+    &:hover
+      border: 1px solid #eee - 10%
+    &:active
+      border: 1px solid #eee - 20%
   &:hover
     .remove
       opacity: 1
       top: -6px
+    .restart
+      opacity: 1
+      top: 16px
 
 // details
 
