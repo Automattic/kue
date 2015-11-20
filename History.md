@@ -1,3 +1,9 @@
+0.10.3 / 2015-11-20
+===================
+
+* Fixing Job processing order without munging the job id, Closes #708, Closes #678
+
+
 0.10.2 / 2015-11-20
 ===================
 
