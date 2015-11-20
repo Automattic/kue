@@ -1,5 +1,14 @@
+0.10.2 / 2015-11-20
+===================
+
+* Add support for ioredis, Closes #652
+* Add support for Redis Cluster, Closes #642
+* Fix `this.state` on refreshTTL 
+
+
 0.10.0 / 2015-11-20
 ===================
+
 * Update TTL on job progress, Closes #694
 * Upgrade to node_redis 2.3,  #717
 * Fix LPUSH vs connection quit race when shutting down
