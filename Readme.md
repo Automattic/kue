@@ -331,7 +331,7 @@ queue.process('email', function(job, ctx, done){
 
 ### Updating Progress
 
-For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](http://github.com/learnboost/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
+For a "real" example, let's say we need to compile a PDF from numerous slides with [node-canvas](https://github.com/Automattic/node-canvas). Our job may consist of the following data, note that in general you should _not_ store large data in the job it-self, it's better to store references like ids, pulling them in while processing.
 
 ```js
 queue.create('slideshow pdf', {
@@ -411,7 +411,7 @@ This can be achieved in two ways:
   });
   ```
 
-  This is the softest and best solution, however is not built-in with Kue. Please refer to [this discussion](https://github.com/kriskowal/q/issues/120). You can comment on this feature in the related open Kue [issue](https://github.com/LearnBoost/kue/pull/403).
+  This is the softest and best solution, however is not built-in with Kue. Please refer to [this discussion](https://github.com/kriskowal/q/issues/120). You can comment on this feature in the related open Kue [issue](https://github.com/Automattic/kue/pull/403).
 
   You can also use promises to do something like
 
@@ -449,7 +449,7 @@ queue.watchStuckJobs(interval)
 
 `interval` is in milliseconds and defaults to 1000ms
 
-Kue will be refactored to fully atomic job state management from version 1.0 and this will happen by lua scripts and/or BRPOPLPUSH combination. You can read more [here](https://github.com/LearnBoost/kue/issues/130) and [here](https://github.com/LearnBoost/kue/issues/38).
+Kue will be refactored to fully atomic job state management from version 1.0 and this will happen by lua scripts and/or BRPOPLPUSH combination. You can read more [here](https://github.com/Automattic/kue/issues/130) and [here](https://github.com/Automattic/kue/issues/38).
 
 ## Queue Maintenance
 
@@ -639,7 +639,7 @@ var queue = kue.createQueue({
 
 ## User-Interface
 
-The UI is a small [Express](http://github.com/visionmedia/express) application.
+The UI is a small [Express](https://github.com/strongloop/express) application.
 A script is provided in `bin/` for running the interface as a standalone application
 with default settings. You may pass in options for the port and redis-url. For example:
 
@@ -693,7 +693,7 @@ queue.create('email', {
 }).searchKeys( ['to', 'title'] ).save();
 ```
 
-Search feature is turned off by default from Kue `>=0.9.0`. Read more about this [here](https://github.com/LearnBoost/kue/issues/412). You should enable search indexes in you need to:
+Search feature is turned off by default from Kue `>=0.9.0`. Read more about this [here](https://github.com/Automattic/kue/issues/412). You should enable search indexes in you need to:
 
 ```javascript
 var kue = require('kue');
@@ -894,7 +894,7 @@ it('does something cool', function() {
 ## Screencasts
 
   - [Introduction](http://www.screenr.com/oyNs) to Kue
-  - API [walkthrough](http://vimeo.com/26963384) to Kue
+  - API [walkthrough](https://vimeo.com/26963384) to Kue
 
 ## License
 
