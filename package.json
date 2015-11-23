@@ -2,7 +2,7 @@
   "name": "kue",
   "version": "0.10.4",
   "description": "Feature rich priority job queue backed by redis",
-  "homepage": "http://learnboost.github.com/kue/",
+  "homepage": "http://automattic.github.io/kue/",
   "keywords": [
     "job",
     "queue",
@@ -19,10 +19,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/LearnBoost/kue.git"
+    "url": "https://github.com/Automattic/kue.git"
   },
   "bugs": {
-    "url": "https://github.com/LearnBoost/kue/issues"
+    "url": "https://github.com/Automattic/kue/issues"
   },
   "dependencies": {
     "body-parser": "^1.12.2",
