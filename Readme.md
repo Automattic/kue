@@ -313,6 +313,18 @@ queue.process('email', 20, function(job, done){
 });
 ```
 
+#### Ensuring job order across multiple servers
+
+If you are working in a multi server environment where `queue.process()` will be called on multiple servers for the same job type, but you need to avoid race conditions, you can pass in an options object. Setting `singleWorker = true` will use redis locking so only one server can be processing a job of a certain type at once. Once the job is `done()`, the lock is removed and any available server will pick up the next job.
+
+```js
+queue.process({
+  type: 'email',
+  singleWorker: true,
+  lockTtl: '5000' // default is 10000ms
+})
+```
+
 ### Pause Processing
 
 Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as `shutdown` method in [Graceful Shutdown](#graceful-shutdown).
