@@ -10,6 +10,8 @@ build:
 test-tdd:
 	@./node_modules/.bin/mocha \
     --reporter $(REPORTER) \
+		--require should \
+		--require sinon \
     --ui tdd \
     test/tdd/*.js
 
@@ -30,6 +32,6 @@ test-bdd-coffee:
     test/*.coffee
 
 
-test-all:   test-bdd test-bdd-coffee
+test-all:   test-tdd test-bdd test-bdd-coffee
 
 .PHONY: test-all
