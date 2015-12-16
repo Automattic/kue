@@ -14,8 +14,8 @@ describe('CONNECTION', function(){
 		  redis: 'redis://localhost:6379/15?foo=bar'
 	  } );
 
-	  jobs.client.connection_option.port.should.be.eql( 6379 );
-	  jobs.client.connection_option.host.should.be.eql( 'localhost' );
+	  jobs.client.connection_options.port.should.be.eql( 6379 );
+	  jobs.client.connection_options.host.should.be.eql( 'localhost' );
 	  jobs.client.options.foo.should.be.eql( 'bar' );
 
 	  var jobData = {
@@ -46,8 +46,8 @@ describe('CONNECTION', function(){
 			}
 		} );
 
-		jobs.client.connection_option.port.should.be.eql( 6379 );
-		jobs.client.connection_option.host.should.be.eql( 'localhost' );
+		jobs.client.connection_options.port.should.be.eql( 6379 );
+		jobs.client.connection_options.host.should.be.eql( 'localhost' );
 		jobs.client.options.foo.should.be.eql( 'bar' );
 
 		var jobData = {
@@ -71,8 +71,8 @@ describe('CONNECTION', function(){
 			redis: 'redis://localhost:6379/?foo=bar'
 		} );
 
-		jobs.client.connection_option.port.should.be.eql( 6379 );
-		jobs.client.connection_option.host.should.be.eql( 'localhost' );
+		jobs.client.connection_options.port.should.be.eql( 6379 );
+		jobs.client.connection_options.host.should.be.eql( 'localhost' );
 		jobs.client.options.foo.should.be.eql( 'bar' );
 
 		var jobData = {
@@ -96,8 +96,8 @@ describe('CONNECTION', function(){
 			redis: 'redis://localhost:6379?foo=bar'
 		} );
 
-		jobs.client.connection_option.port.should.be.eql( 6379 );
-		jobs.client.connection_option.host.should.be.eql( 'localhost' );
+		jobs.client.connection_options.port.should.be.eql( 6379 );
+		jobs.client.connection_options.host.should.be.eql( 'localhost' );
 		jobs.client.options.foo.should.be.eql( 'bar' );
 
 		var jobData = {
@@ -127,8 +127,8 @@ describe('CONNECTION', function(){
 			}
 		} );
 
-		jobs.client.connection_option.port.should.be.eql( 6379 );
-		jobs.client.connection_option.host.should.be.eql( 'localhost' );
+		jobs.client.connection_options.port.should.be.eql( 6379 );
+		jobs.client.connection_options.host.should.be.eql( 'localhost' );
 		jobs.client.options.foo.should.be.eql( 'bar' );
 
 		var jobData = {
@@ -206,8 +206,8 @@ describe( 'JOBS', function () {
       redis: 'redis://localhost:6379/?foo=bar'
     } );
 
-    jobs.client.connection_option.port.should.be.eql( 6379 );
-    jobs.client.connection_option.host.should.be.eql( 'localhost' );
+    jobs.client.connection_options.port.should.be.eql( 6379 );
+    jobs.client.connection_options.host.should.be.eql( 'localhost' );
     jobs.client.options.foo.should.be.eql( 'bar' );
 
     var jobData = {
