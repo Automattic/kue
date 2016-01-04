@@ -34,7 +34,8 @@
     "node-redis-warlock": "^0.1.2",
     "redis": "^2.3.0",
     "reds": "~0.2.5",
-    "stylus": "~0.52.4"
+    "stylus": "~0.52.4",
+    "yargs": "^3.31.0"
   },
   "devDependencies": {
     "async": "^1.4.2",
