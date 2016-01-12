@@ -37,17 +37,17 @@ body {
   border-top: 1px solid #545454;
   border-bottom: 1px solid #333;
   font-size: 12px;
-  background: #3a3a3a;
+  background: #393939;
 }
 #menu li a:hover {
-  background: #444;
+  background: #434343;
 }
 #menu li a:active,
 #menu li a.active {
   background: #343434;
-  -webkit-box-shadow: inset 0 0 3px 2px #292929, inset 0 -5px 10px 2px #313131;
-  box-shadow: inset 0 0 3px 2px #292929, inset 0 -5px 10px 2px #313131;
-  border-bottom: 1px solid #232323;
+  -webkit-box-shadow: inset 0 0 3px 2px #282828, inset 0 -5px 10px 2px #303030;
+  box-shadow: inset 0 0 3px 2px #282828, inset 0 -5px 10px 2px #303030;
+  border-bottom: 1px solid #222;
 }
 .context-menu {
   display: none;
