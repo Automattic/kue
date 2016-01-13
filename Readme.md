@@ -433,7 +433,7 @@ This can be achieved in two ways:
   process.once( 'uncaughtException', function(err){
     console.error( 'Something bad happened: ', err );
     queue.shutdown( 1000, function(err2){
-      console.error( 'Kue shutdown result: ', err||'OK' );
+      console.error( 'Kue shutdown result: ', err2 || 'OK' );
       process.exit( 0 );
     });
   });
