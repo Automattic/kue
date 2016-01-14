@@ -1,6 +1,6 @@
 {
   "name": "kue",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://automattic.github.io/kue/",
   "keywords": [
