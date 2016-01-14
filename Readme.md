@@ -441,7 +441,7 @@ This can be achieved in two ways:
 
 ### Unstable Redis connections
 
-Kue currently uses client side job state management and when redis crashes in the middle of that operations, some stuck jobs or index inconsistencies will happen. If you are facing poor redis connections or an unstable redis service you can start Kue's watchdog to fix stuck inactive jobs (if any) by calling:
+Kue currently uses client side job state management and when redis crashes in the middle of that operations, some stuck jobs or index inconsistencies will happen. The consequence is that certain number of jobs will be stuck, and be pulled out by worker only when new jobs are created, if no more new jobs are created, they stuck forever. So we **strongly** suggest that you run watchdog to fix this issue by calling:
 
 ```js
 queue.watchStuckJobs(interval)
@@ -802,8 +802,8 @@ You can create multiple jobs at once by passing an array. In this case, the resp
            }
          }]' http://localhost:3000/job
     [
-	    {"message": "job created", "id": 4},
-	    {"message": "job created", "id": 5}
+      {"message": "job created", "id": 4},
+      {"message": "job created", "id": 5}
     ]
 
 Note: when inserting multiple jobs in bulk, if one insertion fails Kue will keep processing the remaining jobs in order. The response array will contain the ids of the jobs added successfully, and any failed element will be an object describing the error: `{"error": "error reason"}`.
