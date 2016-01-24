@@ -1,3 +1,4 @@
+should = require 'should'
 kue = require '../'
 
 describe 'Kue Tests', ->
@@ -255,6 +256,19 @@ describe 'Kue Tests', ->
         else
           jdone( new Error('reaattempt') )
 
+
+    it 'should be able to suppress retries for critical failures', (done) ->
+      attempts = 0
+      jobs.create( 'job-with-critical-error' ).attempts(1)
+        .on 'failed attempt', ->
+          done new Error('expected "failed attempt" to have not been fired')
+        .on 'failed', -> done()
+        .save()
+      jobs.process 'job-with-critical-error', (job, jdone) ->
+        (attempts++).should.be.eql 0
+        job.suppressAttempts (err) ->
+          should.not.exist err
+          jdone new Error('critical failure')
 
 
     it 'should honor original delay at fixed backoff', (done) ->

@@ -1,3 +1,4 @@
+var should = require( 'should' );
 var kue = require( '../' );
 
 describe('CONNECTION', function(){
@@ -201,7 +202,33 @@ describe( 'JOBS', function () {
     } );
   } );
 
-  it( 'should accept url strings for redis when making an new queue', function ( done ) {
+  it ( 'should stop retrying if failure attempts are suppressed while processing', function ( done ) {
+    var attempts = 0,
+        failures = 0;
+    jobs.create( 'failure-attempts-suppressing' )
+      .attempts( 3 )
+      .on( 'failed attempt', function () {
+        failures++;
+      } )
+      .on( 'failed', function () {
+        attempts.should.be.equal( 2 );
+        failures.should.be.equal( 1 );
+        done();
+      } )
+      .save();
+    jobs.process( 'failure-attempts-suppressing', function ( job, jdone ) {
+      attempts++;
+      if ( attempts === 1 )
+        jdone( new Error( 'retriable failure' ) );
+      else
+        job.suppressAttempts( function (err) {
+          should.not.exist( err );
+          jdone( new Error( 'critical failure' ) );
+        } );
+    } );
+  } );
+
+  it( 'should accept url strings for redis when making a new queue', function ( done ) {
     var jobs = new kue( {
       redis: 'redis://localhost:6379/?foo=bar'
     } );
