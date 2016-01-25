@@ -1,3 +1,6 @@
+_ = require 'lodash'
+async = require 'async'
+should = require 'should'
 kue = require '../'
 
 describe 'Kue Tests', ->
@@ -5,15 +8,12 @@ describe 'Kue Tests', ->
   jobs = null
   Job = null
 
-  beforeEach (done) ->
+  beforeEach ->
     jobs = kue.createQueue({promotion:{interval:50}})
     Job = kue.Job
-    done()
 
   afterEach (done) ->
-    onShutdown = (err) ->
-      done(err)
-    jobs.shutdown 50, onShutdown
+    jobs.shutdown 50, done
 
   #  before (done) ->
   #    jobs = kue.createQueue({promotion:{interval:100}})
@@ -24,15 +24,13 @@ describe 'Kue Tests', ->
   #    jobs.client.flushdb done
 
 
-
   describe 'Job Producer', ->
-    it 'should save jobs having new id', (done) ->
+    it 'should save jobs having a new id', (done) ->
       job_data =
         title: 'Test Email Job'
         to: 'tj@learnboost.com'
       job = jobs.create('email-to-be-saved', job_data)
-      jobs.process 'email-to-be-saved', (job, done)->
-        done()
+      jobs.process('email-to-be-saved', _.noop)
       job.save (err) ->
         job.id.should.be.an.instanceOf(Number)
         done err
@@ -179,7 +177,6 @@ describe 'Kue Tests', ->
         done()
 
 
-
     it 'should have promote_at timestamp', (done) ->
       now = Date.now()
       job = jobs.create( 'simple-delayed-job', { title: 'simple delay job' } ).delay(300).save()
@@ -187,8 +184,6 @@ describe 'Kue Tests', ->
         job.promote_at.should.be.approximately(now + 300, 100)
         jdone()
         done()
-      done()
-
 
 
     it 'should update promote_at after delay change', (done) ->
@@ -350,32 +345,34 @@ describe 'Kue Tests', ->
 
 
   describe 'Kue Core', ->
-    it 'should receive job enqueue event', (done) ->
-      id = null
-      jobs.on 'job enqueue', (id, type)->
-        if( type == 'email-to-be-enqueued' )
-          id.should.be.equal( job.id )
+
+    it 'should receive a "job enqueue" event', (done) ->
+      jobs.on 'job enqueue', (id, type) ->
+        if type == 'email-to-be-enqueued'
+          id.should.be.equal job.id
           done()
+      jobs.process 'email-to-be-enqueued', (job, jdone) -> jdone()
+      job = jobs.create('email-to-be-enqueued').save()
 
-      jobs.process 'email-to-be-enqueued', (job, jdone) ->
-        jdone()
-      job_data =
-        title: 'Test Email Job'
-        to: 'tj@learnboost.com'
-      job = jobs.create('email-to-be-enqueued', job_data).save()
 
+    it 'should receive a "job remove" event', (done) ->
+      jobs.on 'job remove', (id, type) ->
+        if type == 'removable-job'
+          id.should.be.equal job.id
+          done()
+      jobs.process 'removable-job', (job, jdone) -> jdone()
+      job = jobs.create('removable-job').save().remove()
 
 
     it 'should fail a job with TTL is exceeded', (done) ->
-      jobs.process('test-job-with-ttl', (job,jdone) ->
+      jobs.process('test-job-with-ttl', (job, jdone) ->
         # do nothing to sample a stuck worker
       )
-      job = jobs.create('test-job-with-ttl', title: 'a ttl job').ttl(500).on( 'failed', ( err )->
-        err.should.be.equal( 'TTL exceeded' )
-        done()
-      ).save()
-
-
+      jobs.create('test-job-with-ttl', title: 'a ttl job').ttl(500)
+        .on 'failed', (err) ->
+          err.should.be.equal 'TTL exceeded'
+          done()
+        .save()
 
 
   describe 'Kue Job Concurrency', ->
@@ -429,43 +426,27 @@ describe 'Kue Tests', ->
       ).save()
 
 
-
-
   describe 'Kue Job Removal', ->
 
     beforeEach (done) ->
-      jobs = kue.createQueue({promotion:{interval:50}})
-      Job = kue.Job
-      jobs.process 'sample-job-to-be-cleaned', (job, jdone) ->
-        jdone()
-      jobs.create( 'sample-job-to-be-cleaned', {title: 'sample-job-to-be-cleaned', id:id} ).save() for id in [1..10]
-      done()
-
-    totalJobs = {}
-    removeJobById = (id, type, done)->
-      Job.remove id, (err) ->
-        done() if not --totalJobs[type]
+      jobs.process 'sample-job-to-be-cleaned', (job, jdone) -> jdone()
+      async.each([1..10], (id, next) ->
+        jobs.create( 'sample-job-to-be-cleaned', {id: id} ).save(next)
+      , done)
 
 
     it 'should be able to remove completed jobs', (done) ->
       jobs.complete (err, ids) ->
-        totalJobs.complete = ids.length
-        removeJobById id, 'complete', done for id in ids
-
+        should.not.exist err
+        async.each(ids, (id, next) ->
+          Job.remove(id, next)
+        , done)
 
 
     it 'should be able to remove failed jobs', (done) ->
       jobs.failed (err, ids) ->
-        totalJobs.failed = ids.length
-        removeJobById id, 'failed', done for id in ids
+        should.not.exist err
+        async.each(ids, (id, next) ->
+          Job.remove(id, next)
+        , done)
 
-
-
-    it 'should receive a job remove event', (done) ->
-      jobs.on 'job remove', (id, type) ->
-        if( type == 'removable-job' )
-          id.should.be.equal( job.id )
-          done()
-      jobs.process 'removable-job', (job, jdone) ->
-        jdone()
-      job = jobs.create('removable-job', {}).save().remove()
