@@ -133,7 +133,9 @@ describe 'Kue', ->
 
         setTimeout ()->
           jobs.shutdown 100, (err)->
-            err.should.be.equal "Shutdown already in progress"
+            should.exist err, 'expected `err` to exist'
+            err.should.be.an.instanceOf(Error)
+              .with.property('message', 'Shutdown already in progress')
             testDone()
         , 60
 
