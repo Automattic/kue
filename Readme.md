@@ -313,7 +313,7 @@ When jobs that created with `.attempts()` are failed by worker, they will be aut
 ```js
 queue.process('email', function(job, done){
   if( !isValidEmail(job.data.to) ) {
-    job.suppressAttempts(function(){
+    job.suppressAttempts(function(){ // prevent subsequent attempts
       done( new Error('invalid to address') );
     });
   }
