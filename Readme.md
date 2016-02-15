@@ -56,6 +56,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Jobs Priority](#job-priority)
   - [Failure Attempts](#failure-attempts)
   - [Failure Backoff](#failure-backoff)
+  - [Job Uniqueness](#unique-job)
   - [Job TTL](#job-ttl)
   - [Job Logs](#job-logs)
   - [Job Progress](#job-progress)
@@ -157,6 +158,16 @@ Job retry attempts are done as soon as they fail, with no delay, even if your jo
 ```
 
 In the last scenario, provided function will be executed (via eval) on each re-attempt to get next attempt delay value, meaning that you can't reference external/context variables within it.
+
+### Job Uniqueness
+
+Make job unique by given field with given value. If job saved to redis successfully same job will not save again.
+
+```js
+queue.create('notification', {id: 5}).unique('id').save()
+```
+
+Use `removeOnComplete()` to create same job again after previous one completed.
 
 ### Job TTL
 
