@@ -1,4 +1,5 @@
 var kue = require( '../' );
+var should = require('should');
 
 describe('CONNECTION', function(){
 	var jobs = null;
@@ -200,6 +201,32 @@ describe( 'JOBS', function () {
         done( new Error( "error" ) );
     } );
   } );
+
+	it( 'should not create same job', function (testDone) {
+		var id = "unique1";
+		var uniqueJob = jobs.create("unique", { id: id }).unique("id").removeOnComplete(true);
+		var ununiqueJob = jobs.create("unique", {id: id }).unique("id").removeOnComplete(true);
+		uniqueJob.save(function (err) {
+			should.not.exist(err);
+
+			ununiqueJob.save(function (error) {
+				should.not.exist(error);
+
+				jobs.process("unique", function (job, done) {
+					job.data.id.should.equal(id);
+					done();
+				});
+			});
+		});
+
+		uniqueJob.on("complete", function () {
+			ununiqueJob.save();
+		});
+
+		ununiqueJob.on("complete", function () {
+			testDone();
+		})
+	});
 
   it( 'should accept url strings for redis when making an new queue', function ( done ) {
     var jobs = new kue( {
