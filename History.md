@@ -1,3 +1,19 @@
+0.10.5 / 2016-01-14
+===================
+
+* Attempts surpassing max attempts on delay jobs upon failure, resulting in infinite retries, Fixes #797
+* Add yargs dependency for kue-dashboard, #796
+
+
+0.10.4 / 2016-01-14
+===================
+
+* fix zpop callback on shutdown
+* fix connection_options in test.js
+* Unit tests for redis.js #779
+* Tests for kue.js #778
+
+
 0.10.3 / 2015-11-20
 ===================
 
