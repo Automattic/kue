@@ -63,6 +63,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Queue Events](#queue-events)
   - [Delayed Jobs](#delayed-jobs)
   - [Processing Jobs](#processing-jobs)
+  - [Aborting Failure Attempts](#aborting-failure-attempts)
   - [Processing Concurrency](#processing-concurrency)
   - [Pause Processing](#pause-processing)
   - [Updating Progress](#updating-progress)
@@ -127,33 +128,36 @@ The default priority map is as follows:
 
 ### Failure Attempts
 
-By default jobs only have _one_ attempt, that is when they fail, they are marked as a failure, and remain that way until you intervene. However, Kue allows you to specify this, which is important for jobs such as transferring an email, which upon failure, may usually retry without issue. To do this invoke the `.attempts()` method with a number.
+By default, jobs only have _one_ attempt, that is when they fail, they are marked as a failure, and remain that way until you intervene. However, Kue allows you to specify this, which is important for jobs such as transferring an email, which upon failure, may usually retry without issue. To do this, when creating jobs, invoke the `.attempts()` method with a _number_.
 
 ```js
- queue.create('email', {
-     title: 'welcome email for tj'
-   , to: 'tj@learnboost.com'
-   , template: 'welcome-email'
- }).priority('high').attempts(5).save();
+queue.create('email', {
+    title: 'welcome email for tj'
+  , to: 'tj@learnboost.com'
+  , template: 'welcome-email'
+}).attempts(5).save();
 ```
 
+Job retries can also be suppressed from within a worker (process handler) on critical errors. Refer to the [Aborting Failure Attempts](#aborting-failure-attempts) section to learn more.
+
 ### Failure Backoff
+
 Job retry attempts are done as soon as they fail, with no delay, even if your job had a delay set via `Job#delay`. If you want to delay job re-attempts upon failures (known as backoff) you can use `Job#backoff` method in different ways:
 
 ```js
-    // Honor job's original delay (if set) at each attempt, defaults to fixed backoff
-    job.attempts(3).backoff( true )
+// Honor job's original delay (if set) at each attempt, defaults to fixed backoff
+job.attempts(3).backoff( true )
 
-    // Override delay value, fixed backoff
-    job.attempts(3).backoff( {delay: 60*1000, type:'fixed'} )
+// Override delay value, fixed backoff
+job.attempts(3).backoff( {delay: 60*1000, type: 'fixed'} )
 
-    // Enable exponential backoff using original delay (if set)
-    job.attempts(3).backoff( {type:'exponential'} )
+// Enable exponential backoff using original delay (if set)
+job.attempts(3).backoff( {type: 'exponential'} )
 
-    // Use a function to get a customized next attempt delay value
-    job.attempts(3).backoff( function( attempts, delay ){
-      return my_customized_calculated_delay;
-    })
+// Use a function to get a customized next attempt delay value
+job.attempts(3).backoff( function( attempts, delay ){
+  return my_customized_calculated_delay;
+})
 ```
 
 In the last scenario, provided function will be executed (via eval) on each re-attempt to get next attempt delay value, meaning that you can't reference external/context variables within it.
@@ -291,7 +295,7 @@ queue.process('email', function(job, done){
 });
 
 function email(address, done) {
-  if(!isValidEmail(address)) {
+  if( !isValidEmail(address) ) {
     //done('invalid to address') is possible but discouraged
     return done(new Error('invalid to address'));
   }
@@ -300,7 +304,27 @@ function email(address, done) {
 }
 ```
 
-Workers can also pass job result as the second parameter to done `done(null,result)` to store that in `Job.result` key. `result` is also passed through `complete` event handlers so that job producers can receive it if they like to.
+Workers can also pass job result as a second parameter to done `done(null, result)` to store that in `Job.result` key. `result` is also passed through `complete` event handlers so that job producers can receive it if they like to.
+
+### Aborting Failure Attempts
+
+When jobs that created with `.attempts()` are failed by worker, they will be automatically retried, but you may have some error cases, when subsequent retries doesn't matter (e.g. missing or invalid `job.data` params). In such cases, use `job.suppressAttempts()` from within a worker to prevent unnecessary subsequent calls.
+
+```js
+queue.process('email', function(job, done){
+  if( !isValidEmail(job.data.to) ) {
+    return job.suppressAttempts(function(){ // prevent subsequent attempts
+      done( new Error('invalid to address') );
+    });
+  }
+  sendEmail({...}, function(err){
+    if ( err ) { // e.g. temporary network error
+      return done( err ); // without suppressing will be retried
+    }
+    done();
+  });
+});
+```
 
 ### Processing Concurrency
 
