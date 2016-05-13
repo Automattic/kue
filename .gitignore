@@ -4,3 +4,4 @@ node_modules
 *.sock
 *.rdb
 test/incomplete
+*.swp
