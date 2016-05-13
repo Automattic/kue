@@ -197,6 +197,7 @@ data can be used to pass extra information about the job. For example a message 
 Job-specific events are fired on the `Job` instances via Redis pubsub. The following events are currently supported:
 
     - `enqueue` the job is now queued
+    - `start` the job is now running
     - `promotion` the job is promoted from delayed state to queued
     - `progress` the job's progress ranging from 0-100
     - `failed attempt` the job has failed, but has remaining attempts yet
