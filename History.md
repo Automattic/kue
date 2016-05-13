@@ -1,3 +1,23 @@
+0.11.0 / 2016-05-13
+===================
+
+* force node_redis version to 2.4.x, Closes #857
+* Converting Job ids back into integers, #855
+* Fix LPUSH crash during shutdown, #854
+* Install kue-dashboard script, #853
+* Add start event to documentation, #841
+* Add parameter for testMode.enter to continue processing jobs, #821
+* Modern Node.js versions support, #812
+* Don't start the next job until the current one is totally finished, Closes #806
+* Store multiple instances of jobs in jobs id map to emit events for all, #750 
+
+
+0.10.6 / 2016-04-27
+===================
+
+* Redis Cluster fix, Closes #861
+
+
 0.10.5 / 2016-01-14
 ===================
 
