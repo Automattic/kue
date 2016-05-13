@@ -892,6 +892,15 @@ it('does something cool', function() {
 });
 ```
 
+**IMPORTANT:** By default jobs aren't processed when created during test mode. You can enable job processing by passing true to testMode.enter
+
+```js
+before(function() {
+  queue.testMode.enter(true);
+});
+```
+
+
 ## Screencasts
 
   - [Introduction](http://www.screenr.com/oyNs) to Kue
