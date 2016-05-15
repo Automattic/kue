@@ -1,5 +1,5 @@
 var sinon = require('sinon');
-var r = require('redis');
+var Redis = require('ioredis');
 var redis = require('../../lib/redis');
 
 describe('redis', function() {
@@ -12,16 +12,6 @@ describe('redis', function() {
 
     afterEach(function(){
       redis.reset.restore();
-    });
-
-    it('should parse a url connection string', function () {
-      var options = {
-        redis: 'redis://:password@host:1234/db'
-      };
-      redis.configureFactory(options);
-      options.redis.port.should.equal('1234');
-      options.redis.host.should.equal('host');
-      options.redis.db.should.equal('db');
     });
 
     it('should reset everything', function () {
@@ -79,7 +69,7 @@ describe('redis', function() {
       it('should return key with prefix and curly braces for ioredis cluster', function () {
         var client = redis.createClient();
         client.constructor = {
-          name: 'Redis'
+          name: 'Cluster'
         };
         var key = client.getKey('key');
         key.should.equal('{prefix}:key');
@@ -130,29 +120,11 @@ describe('redis', function() {
         auth: sinon.stub(),
         select: sinon.stub()
       };
-      sinon.stub(r, 'createClient').returns(client);
+      // sinon.stub(Redis, 'createClient').returns(client);
     });
 
     afterEach(function(){
-      r.createClient.restore();
-    });
 
-    it('should create a client', function () {
-      var c = redis.createClientFactory(options);
-      r.createClient.called.should.be.true;
-      r.createClient.calledWith(options.redis.port, options.redis.host, options.redis.options).should.be.true;
-    });
-
-    it('should authenticate if auth is present', function () {
-      options.redis.auth = 'auth';
-      var c = redis.createClientFactory(options);
-      client.auth.calledWith(options.redis.auth).should.be.true;
-    });
-
-    it('should select the passed in db', function () {
-      options.redis.db = 1;
-      var c = redis.createClientFactory(options);
-      client.select.calledWith(options.redis.db).should.be.true;
     });
 
   });

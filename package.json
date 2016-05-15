@@ -27,12 +27,12 @@
   "dependencies": {
     "body-parser": "^1.12.2",
     "express": "^4.12.2",
+    "ioredis": "^1.15.1",
     "jade": "^1.11.0",
     "lodash": "^3.10.1",
     "lodash-deep": "^1.1.0",
     "nib": "~1.1.0",
     "node-redis-warlock": "~0.1.2",
-    "redis": "~2.4.2",
     "reds": "~0.2.5",
     "stylus": "~0.52.4",
     "yargs": "^3.31.0"
