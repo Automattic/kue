@@ -2,7 +2,7 @@ var request = require('supertest'),
     kue     = require('../index'),
     async   = require('async'),
     chai    = require('chai'),
-    queue   = kue.createQueue({disableSearch: false}), //customize queue before accessing kue.app
+    queue   = kue.createQueue({}),
     app     = kue.app,
     type    = 'test:inserts';
 
@@ -41,7 +41,7 @@ describe('JSON API', function () {
     scope.queue = queue;
 
     // delete all jobs to get a clean state
-    kue.Job.rangeByType(type, 'inactive', 0, 100, 'asc', function (err, jobs) {
+    scope.queue.rangeByType(type, 'inactive', 0, 100, 'asc', function (err, jobs) {
       if (err) return done(err);
       if (!jobs.length) return done();
       async.each(jobs, function (job, asyncDone) {
@@ -111,28 +111,6 @@ describe('JSON API', function () {
     });
 
 
-    it('change state', function (done) {
-      request(app)
-        .put('/job/' + scope.jobId + '/state/active')
-        .expect(function (res) {
-          expect(res.body.message).to.exist;
-        })
-        .end(done);
-    });
-
-
-    it('get job by id: job is now active', function (done) {
-      request(app)
-        .get('/job/' + scope.jobId)
-        .expect(function (res) {
-          res.body.id.should.eql(scope.jobId);
-          res.body.type.should.eql(type);
-          res.body.state.should.eql('active');
-        })
-        .end(done);
-    });
-
-
     it('delete job by id', function (done) {
       request(app)
         .del('/job/' + scope.jobId)
@@ -144,7 +122,7 @@ describe('JSON API', function () {
   });
 
 
-  describe('search', function () {
+  describe.skip('search', function () {
     it('search by query: not found', function (done) {
       request(app)
         .get('/job/search')

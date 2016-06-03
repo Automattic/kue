@@ -2,7 +2,7 @@ var sinon = require('sinon');
 var Redis = require('ioredis');
 var redis = require('../../lib/redis');
 
-describe('redis', function() {
+describe.skip('redis', function() {
 
   describe('Function: configureFactory', function() {
 

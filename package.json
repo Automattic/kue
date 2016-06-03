@@ -1,7 +1,7 @@
 {
   "name": "kue",
-  "version": "0.11.0",
-  "description": "Feature rich priority job queue backed by redis",
+  "version": "1.0.0-alpha",
+  "description": "Feature rich atomic priority job queue backed by redis",
   "homepage": "http://automattic.github.io/kue/",
   "keywords": [
     "job",
@@ -10,13 +10,7 @@
     "redis"
   ],
   "license": "MIT",
-  "author": "TJ Holowaychuk <tj@learnboost.com>",
-  "contributors": [
-    {
-      "name": "Behrad Zari",
-      "email": "behradz@gmail.com"
-    }
-  ],
+  "author": "Behrad Zari <behradz@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/Automattic/kue.git"
@@ -30,10 +24,9 @@
     "ioredis": "^1.15.1",
     "jade": "^1.11.0",
     "lodash": "^3.10.1",
-    "lodash-deep": "^1.1.0",
     "nib": "~1.1.0",
-    "node-redis-warlock": "~0.1.2",
-    "reds": "~0.2.5",
+    "redlock": "^2.0.0",
+    "retimer": "^1.0.1",
     "stylus": "~0.52.4",
     "yargs": "^3.31.0"
   },
