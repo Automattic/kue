@@ -58,8 +58,10 @@ if newState == 'failed' then
         if remaining > 0 then
             -- reattempt
             local backoff  = redis.call('HGET', jobKey, 'backoff')
-            local delay  = tonumber(redis.call('HGET', jobKey, 'delay'))
-
+            local delay  = redis.call('HGET', jobKey, 'delay')
+            if not delay then
+                delay = 0
+            end
             if backoff then
                 newState = 'delayed'
                 backoff = cjson.decode(backoff)
@@ -77,7 +79,7 @@ if newState == 'failed' then
                 if not lastAttemptTs then
                     lastAttemptTs = tonumber(redis.call('HGET', jobKey, 'created_at'))
                 end
-                local promote_at = delay + lastAttemptTs
+                local promote_at = tonumber(delay) + lastAttemptTs
                 redis.call('HSET', jobKey, 'promote_at', promote_at)
             else
                 newState = 'inactive'
