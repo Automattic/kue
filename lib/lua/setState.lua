@@ -58,7 +58,7 @@ if newState == 'failed' then
         if remaining > 0 then
             -- reattempt
             local backoff  = redis.call('HGET', jobKey, 'backoff')
-            local delay  = redis.call('HGET', jobKey, 'delay')
+            local delay  = tonumber(redis.call('HGET', jobKey, 'delay'))
 
             if backoff then
                 newState = 'delayed'
