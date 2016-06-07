@@ -103,4 +103,9 @@ redis.call('ZADD', KEYS[1]..':jobs:'..newState, order, ARGV[2])
 redis.call('ZADD', KEYS[1]..':jobs:'..jobType..':'..newState, tonumber(prio), ARGV[2])
 
 
+if newState == 'inactive' then
+    local helperList = KEYS[1]..':'..jobType..':jobs'
+    redis.call('LPUSH', helperList, ARGV[2])
+end
+
 return returnVal
