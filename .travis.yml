@@ -2,7 +2,8 @@ language: node_js
 node_js:
   - "0.10"
   - "0.12"
-  - "4.2"
-  - "5.5"
+  - "4"
+  - "5"
+  - "node"
 services:
   - redis-server
