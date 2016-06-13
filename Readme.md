@@ -238,6 +238,12 @@ job.on('complete', function(result){
  kue.createQueue({jobEvents: false})
  ```
 
+ Alternatively, you can use the job level function `events` to control whether events are fired for a job at the job level.
+
+ ```js
+var job = queue.create('test').events(false).save();
+ ```
+
 ### Queue Events
 
 Queue-level events provide access to the job-level events previously mentioned, however scoped to the `Queue` instance to apply logic at a "global" level. An example of this is removing completed jobs:
