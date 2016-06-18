@@ -2,6 +2,7 @@ _ = require 'lodash'
 async = require 'async'
 should = require 'should'
 kue = require '../'
+util = require 'util'
 
 describe 'Kue Tests', ->
 
@@ -313,11 +314,12 @@ describe 'Kue Tests', ->
     it 'should log objects, errors, arrays, numbers, etc', (done) ->
       jobs.create( 'log-job', { title: 'simple job' } ).save()
       jobs.process 'log-job', (job, jdone) ->
+        testErr = new Error('test error')# to compare the same stack
         job.log()
         job.log(undefined)
         job.log(null)
         job.log({test: 'some text'})
-        job.log(new Error('test error'))
+        job.log(testErr)
         job.log([1,2,3])
         job.log(123)
         job.log(1.23)
@@ -325,19 +327,20 @@ describe 'Kue Tests', ->
         job.log(NaN)
         job.log(true)
         job.log(false)
+
         Job.log job.id, (err,logs) ->
-          logs[0].should.be.equal('undefined');
-          logs[1].should.be.equal('undefined');
-          logs[2].should.be.equal('null');
-          logs[3].should.be.equal('{ test: \'some text\' }');
-          logs[4].should.be.equal('[Error: test error]');
-          logs[5].should.be.equal('[ 1, 2, 3 ]');
-          logs[6].should.be.equal('123');
-          logs[7].should.be.equal('1.23');
-          logs[8].should.be.equal('0');
-          logs[9].should.be.equal('NaN');
-          logs[10].should.be.equal('true');
-          logs[11].should.be.equal('false');
+          logs[0].should.be.equal(util.format(undefined));
+          logs[1].should.be.equal(util.format(undefined));
+          logs[2].should.be.equal(util.format(null));
+          logs[3].should.be.equal(util.format({ test: 'some text' }));
+          logs[4].should.be.equal(util.format(testErr));
+          logs[5].should.be.equal(util.format([ 1, 2, 3 ]));
+          logs[6].should.be.equal(util.format(123));
+          logs[7].should.be.equal(util.format(1.23));
+          logs[8].should.be.equal(util.format(0));
+          logs[9].should.be.equal(util.format(NaN));
+          logs[10].should.be.equal(util.format(true));
+          logs[11].should.be.equal(util.format(false));
           done()
         jdone()
 
@@ -449,4 +452,3 @@ describe 'Kue Tests', ->
         async.each(ids, (id, next) ->
           Job.remove(id, next)
         , done)
-
