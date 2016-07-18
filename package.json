@@ -25,8 +25,10 @@
     "url": "https://github.com/Automattic/kue/issues"
   },
   "dependencies": {
+    "async": "^1.4.2",
     "body-parser": "^1.12.2",
     "express": "^4.12.2",
+    "express-autoroute": "^1.2.3",
     "lodash": "^4.0.0",
     "lodash-deep": "^2.0.0",
     "nib": "~1.1.0",
@@ -38,10 +40,10 @@
     "yargs": "^4.0.0"
   },
   "devDependencies": {
-    "async": "^1.4.2",
     "chai": "^3.3.0",
     "coffee-script": "~1.10.0",
     "mocha": "^2.3.3",
+    "moment": "^2.10.6",
     "should": "^3.1.0",
     "sinon": "^1.17.2",
     "supertest": "^1.1.0"
@@ -51,6 +53,7 @@
     "kue-dashboard": "bin/kue-dashboard"
   },
   "scripts": {
-    "test": "make test-all"
+    "test": "make test-all",
+    "test-tdd": "mocha --reporter spec --require should --require sinon --ui tdd test/tdd/*.js"
   }
 }

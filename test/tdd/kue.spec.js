@@ -1,11 +1,14 @@
+var _ = require('lodash');
+var EventEmitter = require('events').EventEmitter;
+var moment = require('moment');
 var sinon = require('sinon');
+
 var kue = require('../../lib/kue');
 var redis = require('../../lib/redis');
 var events = require('../../lib/queue/events');
 var Job = require('../../lib/queue/job');
 var Worker = require('../../lib/queue/worker');
-var _ = require('lodash');
-var EventEmitter = require('events').EventEmitter;
+
 var redisClient = {};
 
 describe('Kue', function () {
@@ -495,6 +498,35 @@ describe('Kue', function () {
     it('should get all job ids for the given state', function (done) {
       queue.state(state, function (err, ids) {
         ids.should.eql(jobIds);
+        done();
+      });
+    });
+
+  });
+
+  describe('Function: stateSince', function() {
+    var queue, client, jobIds, state;
+
+    beforeEach(function(){
+      jobIds = [1, 2];
+      state = 'state';
+      client = {
+        getKey: sinon.stub().returnsArg(0),
+        stripFIFO: sinon.stub().returnsArg(0),
+        zrange: sinon.stub().callsArgWith(3, null, jobIds)
+      };
+      queue = kue.createQueue();
+      queue.client = client;
+    });
+
+    it('should get all job ids for the given state since timestamp', function (done) {
+      //get ids since an hour ago - expect one entry in the time series data
+      queue.stateSince(state, Date.now() - 3600000, function (err, ids) {
+        //floor the time using a different method to test the implementation of the actual code
+        var expectedResult = {};
+        expectedResult[moment().startOf('hour').toDate().getTime()] = jobIds;
+
+        ids.should.eql(expectedResult);
         done();
       });
     });
