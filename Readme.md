@@ -197,6 +197,7 @@ data can be used to pass extra information about the job. For example a message 
 Job-specific events are fired on the `Job` instances via Redis pubsub. The following events are currently supported:
 
     - `enqueue` the job is now queued
+    - `start` the job is now running
     - `promotion` the job is promoted from delayed state to queued
     - `progress` the job's progress ranging from 0-100
     - `failed attempt` the job has failed, but has remaining attempts yet
@@ -235,6 +236,12 @@ job.on('complete', function(result){
 
  ```js
  kue.createQueue({jobEvents: false})
+ ```
+
+ Alternatively, you can use the job level function `events` to control whether events are fired for a job at the job level.
+
+ ```js
+var job = queue.create('test').events(false).save();
  ```
 
 ### Queue Events
@@ -433,7 +440,7 @@ This can be achieved in two ways:
   process.once( 'uncaughtException', function(err){
     console.error( 'Something bad happened: ', err );
     queue.shutdown( 1000, function(err2){
-      console.error( 'Kue shutdown result: ', err||'OK' );
+      console.error( 'Kue shutdown result: ', err2 || 'OK' );
       process.exit( 0 );
     });
   });
@@ -441,7 +448,7 @@ This can be achieved in two ways:
 
 ### Unstable Redis connections
 
-Kue currently uses client side job state management and when redis crashes in the middle of that operations, some stuck jobs or index inconsistencies will happen. If you are facing poor redis connections or an unstable redis service you can start Kue's watchdog to fix stuck inactive jobs (if any) by calling:
+Kue currently uses client side job state management and when redis crashes in the middle of that operations, some stuck jobs or index inconsistencies will happen. The consequence is that certain number of jobs will be stuck, and be pulled out by worker only when new jobs are created, if no more new jobs are created, they stuck forever. So we **strongly** suggest that you run watchdog to fix this issue by calling:
 
 ```js
 queue.watchStuckJobs(interval)
@@ -802,8 +809,8 @@ You can create multiple jobs at once by passing an array. In this case, the resp
            }
          }]' http://localhost:3000/job
     [
-	    {"message": "job created", "id": 4},
-	    {"message": "job created", "id": 5}
+      {"message": "job created", "id": 4},
+      {"message": "job created", "id": 5}
     ]
 
 Note: when inserting multiple jobs in bulk, if one insertion fails Kue will keep processing the remaining jobs in order. The response array will contain the ids of the jobs added successfully, and any failed element will be an object describing the error: `{"error": "error reason"}`.
@@ -891,10 +898,34 @@ it('does something cool', function() {
 });
 ```
 
+**IMPORTANT:** By default jobs aren't processed when created during test mode. You can enable job processing by passing true to testMode.enter
+
+```js
+before(function() {
+  queue.testMode.enter(true);
+});
+```
+
+
 ## Screencasts
 
   - [Introduction](http://www.screenr.com/oyNs) to Kue
   - API [walkthrough](https://vimeo.com/26963384) to Kue
+
+## Contributing
+
+**We love contributions!**
+
+When contributing, follow the simple rules:
+
+* Don't violate [DRY](http://programmer.97things.oreilly.com/wiki/index.php/Don%27t_Repeat_Yourself) principles.
+* [Boy Scout Rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule) needs to have been applied.
+* Your code should look like all the other code – this project should look like it was written by one man, always.
+* If you want to propose something – just create an issue and describe your question with as much description as you can.
+* If you think you have some general improvement, consider creating a pull request with it.
+* If you add new code, it should be covered by tests. No tests – no code.
+* If you add a new feature, don't forget to update the documentation for it.
+* If you find a bug (or at least you think it is a bug), create an issue with the library version and test case that we can run and see what are you talking about, or at least full steps by which we can reproduce it.
 
 ## License
 

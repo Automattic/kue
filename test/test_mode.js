@@ -23,6 +23,31 @@ describe('Test Mode', function() {
             expect(job.data).to.eql({ foo: 'bar' });
         });
 
+        it('adds jobs to an array in memory and processes them when processQueue is true', function(done) {
+            queue.testMode.exit();
+            queue.testMode.enter(true);
+
+            queue.createJob('test-testMode-process', { foo: 'bar' }).save();
+
+            var jobs = queue.testMode.jobs;
+            expect(jobs.length).to.equal(1);
+
+            var job = _.last(jobs);
+            expect(job.type).to.equal('test-testMode-process');
+            expect(job.data).to.eql({ foo: 'bar' });
+
+            job.on('complete', function() {
+                queue.testMode.exit();
+                queue.testMode.enter();
+                done();
+            });
+
+            queue.process('test-testMode-process', function(job, jdone) {
+                job.data.should.be.eql({ foo: 'bar' });
+
+                jdone();
+            });
+        });
 
         describe('#clear', function() {
             it('resets the list of jobs', function() {

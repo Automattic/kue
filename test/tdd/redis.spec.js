@@ -108,7 +108,7 @@ describe('redis', function() {
       it('should strip the prefix on the id', function () {
         var client = redis.createClient();
         var id = client.stripFIFO( '03|123' );
-        id.should.equal('123');
+        id.should.equal(123);
       });
     });
 
