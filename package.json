@@ -33,7 +33,6 @@
     "node-redis-warlock": "~0.2.0",
     "pug": "^2.0.0-beta3",
     "redis": "~2.6.0-2",
-    "reds": "~0.2.5",
     "stylus": "~0.52.4",
     "yargs": "^4.0.0"
   },

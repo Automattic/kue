@@ -700,13 +700,17 @@ queue.create('email', {
 }).searchKeys( ['to', 'title'] ).save();
 ```
 
-Search feature is turned off by default from Kue `>=0.9.0`. Read more about this [here](https://github.com/Automattic/kue/issues/412). You should enable search indexes in you need to:
+Search feature is turned off by default from Kue `>=0.9.0`. Read more about this [here](https://github.com/Automattic/kue/issues/412). You should enable search indexes and add [reds](https://www.npmjs.com/package/reds) in your dependencies if you need to:
 
 ```javascript
 var kue = require('kue');
 q = kue.createQueue({
     disableSearch: false
 });
+```
+
+```
+npm install reds --save
 ```
 
 ### GET /stats
