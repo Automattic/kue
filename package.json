@@ -29,12 +29,12 @@
     "express": "^4.12.2",
     "lodash": "^4.0.0",
     "lodash-deep": "^2.0.0",
-    "nib": "~1.1.0",
+    "nib": "~1.1.2",
     "node-redis-warlock": "~0.2.0",
     "pug": "^2.0.0-beta3",
     "redis": "~2.6.0-2",
     "reds": "~0.2.5",
-    "stylus": "~0.52.4",
+    "stylus": "~0.54.5",
     "yargs": "^4.0.0"
   },
   "devDependencies": {
