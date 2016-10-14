@@ -1,3 +1,13 @@
+0.11.2 / 2016-10-14
+===================
+
+* Update packages to remove CVEs, #932
+* Make reds an optional dependency, #922
+* Remove unnecessary dependency to lodash-deep, #921
+* Expose shutdown in process worker ctx, #912
+* Add ioredis support to watchStuckJobs, #884
+
+
 0.11.1 / 2016-06-15
 ===================
 
