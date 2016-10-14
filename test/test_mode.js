@@ -1,8 +1,22 @@
 var kue = require('../'),
-    _ = require('lodash'),
-    queue = kue.createQueue();
+    _ = require('lodash');
 
 describe('Test Mode', function() {
+    // Moved queue creation in before as it's a singleton.
+    // Indeed, when shut down, this.client is set to null,
+    // hence we want a fresh instance for disabled mode.
+    var queue;
+
+    before(function () {
+        queue = kue.createQueue();
+    });
+
+    after(function (done) {
+        queue.shutdown(50, function() {
+            done();
+        });
+    });
+
     context('when enabled', function() {
         before(function() {
             queue.testMode.enter();
