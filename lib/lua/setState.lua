@@ -38,11 +38,13 @@ end
 if newState == 'complete' then
     redis.call('HSET', jobKey, 'progress', 100)
     redis.call('HINCRBY', jobKey, 'attempts', 1)
+    order = tonumber(ARGV[4])
     -- set duration
 end
 
 
 if newState == 'failed' then
+    order = tonumber(ARGV[4])
     redis.call('HSET', jobKey, 'failed_at', tonumber(ARGV[4]))
     local attempts      = tonumber(redis.call('HGET', jobKey, 'attempts'))
     local max_attempts  = tonumber(redis.call('HGET', jobKey, 'max_attempts'))
@@ -100,7 +102,7 @@ end
 redis.call('HSET', jobKey, 'state', newState)
 redis.call('HSET', jobKey, 'updated_at', tonumber(ARGV[4]))
 redis.call('ZADD', KEYS[1]..':jobs:'..newState, order, ARGV[2])
-redis.call('ZADD', KEYS[1]..':jobs:'..jobType..':'..newState, tonumber(prio), ARGV[2])
+redis.call('ZADD', KEYS[1]..':jobs:'..jobType..':'..newState, order, ARGV[2])
 
 
 if newState == 'inactive' then

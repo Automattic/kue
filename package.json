@@ -1,6 +1,6 @@
 {
   "name": "kue",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0",
   "description": "Feature rich atomic priority job queue backed by redis",
   "homepage": "http://automattic.github.io/kue/",
   "keywords": [
@@ -21,14 +21,14 @@
   "dependencies": {
     "body-parser": "^1.12.2",
     "express": "^4.12.2",
-    "ioredis": "^1.15.1",
+    "ioredis": "^2.4.0",
     "jade": "^1.11.0",
-    "lodash": "^3.10.1",
-    "nib": "~1.1.0",
-    "redlock": "^2.0.0",
+    "lodash": "^4.16.4",
+    "nib": "~1.1.2",
+    "redlock": "^2.0.1",
     "retimer": "^1.0.1",
     "stylus": "~0.52.4",
-    "yargs": "^3.31.0"
+    "yargs": "^6.0.0"
   },
   "devDependencies": {
     "async": "^1.4.2",
