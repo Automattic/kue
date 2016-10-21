@@ -1,6 +1,6 @@
 {
   "name": "kue",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://automattic.github.io/kue/",
   "keywords": [
@@ -40,7 +40,6 @@
     "chai": "^3.3.0",
     "coffee-script": "~1.10.0",
     "mocha": "^2.3.3",
-    "reds": "~0.2.5",
     "should": "^3.1.0",
     "sinon": "^1.17.2",
     "supertest": "^1.1.0"
@@ -51,5 +50,8 @@
   },
   "scripts": {
     "test": "make test-all"
+  },
+  "optionalDependencies": {
+    "reds": "^0.2.5"
   }
 }

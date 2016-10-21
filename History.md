@@ -1,3 +1,15 @@
+0.11.4 / 2016-10-21
+===================
+
+* adding reds module to optional dependencies
+
+
+0.11.3 / 2016-10-21
+===================
+
+* Fix making reds module optional, #969
+
+
 0.11.2 / 2016-10-14
 ===================
 
