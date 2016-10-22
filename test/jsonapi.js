@@ -190,6 +190,23 @@ describe( 'JSON API', function () {
         } )
         .end( done );
     } );
+    
+    it( 'range from...to by created_at', function (done ) {
+      
+      var start, end;
+      kue.Job.range( 0, 100, 'asc', function ( err, jobs ) {
+        if ( err ) return done( err );
+        start = jobs[1].created_at;
+        end = jobs[3].created_at;
+        
+        request( app )
+          .get('/jobs/created/' + start + '..' + end )
+          .expect( function ( res ) {
+            res.body.length.should.eql( 3 );
+          } )
+          .end( done );
+      } );
+    } );
   } );
 
 

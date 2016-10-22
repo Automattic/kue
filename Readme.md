@@ -499,7 +499,18 @@ kue.Job.rangeByType( 'my-job-type', 'failed', 0, n, 'asc', function( err, jobs )
 });
 ```
 
-**Note** *that the last two methods are subject to change in later Kue versions.*
+It is also possible to get a range of jobs that were submitted during a specified time range.
+```js
+var ONE_HOUR = 60 * 60 * 1000; /* ms */
+var now = new Date();
+var oneHourAgo = new Date(now.getTime() - ONE_HOUR);
+// get the jobs created in the last hour.
+kue.Job.rangeByCreated(oneHourAgo, now, 'asc', function(err, jobs) {
+  // you have an array of Job objects inclusive of the time range here
+});
+```
+
+**Note** *that the last three methods are subject to change in later Kue versions.*
 
 
 ### Programmatic Job Management
@@ -753,6 +764,10 @@ Same as above, restricting by `:state` which is one of:
 ### GET /jobs/:type/:state/:from..:to/:order?
 
 Same as above, however restricted to `:type` and `:state`.
+
+### GET /jobs/created/:from..:to/:order?
+
+Get jobs that were submitted in the specified range inclusively using the created_at timestamp.
 
 ### DELETE /job/:id
 
