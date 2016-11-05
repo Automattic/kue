@@ -1,3 +1,10 @@
+0.11.5 / 2016-11-05
+===================
+
+* Fix even more redis command callbacks
+* Fix redis commands SLC integration #978
+
+
 0.11.4 / 2016-10-21
 ===================
 
