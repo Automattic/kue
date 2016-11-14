@@ -148,6 +148,8 @@ Job retry attempts are done as soon as they fail, with no delay, even if your jo
 
     // Use a function to get a customized next attempt delay value
     job.attempts(3).backoff( function( attempts, delay ){
+      //attempts will correspond to the nth attempt failure so it will start with 0
+      //delay will be the amount of the last delay, not the initial delay unless attempts === 0
       return my_customized_calculated_delay;
     })
 ```
