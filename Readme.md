@@ -174,7 +174,7 @@ or anything else (uses [util.inspect()](https://nodejs.org/api/util.html#util_ut
 
 ```js
 job.log({key: 'some key', value: 10});
-job.log({[1,2,3,5,8]});
+job.log([1,2,3,5,8]);
 job.log(10.1);
 ```
 
