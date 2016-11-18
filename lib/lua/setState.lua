@@ -9,14 +9,10 @@
 -- ARGV[3] new state
 -- ARGV[4] current timestamp
 
+
 local jobKey    = KEYS[1]..':job:'..ARGV[1]
-local jobType   = redis.call('HGET', jobKey, 'type')
-local prio      = redis.call('HGET', jobKey, 'priority')
-local order     = tonumber(prio)
-local curState  = redis.call('HGET', jobKey, 'state')
 local newState  = ARGV[3]
 local returnVal = 1
-
 
 if newState == 'active' then
     -- you can't set job active this way!
@@ -27,6 +23,16 @@ if redis.call("EXISTS", jobKey) ~= 1 then
     -- job not exists
     return 0
 end
+
+local pairs = redis.call('HMGET', jobKey, 'type', 'priority', 'state')
+if not pairs[1] then
+    return 0
+end
+
+local jobType   = pairs[1] --redis.call('HGET', jobKey, 'type')
+local prio      = pairs[2] --redis.call('HGET', jobKey, 'priority')
+local curState  = pairs[3] --redis.call('HGET', jobKey, 'state')
+local order     = tonumber(prio)
 
 
 if curState then
@@ -99,8 +105,7 @@ if newState == 'delayed' then
 end
 
 
-redis.call('HSET', jobKey, 'state', newState)
-redis.call('HSET', jobKey, 'updated_at', tonumber(ARGV[4]))
+redis.call('HMSET', jobKey, 'state', newState, 'updated_at', tonumber(ARGV[4]))
 redis.call('ZADD', KEYS[1]..':jobs:'..newState, order, ARGV[2])
 redis.call('ZADD', KEYS[1]..':jobs:'..jobType..':'..newState, order, ARGV[2])
 
