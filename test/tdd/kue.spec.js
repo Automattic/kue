@@ -92,12 +92,12 @@ describe('Kue', function () {
     beforeEach(function(){
       queue = kue.createQueue();
       sinon.stub(queue, 'checkJobPromotion');
-      sinon.stub(queue, 'checkActiveJobTtl');
+      sinon.stub(queue, 'checkStalledJobs');
     });
 
     afterEach(function(){
       queue.checkJobPromotion.restore();
-      queue.checkActiveJobTtl.restore();
+      queue.checkStalledJobs.restore();
     });
 
     it('should setup a redlock client if it is not setup yet', function () {
@@ -111,9 +111,9 @@ describe('Kue', function () {
       queue.checkJobPromotion.called.should.be.true;
     });
 
-    it('should call checkActiveJobTtl', function () {
+    it('should call checkStalledJobs', function () {
       queue.setupTimers();
-      queue.checkActiveJobTtl.called.should.be.true;
+      queue.checkStalledJobs.called.should.be.true;
     });
   });
 
@@ -152,13 +152,13 @@ describe('Kue', function () {
     it('should set the promotion lock', function () {
       queue.checkJobPromotion();
       clock.tick(timeout);
-      queue.redlock.lock.calledWith('promotion').should.be.true;
+      queue.redlock.lock.calledWith('promotionLock', 2000).should.be.true;
     });
 
     it('should load all delayed jobs that should be run job', function () {
       queue.checkJobPromotion();
       clock.tick(timeout);
-      client.zrangebyscore.calledWith(client.getKey('jobs:delayed'), 0, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
+      client.zrangebyscore.calledWith(client.getKey('jobs:delayed'), 0, sinon.match.any, "LIMIT", 0, sinon.match.any).should.be.true;
     });
 
     it('should get each job', function () {
@@ -193,7 +193,7 @@ describe('Kue', function () {
 
   });
 
-  describe('Function: checkActiveJobTtl', function() {
+  describe('Function: checkStalledJobs', function() {
     var queue, unlock, clock, timeout, client, ids, job;
 
     beforeEach(function(){
@@ -214,7 +214,7 @@ describe('Kue', function () {
 
       sinon.spy(queue, 'removeAllListeners');
       sinon.stub(Job, 'get').callsArgWith(1, null, job);
-      sinon.stub(queue.redlock, 'lock').callsArgWith(2, null, unlock);
+      sinon.stub(queue.redlock, 'lock').callsArgWith(2, null, 'stalledJobsLock', 2000);
       sinon.stub(events, 'emit');
       clock = sinon.useFakeTimers();
     });
@@ -228,19 +228,19 @@ describe('Kue', function () {
     });
 
     it('should set the activeJobsTTL lock', function () {
-      queue.checkActiveJobTtl();
+      queue.checkStalledJobs();
       clock.tick(timeout);
       queue.redlock.lock.calledWith('activeJobsTTL').should.be.true;
     });
 
     it('should load all expired jobs', function () {
-      queue.checkActiveJobTtl();
+      queue.checkStalledJobs();
       clock.tick(timeout);
       client.zrangebyscore.calledWith(client.getKey('jobs:active'), 100000, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
     });
 
     it('should emit ttl exceeded for each job', function () {
-      queue.checkActiveJobTtl();
+      queue.checkStalledJobs();
       clock.tick(timeout);
       events.emit.callCount.should.equal(3);
       events.emit.calledWith(ids[0], 'ttl exceeded');
@@ -249,8 +249,8 @@ describe('Kue', function () {
     });
 
     it('should unlock after all the job ttl exceeded acks have been received', function () {
-      queue.checkActiveJobTtl('job ttl exceeded ack');
-      queue.checkActiveJobTtl();
+      queue.checkStalledJobs('job ttl exceeded ack');
+      queue.checkStalledJobs();
       clock.tick(timeout);
       _.each(ids, function (id) {
         // calling queue.emit since queue.on does special logic for events that start with "job"
@@ -262,7 +262,7 @@ describe('Kue', function () {
 
     it('should call job.failedAttempt for each job that did not receive the ack event', function () {
       queue.removeAllListeners('job ttl exceeded ack');
-      queue.checkActiveJobTtl('job ttl exceeded ack');
+      queue.checkStalledJobs('job ttl exceeded ack');
       clock.tick(timeout);
       var id = ids.splice(0, 1)[0];
       _.each(ids, function (id) {
