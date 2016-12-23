@@ -290,7 +290,7 @@ describe 'Kue Tests', ->
       [total, remaining] = [2,2]
       start = Date.now()
       jobs.create( 'backoff-user-job', { title: 'backoff-user-job' } )
-      .delay( 50 ).attempts(total).backoff( ( attempts ) -> 250 ).save()
+      .delay( 50 ).attempts(total).backoff( ( attempts, delay ) -> 250 ).save()
       jobs.process 'backoff-user-job', (job, jdone) ->
         now = Date.now()
         if( !--remaining )
