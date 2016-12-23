@@ -126,7 +126,7 @@ describe('Kue', function () {
       ids = [1, 2, 3];
       client = {
         zrangebyscore: sinon.stub().callsArgWith(6, null, ids),
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         stripFIFO: sinon.stub().returnsArg(0)
       };
       job = {
@@ -152,13 +152,13 @@ describe('Kue', function () {
     it('should set the promotion lock', function () {
       queue.checkJobPromotion();
       clock.tick(timeout);
-      queue.warlock.lock.calledWith('promotion').should.be.true;
+      queue.warlock.lock.calledWith('q:promotion').should.be.true;
     });
 
     it('should load all delayed jobs that should be run job', function () {
       queue.checkJobPromotion();
       clock.tick(timeout);
-      client.zrangebyscore.calledWith(client.getKey('jobs:delayed'), 0, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
+      client.zrangebyscore.calledWith('q:jobs:delayed', 0, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
     });
 
     it('should get each job', function () {
@@ -202,7 +202,7 @@ describe('Kue', function () {
       ids = [1, 2, 3];
       client = {
         zrangebyscore: sinon.stub().callsArgWith(6, null, ids),
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         stripFIFO: sinon.stub().returnsArg(0)
       };
       job = {
@@ -230,13 +230,13 @@ describe('Kue', function () {
     it('should set the activeJobsTTL lock', function () {
       queue.checkActiveJobTtl();
       clock.tick(timeout);
-      queue.warlock.lock.calledWith('activeJobsTTL').should.be.true;
+      queue.warlock.lock.calledWith('q:activeJobsTTL').should.be.true;
     });
 
     it('should load all expired jobs', function () {
       queue.checkActiveJobTtl();
       clock.tick(timeout);
-      client.zrangebyscore.calledWith(client.getKey('jobs:active'), 100000, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
+      client.zrangebyscore.calledWith('q:jobs:active', 100000, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
     });
 
     it('should emit ttl exceeded for each job', function () {
@@ -320,7 +320,7 @@ describe('Kue', function () {
 
     beforeEach(function(){
       client = {
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         hget: sinon.stub().callsArg(2)
       };
 
@@ -330,7 +330,7 @@ describe('Kue', function () {
 
     it('should get the requested setting', function (done) {
       queue.setting('name', function () {
-        client.hget.calledWith(client.getKey('settings'), 'name').should.be.true;
+        client.hget.calledWith('q:settings', 'name').should.be.true;
         done();
       });
     });
@@ -342,7 +342,7 @@ describe('Kue', function () {
 
     beforeEach(function(){
       client = {
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         incrby: sinon.stub()
       };
       worker = new EventEmitter();
@@ -388,7 +388,7 @@ describe('Kue', function () {
       };
       queue.process('type', 3, sinon.stub());
       worker.emit('job complete', job);
-      client.incrby.calledWith(client.getKey('stats:work-time'), job.duration).should.be.true;
+      client.incrby.calledWith('q:stats:work-time', job.duration).should.be.true;
     });
 
     it('should setup timers', function () {
@@ -462,7 +462,7 @@ describe('Kue', function () {
     beforeEach(function(){
       types = ['type1', 'type2'];
       client = {
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         smembers: sinon.stub().callsArgWith(1, null, types)
       };
       queue = kue.createQueue();
@@ -484,7 +484,7 @@ describe('Kue', function () {
       jobIds = [1, 2];
       state = 'state';
       client = {
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         stripFIFO: sinon.stub().returnsArg(0),
         zrange: sinon.stub().callsArgWith(3, null, jobIds)
       };
@@ -507,7 +507,7 @@ describe('Kue', function () {
     beforeEach(function(){
       n = 20;
       client = {
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         get: sinon.stub().callsArgWith(1, null, n)
       };
       queue = kue.createQueue();
@@ -531,7 +531,7 @@ describe('Kue', function () {
       state = 'state';
       total = 20;
       client = {
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         zcard: sinon.stub().callsArgWith(1, null, total)
       };
       queue = kue.createQueue();
@@ -553,7 +553,7 @@ describe('Kue', function () {
       state = 'state';
       total = 20;
       client = {
-        getKey: sinon.stub().returnsArg(0),
+        getKey: sinon.spy(function (key) { return 'q:' + key; }),
         zcard: sinon.stub().callsArgWith(1, null, total)
       };
       queue = kue.createQueue();
