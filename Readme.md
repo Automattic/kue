@@ -72,6 +72,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Securing Kue](#securing-kue)
   - [Testing](#testing)
   - [Screencasts](#screencasts)
+  - [Third Party Tools](#third-party-tools)
   - [License](#license)
 
 
@@ -913,6 +914,10 @@ before(function() {
 
   - [Introduction](http://www.screenr.com/oyNs) to Kue
   - API [walkthrough](https://vimeo.com/26963384) to Kue
+  
+## Third Party Tools
+
+  - [kuee](https://github.com/wong2/kuee): command line tool to overview queue stats
 
 ## Contributing
 
