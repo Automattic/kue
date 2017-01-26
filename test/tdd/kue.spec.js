@@ -152,7 +152,13 @@ describe('Kue', function () {
     it('should set the promotion lock', function () {
       queue.checkJobPromotion();
       clock.tick(timeout);
-      queue.warlock.lock.calledWith('promotion').should.be.true;
+      queue.warlock.lock.calledWith('promotion', 2000).should.be.true;
+    });
+
+    it('should allow an override for the lockTtl', function () {
+      queue.checkJobPromotion({ lockTtl: 5000 });
+      clock.tick(timeout);
+      queue.warlock.lock.calledWith('promotion', 5000).should.be.true;
     });
 
     it('should load all delayed jobs that should be run job', function () {
