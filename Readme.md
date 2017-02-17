@@ -646,10 +646,10 @@ var queue = kue.createQueue({
 
 The UI is a small [Express](https://github.com/strongloop/express) application.
 A script is provided in `bin/` for running the interface as a standalone application
-with default settings. You may pass in options for the port and redis-url. For example:
+with default settings. You may pass in options for the port, redis-url, and prefix. For example:
 
 ```
-node_modules/kue/bin/kue-dashboard -p 3050 -r redis://127.0.0.1:3000
+node_modules/kue/bin/kue-dashboard -p 3050 -r redis://127.0.0.1:3000 -q prefix
 ```
 
 You can fire it up from within another application too:
