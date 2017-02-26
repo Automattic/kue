@@ -52,6 +52,7 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
   - [Jobs Priority](#job-priority)
   - [Failure Attempts](#failure-attempts)
   - [Failure Backoff](#failure-backoff)
+  - [Job Uniqueness](#job-uniqueness)
   - [Job TTL](#job-ttl)
   - [Job Logs](#job-logs)
   - [Job Progress](#job-progress)
@@ -155,6 +156,26 @@ Job retry attempts are done as soon as they fail, with no delay, even if your jo
 ```
 
 In the last scenario, provided function will be executed (via eval) on each re-attempt to get next attempt delay value, meaning that you can't reference external/context variables within it.
+
+### Job Uniqueness
+
+Make job unique by given field with given value, or all given fields and values.
+If job saved to redis successfully same job will not save again.
+This is helpful to prevent reprocessing, or to enforce once-and-only-once semantics.
+
+```js
+// This would only produce one job, with title 'Hello World'
+queue.create('notification', {id: 5, title: 'Hello World'}).unique('id').save();
+queue.create('notification', {id: 5, title: 'Goodbye Moon'}).unique('id').save();
+
+// This would produce two jobs, one with each title
+queue.create('notification', {id: 5, title: 'Hello World'}).unique().save();
+queue.create('notification', {id: 5, title: 'Hello World'}).unique().save();
+queue.create('notification', {id: 5, title: 'Goodbye Moon'}).unique().save();
+queue.create('notification', {id: 5, title: 'Goodbye Moon'}).unique().save();
+```
+
+Use `removeOnComplete()` to create same job again after previous one completed.
 
 ### Job TTL
 
