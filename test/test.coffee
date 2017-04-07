@@ -284,6 +284,23 @@ describe 'Kue Tests', ->
         else
           jdone( new Error('reaattempt') )
 
+    it 'should honor max delay at exponential backoff', (done) ->
+      [total, remaining] = [10,10]
+      last = Date.now()
+      jobs.create( 'backoff-exponential-job', { title: 'backoff-exponential-job' } )
+      .attempts(total).backoff( {type:'exponential', delay: 50, maxDelay: 100} ).save()
+      jobs.process 'backoff-exponential-job', (job, jdone) ->
+        job._backoff.type.should.be.equal "exponential"
+        job._backoff.delay.should.be.equal 50
+        job._backoff.maxDelay.should.be.equal 100
+        now = Date.now()
+        (now - last).should.be.lessThan 120
+        if( !--remaining )
+          jdone()
+          done()
+        else
+          last = now
+          jdone( new Error('reaattempt') )
 
 
     it 'should honor users backoff function', (done) ->
