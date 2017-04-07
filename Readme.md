@@ -415,7 +415,7 @@ This can be achieved in two ways:
     });
   });
   ```
-
+**Notice -** Domains are [deprecated](https://nodejs.org/api/documentation.html#documentation_stability_index) from Nodejs with **stability 0** and it's not recommended to use.
   This is the softest and best solution, however is not built-in with Kue. Please refer to [this discussion](https://github.com/kriskowal/q/issues/120). You can comment on this feature in the related open Kue [issue](https://github.com/Automattic/kue/pull/403).
 
   You can also use promises to do something like
