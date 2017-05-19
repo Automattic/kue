@@ -99,7 +99,7 @@ var job = queue.create('email', {
 
 ### Job Priority
 
-To specify the priority of a job, simply invoke the `priority()` method with a number, or priority name, which is mapped to a number.
+To specify the priority of a job, simply invoke the `priority()` method with a number (the lower the number the higher the priority), or priority name, which is mapped to a number.
 
 ```js
 queue.create('email', {
