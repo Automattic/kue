@@ -445,6 +445,26 @@ describe 'Kue Tests', ->
         ++failures
       ).save()
 
+    it 'should not stuck in inactive mode if one of the workers failed because of ttl', (done) ->
+      jobs.create('jobsA',
+        title: 'titleA'
+        metadata: {}).delay(1000).attempts(3).backoff(
+        delay: 1 * 1000
+        type: 'exponential').removeOnComplete(true).ttl(1 * 1000).save()
+      jobs.create('jobsB',
+        title: 'titleB'
+        metadata: {}).delay(1500).attempts(3).backoff(
+        delay: 1 * 1000
+        type: 'exponential').removeOnComplete(true).ttl(1 * 1000).save()
+
+      jobs.process 'jobsA', 1, (job, jdone) ->
+        if job._attempts == '2'
+          done()
+        return
+      jobs.process 'jobsB', 1, (job, jdone) ->
+        done()
+        return
+
 
   describe 'Kue Job Removal', ->
 
