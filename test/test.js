@@ -201,6 +201,14 @@ describe( 'JOBS', function () {
     } );
   } );
 
+	it( 'should create with overRidden Id', function ( done ) {
+		var job = jobs.create('custom Id', {}, 1337 )
+		.save(true, function ( err ) {
+			job.id.should.be.equal( 1337);
+			done();
+		})
+	});
+
   it( 'should accept url strings for redis when making an new queue', function ( done ) {
     var jobs = new kue( {
       redis: 'redis://localhost:6379/?foo=bar'
