@@ -280,6 +280,12 @@ var email = queue.create('email', {
 
 Kue will check the delayed jobs with a timer, promoting them if the scheduled delay has been exceeded, defaulting to a check of top 1000 jobs every second.
 
+To reschedule a delayed job to occur immediately, you can do something like this:
+
+```js
+job.delay(0).update();
+```
+
 ## Processing Jobs
 
 Processing jobs is simple with Kue. First create a `Queue` instance much like we do for creating jobs, providing us access to redis etc, then invoke `queue.process()` with the associated type.
