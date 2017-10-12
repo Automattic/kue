@@ -694,7 +694,7 @@ const queue = kue.createQueue();
 queue.create('email', {
     title: 'welcome email for tj',
     to: 'tj@learnboost.com',
-    template: 'welcome-email',
+    template: 'welcome-email'
 }).searchKeys( ['to', 'title'] ).save();
 ```
 
