@@ -530,7 +530,13 @@ Jobs data and search indexes eat up redis memory space, so you will need some jo
 queue.create( ... ).removeOnComplete( true ).save()
 ```
 
-But if you eventually/temporally need completed job data, you can setup an on-demand job removal script like below to remove top `n` completed jobs:
+You can set jobs to be automatically removed after a set amount of time after completion (like 30 seconds):
+
+```javascript
+queue.create( ... ).removeOnComplete( 30000 ).save()
+```
+
+You can instead remove jobs by setting up an on-demand job removal script like below to remove top `n` completed jobs:
 
 ```js
 kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {

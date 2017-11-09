@@ -212,7 +212,8 @@ describe('Kue', function () {
         stripFIFO: sinon.stub().returnsArg(0)
       };
       job = {
-        failedAttempt: sinon.stub().callsArg(1)
+        failedAttempt: sinon.stub().callsArg(1),
+        completeTtl: sinon.stub()
       };
 
       queue = kue.createQueue();
