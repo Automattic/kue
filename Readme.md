@@ -319,7 +319,7 @@ queue.process('email', 20, function(job, done){
 
 ### Pause Processing
 
-Workers can temporary pause and resume their activity. It is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. `pause` function gracefully shutdowns this worker, and uses the same internal functionality as `shutdown` method in [Graceful Shutdown](#graceful-shutdown).
+Workers can temporarily pause and resume their activity. That is, after calling `pause` they will receive no jobs in their process callback until `resume` is called. The `pause` function gracefully shutdowns this worker, and uses the same internal functionality as the `shutdown` method in [Graceful Shutdown](#graceful-shutdown).
 
 ```js
 queue.process('email', function(job, ctx, done){
@@ -330,9 +330,9 @@ queue.process('email', function(job, ctx, done){
 });
 ```
 
-**Note** *that the `ctx` parameter from Kue `>=0.9.0` is the second argument of the process callback function and `done` is idiomatically always the last*
+**Note** *The `ctx` parameter from Kue `>=0.9.0` is the second argument of the process callback function and `done` is idiomatically always the last*
 
-**Note** *that `pause` method signature is changed from Kue `>=0.9.0` to move the callback function to the last.*
+**Note** *The `pause` method signature is changed from Kue `>=0.9.0` to move the callback function to the last.*
 
 ### Updating Progress
 
