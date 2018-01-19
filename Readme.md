@@ -81,17 +81,17 @@ Kue is a priority job queue backed by [redis](http://redis.io), built for [node.
 First create a job `Queue` with `kue.createQueue()`:
 
 ```js
-var kue = require('kue')
-  , queue = kue.createQueue();
+const kue = require('kue');
+const queue = kue.createQueue();
 ```
 
 Calling `queue.create()` with the type of job ("email"), and arbitrary job data will return a `Job`, which can then be `save()`ed, adding it to redis, with a default priority level of "normal". The `save()` method optionally accepts a callback, responding with an `error` if something goes wrong. The `title` key is special-cased, and will display in the job listings within the UI, making it easier to find a specific job.
 
 ```js
-var job = queue.create('email', {
-    title: 'welcome email for tj'
-  , to: 'tj@learnboost.com'
-  , template: 'welcome-email'
+const job = queue.create('email', {
+    title: 'welcome email for tj',
+    to: 'tj@learnboost.com',
+    template: 'welcome-email'
 }).save( function(err){
    if( !err ) console.log( job.id );
 });
@@ -103,9 +103,9 @@ To specify the priority of a job, simply invoke the `priority()` method with a n
 
 ```js
 queue.create('email', {
-    title: 'welcome email for tj'
-  , to: 'tj@learnboost.com'
-  , template: 'welcome-email'
+  title: 'welcome email for tj',
+  to: 'tj@learnboost.com',
+  template: 'welcome-email'
 }).priority('high').save();
 ```
 
@@ -113,11 +113,11 @@ The default priority map is as follows:
 
 ```js
 {
-    low: 10
-  , normal: 0
-  , medium: -5
-  , high: -10
-  , critical: -15
+    low: 10,
+    normal: 0,
+    medium: -5,
+    high: -10,
+    critical: -15
 };
 ```
 
@@ -127,9 +127,9 @@ By default jobs only have _one_ attempt, that is when they fail, they are marked
 
 ```js
  queue.create('email', {
-     title: 'welcome email for tj'
-   , to: 'tj@learnboost.com'
-   , template: 'welcome-email'
+     title: 'welcome email for tj',
+     to: 'tj@learnboost.com',
+     template: 'welcome-email',
  }).priority('high').attempts(5).save();
 ```
 
@@ -154,7 +154,7 @@ Job retry attempts are done as soon as they fail, with no delay, even if your jo
     })
 ```
 
-In the last scenario, provided function will be executed (via eval) on each re-attempt to get next attempt delay value, meaning that you can't reference external/context variables within it.
+In the last scenario, provided function will be executed (via eval) on each re-attempt to get next attempt delay value, meaning that you can't reference external/context constiables within it.
 
 ### Job TTL
 
@@ -166,7 +166,7 @@ queue.create('email', {title: 'email job with TTL'}).ttl(milliseconds).save();
 
 ### Job Logs
 
-Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
+Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as constiable-arguments for sprintf-like support:
 
 ```js
 job.log('$%d sent to %s', amount, user.name);
@@ -207,10 +207,10 @@ Job-specific events are fired on the `Job` instances via Redis pubsub. The follo
 For example this may look something like the following:
 
 ```js
-var job = queue.create('video conversion', {
-    title: 'converting loki\'s to avi'
-  , user: 1
-  , frames: 200
+const job = queue.create('video conversion', {
+    title: 'converting loki\'s to avi',
+    user: 1,
+    frames: 200
 });
 
 job.on('complete', function(result){
@@ -239,7 +239,7 @@ job.on('complete', function(result){
  Alternatively, you can use the job level function `events` to control whether events are fired for a job at the job level.
 
  ```js
-var job = queue.create('test').events(false).save();
+const job = queue.create('test').events(false).save();
  ```
 
 ### Queue Events
@@ -269,10 +269,10 @@ Delayed jobs may be scheduled to be queued for an arbitrary distance in time by 
 This automatically flags the `Job` as "delayed".
 
 ```js
-var email = queue.create('email', {
-    title: 'Account renewal required'
-  , to: 'tj@learnboost.com'
-  , template: 'renewal-email'
+const email = queue.create('email', {
+    title: 'Account renewal required',
+    to: 'tj@learnboost.com',
+    template: 'renewal-email'
 }).delay(milliseconds)
   .priority('high')
   .save();
@@ -288,8 +288,8 @@ Note that unlike what the name `createQueue` suggests, it currently returns a si
 In the following example we pass the callback `done` to `email`, When an error occurs we invoke `done(err)` to tell Kue something happened, otherwise we invoke `done()` only when the job is complete. If this function responds with an error it will be displayed in the UI and the job will be marked as a failure. The error object passed to done, should be of standard type `Error`.
 
 ```js
-var kue = require('kue')
- , queue = kue.createQueue();
+const kue = require('kue');
+const queue = kue.createQueue();
 
 queue.process('email', function(job, done){
   email(job.data.to, done);
@@ -340,8 +340,8 @@ For a "real" example, let's say we need to compile a PDF from numerous slides wi
 
 ```js
 queue.create('slideshow pdf', {
-    title: user.name + "'s slideshow"
-  , slides: [...] // keys to data stored in redis, mongodb, or some other store
+    title: user.name + "'s slideshow",
+    slides: [...] // keys to data stored in redis, mongodb, or some other store
 });
 ```
 
@@ -349,11 +349,11 @@ We can access this same arbitrary data within a separate process while processin
 
 ```js
 queue.process('slideshow pdf', 5, function(job, done){
-  var slides = job.data.slides
-    , len = slides.length;
+  const slides = job.data.slides
+  const len = slides.length;
 
   function next(i) {
-    var slide = slides[i]; // pretend we did a query on this slide id ;)
+    const slide = slides[i]; // pretend we did a query on this slide id ;)
     job.log('rendering %dx%d slide', slide.width, slide.height);
     renderSlide(slide, function(err){
       if (err) return done(err);
@@ -372,7 +372,7 @@ queue.process('slideshow pdf', 5, function(job, done){
 `Queue#shutdown([timeout,] fn)` signals all workers to stop processing after their current active job is done. Workers will wait `timeout` milliseconds for their active job's done to be called or mark the active job `failed` with shutdown error reason. When all workers tell Kue they are stopped `fn` is called.
 
 ```javascript
-var queue = require('kue').createQueue();
+const queue = require('kue').createQueue();
 
 process.once( 'SIGTERM', function ( sig ) {
   queue.shutdown( 5000, function(err) {
@@ -389,7 +389,7 @@ process.once( 'SIGTERM', function ( sig ) {
 All errors either in Redis client library or Queue are emitted to the `Queue` object. You should bind to `error` events to prevent uncaught exceptions or debug kue errors.
 
 ```javascript
-var queue = require('kue').createQueue();
+const queue = require('kue').createQueue();
 
 queue.on( 'error', function( err ) {
   console.log( 'Oops... ', err );
@@ -405,7 +405,7 @@ This can be achieved in two ways:
 
   ```js
   queue.process('my-error-prone-task', function(job, done){
-    var domain = require('domain').create();
+    const domain = require('domain').create();
     domain.on('error', function(err){
       done(err);
     });
@@ -550,8 +550,8 @@ kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
 By default, Kue will connect to Redis using the client default settings (port defaults to `6379`, host defaults to `127.0.0.1`, prefix defaults to `q`). `Queue#createQueue(options)` accepts redis connection options in `options.redis` key.
 
 ```javascript
-var kue = require('kue');
-var q = kue.createQueue({
+const kue = require('kue');
+const q = kue.createQueue({
   prefix: 'q',
   redis: {
     port: 1234,
@@ -570,7 +570,7 @@ var q = kue.createQueue({
 You can also specify the connection information as a URL string.
 
 ```js
-var q = kue.createQueue({
+const q = kue.createQueue({
   redis: 'redis://example.com:1234?redis_option=value&redis_option=value'
 });
 ```
@@ -580,8 +580,8 @@ var q = kue.createQueue({
 Since [node_redis](https://github.com/mranney/node_redis) supports Unix Domain Sockets, you can also tell Kue to do so. See [unix-domain-socket](https://github.com/mranney/node_redis#unix-domain-socket) for your redis server configuration.
 
 ```javascript
-var kue = require('kue');
-var q = kue.createQueue({
+const kue = require('kue');
+const q = kue.createQueue({
   prefix: 'q',
   redis: {
     socket: '/data/sockets/redis.sock',
@@ -600,17 +600,16 @@ Any node.js redis client library that conforms (or when adapted) to  [node_redis
 Below is a sample code to enable [redis-sentinel](https://github.com/ortoo/node-redis-sentinel) to connect to [Redis Sentinel](http://redis.io/topics/sentinel) for automatic master/slave failover.
 
 ```javascript
-var kue = require('kue');
-var Sentinel = require('redis-sentinel');
-var endpoints = [
+const Sentinel = require('redis-sentinel');
+const endpoints = [
   {host: '192.168.1.10', port: 6379},
   {host: '192.168.1.11', port: 6379}
 ];
-var opts = options || {}; // Standard node_redis client options
-var masterName = 'mymaster';
-var sentinel = Sentinel.Sentinel(endpoints);
+const opts = options || {}; // Standard node_redis client options
+const masterName = 'mymaster';
+const sentinel = Sentinel.Sentinel(endpoints);
 
-var q = kue.createQueue({
+const q = kue.createQueue({
    redis: {
       createClientFactory: function(){
          return sentinel.createClient(masterName, opts);
@@ -625,12 +624,12 @@ var q = kue.createQueue({
 
 ```javascript
 
-var Redis = require('ioredis');
-var kue = require('kue');
+const Redis = require('ioredis');
+const kue = require('kue');
 
 // using https://github.com/72squared/vagrant-redis-cluster
 
-var queue = kue.createQueue({
+const queue = kue.createQueue({
     redis: {
       createClientFactory: function () {
         return new Redis.Cluster([{
@@ -657,7 +656,7 @@ You can fire it up from within another application too:
 
 
 ```js
-var kue = require('kue');
+const kue = require('kue');
 kue.createQueue(...);
 kue.app.listen(3000);
 ```
@@ -690,20 +689,20 @@ Query jobs, for example "GET /job/search?q=avi video":
 By default kue indexes the whole Job data object for searching, but this can be customized via calling `Job#searchKeys` to tell kue which keys on Job data to create index for:
 
 ```javascript
-var kue = require('kue');
-queue = kue.createQueue();
+const kue = require('kue');
+const queue = kue.createQueue();
 queue.create('email', {
-    title: 'welcome email for tj'
-  , to: 'tj@learnboost.com'
-  , template: 'welcome-email'
+    title: 'welcome email for tj',
+    to: 'tj@learnboost.com',
+    template: 'welcome-email'
 }).searchKeys( ['to', 'title'] ).save();
 ```
 
 Search feature is turned off by default from Kue `>=0.9.0`. Read more about this [here](https://github.com/Automattic/kue/issues/412). You should enable search indexes and add [reds](https://www.npmjs.com/package/reds) in your dependencies if you need to:
 
 ```javascript
-var kue = require('kue');
-q = kue.createQueue({
+const kue = require('kue');
+const q = kue.createQueue({
     disableSearch: false
 });
 ```
@@ -826,23 +825,23 @@ The example below shows how you may use [Cluster](http://nodejs.org/api/cluster.
 When cluster `.isMaster` the file is being executed in context of the master process, in which case you may perform tasks that you only want once, such as starting the web app bundled with Kue. The logic in the `else` block is executed _per worker_.
 
 ```js
-var kue = require('kue')
-  , cluster = require('cluster')
-  , queue = kue.createQueue();
+const kue = require('kue')
+const cluster = require('cluster')
+const queue = kue.createQueue();
 
-var clusterWorkerSize = require('os').cpus().length;
+const clusterWorkerSize = require('os').cpus().length;
 
 if (cluster.isMaster) {
   kue.app.listen(3000);
-  for (var i = 0; i < clusterWorkerSize; i++) {
+  for (let i = 0; i < clusterWorkerSize; i++) {
     cluster.fork();
   }
 } else {
   queue.process('email', 10, function(job, done){
-    var pending = 5
-      , total = pending;
+    const pending = 5
+    const total = pending;
 
-    var interval = setInterval(function(){
+    const interval = setInterval(function(){
       job.log('sending!');
       job.progress(total - pending, total);
       --pending || done();
@@ -865,8 +864,8 @@ $ npm install --save basic-auth-connect
 ```
 
 ```js
-var basicAuth = require('basic-auth-connect');
-var app = express.createServer({ ... tls options ... });
+const basicAuth = require('basic-auth-connect');
+const app = express.createServer({ ... tls options ... });
 app.use(basicAuth('foo', 'bar'));
 app.use(kue.app);
 app.listen(3000);
@@ -878,7 +877,7 @@ Enable test mode to push all jobs into a `jobs` array. Make assertions against
 the jobs in that array to ensure code under test is correctly enqueuing jobs.
 
 ```js
-queue = require('kue').createQueue();
+const queue = require('kue').createQueue();
 
 before(function() {
   queue.testMode.enter();
