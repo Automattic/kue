@@ -394,6 +394,14 @@ describe 'Kue Tests', ->
           done()
         .save()
 
+    it 'should remove a job a removeOnCompleted ttl', (done) ->
+      jobs.process 'test-job-with-completed-ttl', (job, jdone) -> jdone()
+      job = jobs.create('test-job-with-completed-ttl', title: 'a ttl job').removeOnComplete(500).save()
+      jobs.on 'job remove', (id, type) ->
+        if type == 'test-job-with-completed-ttl'
+          id.should.be.equal job.id
+          done()
+
 
   describe 'Kue Job Concurrency', ->
 
