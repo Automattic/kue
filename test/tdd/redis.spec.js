@@ -105,10 +105,17 @@ describe('redis', function() {
 
     describe('Function: client.stripFIFO', function() {
 
-      it('should strip the prefix on the id', function () {
+      it('should strip the prefix on a number id', function () {
         var client = redis.createClient();
         var id = client.stripFIFO( '03|123' );
         id.should.equal(123);
+      });
+
+      it('should strip the prefix on a string id', function () {
+        var client = redis.createClient();
+        client.idType = 'string';
+        var id = client.stripFIFO( '03|abc-def-ghi' );
+        id.should.equal('abc-def-ghi');
       });
     });
 
