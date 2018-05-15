@@ -677,7 +677,7 @@ You can also use [Kue-UI](https://github.com/StreetHub/kue-ui) web interface con
 
 ## JSON API
 
-Along with the UI Kue also exposes a JSON API, which is utilized by the UI.
+Along with the UI Kue also exposes a JSON API, which is utilized by the UI. The UI server has to be queried.
 
 ### GET /job/search?q=
 
@@ -756,6 +756,19 @@ Same as above, restricting by `:state` which is one of:
 ### GET /jobs/:type/:state/:from..:to/:order?
 
 Same as above, however restricted to `:type` and `:state`.
+
+### PUT /job/:id/state/:state
+
+Change the state of a given `:job`. `:state` can be one of:
+
+    - active
+    - inactive
+    - failed
+    - complete
+
+### PUT /job/:id/priority/:priority
+
+Change the priority of a given `:job`. `:priority` is a numerical value (integer).
 
 ### DELETE /job/:id
 
