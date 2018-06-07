@@ -1,6 +1,6 @@
 var sinon = require('sinon');
 var kue = require('../../lib/kue');
-var Worker = require('../../lib/queue/worker');
+var Worker = require('../../lib/worker');
 var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 var redisClient = {};
