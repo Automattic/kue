@@ -1,21 +1,21 @@
 var kue = require('../'),
     _ = require('lodash'),
-    queue = kue.createQueue();
+    queue = kue.getQueue();
 
 describe('Test Mode', function() {
     context('when enabled', function() {
         before(function() {
-            queue.testMode.enter();
+            queue.testMode().enter();
         });
 
         afterEach(function() {
-            queue.testMode.clear();
+            queue.testMode().clear();
         });
 
         it('adds jobs to an array in memory', function() {
             queue.createJob('myJob', { foo: 'bar' }).save();
 
-            var jobs = queue.testMode.jobs;
+            var jobs = queue.testMode().jobs;
             expect(jobs.length).to.equal(1);
 
             var job = _.last(jobs);
@@ -24,12 +24,13 @@ describe('Test Mode', function() {
         });
 
         it('adds jobs to an array in memory and processes them when processQueue is true', function(done) {
-            queue.testMode.exit();
-            queue.testMode.enter(true);
+
+            queue.testMode().exit();
+            queue.testMode().enter(true);
 
             queue.createJob('test-testMode-process', { foo: 'bar' }).save();
 
-            var jobs = queue.testMode.jobs;
+            var jobs = queue.testMode().jobs;
             expect(jobs.length).to.equal(1);
 
             var job = _.last(jobs);
@@ -37,8 +38,8 @@ describe('Test Mode', function() {
             expect(job.data).to.eql({ foo: 'bar' });
 
             job.on('complete', function() {
-                queue.testMode.exit();
-                queue.testMode.enter();
+                queue.testMode().exit();
+                queue.testMode().enter();
                 done();
             });
 
@@ -52,9 +53,9 @@ describe('Test Mode', function() {
         describe('#clear', function() {
             it('resets the list of jobs', function() {
                 queue.createJob('myJob', { foo: 'bar' }).save();
-                queue.testMode.clear();
+                queue.testMode().clear();
 
-                var jobs = queue.testMode.jobs;
+                var jobs = queue.testMode().jobs;
                 expect(jobs.length).to.equal(0);
             });
         });
@@ -64,14 +65,14 @@ describe('Test Mode', function() {
         before(function() {
             // Simulate entering and exiting test mode to ensure
             // state is restored correctly.
-            queue.testMode.enter();
-            queue.testMode.exit();
+            queue.testMode().enter();
+            queue.testMode().exit();
         });
 
         it('processes jobs regularly', function(done) {
             queue.createJob('myJob', { foo: 'bar' }).save();
 
-            var jobs = queue.testMode.jobs;
+            var jobs = queue.testMode().jobs;
             expect(jobs.length).to.equal(0);
 
             queue.process('myJob', function (job, jdone) {

@@ -7,7 +7,7 @@ describe 'Kue - Prefix', ->
           prefix: queueName
           promotion:
             interval: 10
-      jobs = kue.createQueue opts
+      jobs = kue.getQueue opts
       return jobs
 
   stopJobs = (jobs, callback) ->
@@ -18,7 +18,7 @@ describe 'Kue - Prefix', ->
   # 1397744169.196792 "subscribe" "q:events"
   # 1397744169.196852 "unsubscribe"
   it 'should use prefix q by default', (done) ->
-      jobs = kue.createQueue()
+      jobs = kue.getQueue()
       jobs.client.prefix.should.equal 'q'
       stopJobs jobs, done
 
@@ -89,7 +89,7 @@ describe 'Kue - Prefix', ->
   it 'should properly switch back to default queue', (testDone) ->
       jobs = makeJobs('notDefault')
       stopJobs jobs, (err) ->
-          jobs = kue.createQueue()
+          jobs = kue.getQueue()
 
           job = jobs.create('defaultPrefixJob')
           job.on 'complete', () ->
@@ -98,4 +98,3 @@ describe 'Kue - Prefix', ->
 
           jobs.process 'defaultPrefixJob', (job, done) ->
               done()
-

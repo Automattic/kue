@@ -1,6 +1,6 @@
 var sinon = require('sinon');
 var r = require('redis');
-var redis = require('../../lib/redis');
+var redis = require('../../lib/redis')();
 
 describe('redis', function() {
 

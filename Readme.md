@@ -251,7 +251,7 @@ queue.on('job enqueue', function(id, type){
   console.log( 'Job %s got queued of type %s', id, type );
 
 }).on('job complete', function(id, result){
-  kue.Job.get(id, function(err, job){
+  queue.Job.get(id, function(err, job){
     if (err) return;
     job.remove(function(err){
       if (err) throw err;
@@ -490,14 +490,14 @@ queue.inactive( function( err, ids ) { // others are active, complete, failed, d
 however the second one doesn't scale to large deployments, there you can use more specific `Job` static methods:
 
 ```js
-kue.Job.rangeByState( 'failed', 0, n, 'asc', function( err, jobs ) {
+queue.Job.rangeByState( 'failed', 0, n, 'asc', function( err, jobs ) {
   // you have an array of maximum n Job objects here
 });
 ```
 or
 
 ```js
-kue.Job.rangeByType( 'my-job-type', 'failed', 0, n, 'asc', function( err, jobs ) {
+queue.Job.rangeByType( 'my-job-type', 'failed', 0, n, 'asc', function( err, jobs ) {
   // you have an array of maximum n Job objects here
 });
 ```
@@ -512,7 +512,7 @@ If you did none of above in [Error Handling](#error-handling) section or your pr
 ```js
 queue.active( function( err, ids ) {
   ids.forEach( function( id ) {
-    kue.Job.get( id, function( err, job ) {
+    queue.Job.get( id, function( err, job ) {
       // Your application should check if job is a stuck one
       job.inactive();
     });
@@ -533,7 +533,7 @@ queue.create( ... ).removeOnComplete( true ).save()
 But if you eventually/temporally need completed job data, you can setup an on-demand job removal script like below to remove top `n` completed jobs:
 
 ```js
-kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
+queue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
   jobs.forEach( function( job ) {
     job.remove( function(){
       console.log( 'removed ', job.id );
