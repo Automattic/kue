@@ -31,7 +31,7 @@
     "nib": "~1.1.2",
     "node-redis-warlock": "~0.2.0",
     "pug": "^2.0.0-beta3",
-    "redis": "~2.6.0-2",
+    "redis": "^2.8.0",
     "stylus": "~0.54.5",
     "yargs": "^4.0.0"
   },
@@ -39,10 +39,10 @@
     "async": "^1.4.2",
     "chai": "^3.3.0",
     "coffee-script": "~1.10.0",
-    "mocha": "^2.3.3",
+    "mocha": "^5.2.0",
     "should": "^3.1.0",
     "sinon": "^1.17.2",
-    "supertest": "^1.1.0"
+    "supertest": "^3.3.0"
   },
   "main": "index",
   "bin": {
