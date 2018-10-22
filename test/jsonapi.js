@@ -5,7 +5,7 @@ var request = require( 'supertest' ),
     queue   = kue.getQueue( { disableSearch: false } ), //customize queue before accessing kue.app
     app     = kue.app,
     type    = 'test:inserts';
-console.log(queue._options)
+
 expect = chai.expect;
 
 
@@ -102,7 +102,7 @@ describe.only( 'JSON API', function () {
       request( app )
         .get( '/job/' + scope.jobId )
         .expect( function ( res ) {
-          res.body.id.should.eql( scope.jobId );
+          res.body.id.should.eql( scope.jobId.toString() );
           res.body.type.should.eql( type );
           res.body.state.should.eql( 'inactive' );
         } )
@@ -124,7 +124,7 @@ describe.only( 'JSON API', function () {
       request( app )
         .get( '/job/' + scope.jobId )
         .expect( function ( res ) {
-          res.body.id.should.eql( scope.jobId );
+          res.body.id.should.eql( scope.jobId.toString() );
           res.body.type.should.eql( type );
           res.body.state.should.eql( 'active' );
         } )

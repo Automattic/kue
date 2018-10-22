@@ -159,8 +159,8 @@ describe 'Kue', ->
         fn = (err) ->
           jobs.Job.get jobId, (err, job) ->
             job.should.have.property '_state', "inactive"
-            job.should.have.property '_attempts', "1"
             job.should.have.property '_error', "Shutdown"
+            job.should.have.property '_attempts', 1
             testDone()
 
         # shutdown timer is shorter than job length

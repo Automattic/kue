@@ -10,7 +10,7 @@ describe('Kue', function () {
 
   beforeEach(function(){
     sinon.stub(queue.events, 'subscribe');
-    sinon.stub(queue.redis, 'configureFactory', function () {
+    sinon.stub(queue.redis, 'configureFactory').callsFake( function () {
       queue.redis.createClient = sinon.stub();
     });
   });
