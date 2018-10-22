@@ -40,8 +40,8 @@
     "chai": "^3.3.0",
     "coffee-script": "~1.10.0",
     "mocha": "^5.2.0",
-    "should": "^3.1.0",
-    "sinon": "^1.17.2",
+    "should": "^13.2.3",
+    "sinon": "^7.0.0",
     "supertest": "^3.3.0"
   },
   "main": "index",
