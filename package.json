@@ -1,6 +1,6 @@
 {
   "name": "@foko/kue",
-  "version": "0.11.5",
+  "version": "0.12.0",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://automattic.github.io/kue/",
   "keywords": [
