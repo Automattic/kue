@@ -1,5 +1,5 @@
 {
-  "name": "kue",
+  "name": "@foko/kue",
   "version": "0.11.5",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://automattic.github.io/kue/",
