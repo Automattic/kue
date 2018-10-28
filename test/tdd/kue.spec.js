@@ -292,7 +292,7 @@ describe('Kue', function () {
       sha = 'sha';
       client = {
         script: sinon.stub().callsArgWith(2, null, sha),
-        evalsha: sinon.stub().callsArg(2)
+        evalsha: sinon.stub()
       };
 
       queue = kue.createQueue();
@@ -306,14 +306,14 @@ describe('Kue', function () {
     });
 
     it('should load the script', function () {
-      queue.watchStuckJobs();
+      queue.watchStuckJobs(1000, 'blah');
       client.script.calledWith('LOAD').should.be.true;
     });
 
     it('should run the script on an interval', function () {
-      queue.watchStuckJobs();
+      queue.watchStuckJobs(1000, 'blah');
       clock.tick(1000);
-      client.evalsha.calledWith(sha, 0).should.be.true;
+      client.evalsha.calledWith(sha, 1, 'blah').should.be.true;
       client.evalsha.callCount.should.equal(1);
       clock.tick(1000);
       client.evalsha.callCount.should.equal(2);
