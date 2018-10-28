@@ -1,4 +1,12 @@
 language: node_js
 node_js: 6
 services:
-  - redis-server
+- redis-server
+deploy:
+  provider: npm
+  email: aws@foko.co
+  api_key:
+    secure: OLXhFS3UV575aUIAyv1NaJYoL23J2mAtyY/SNWY4/j/rFI/j09VTMvYQTPr2R1aAJmskUD23c7bu61fel6wBvebtIAPogBhOPb+dG7Fnswqlffiz0wHucjfW5VxN2Ej2Wf74sFpc1+NXLjcobZN/fXNO45RNeISzDMdLHsin4fQLHcCopDkFa8uueJCPkPKGlKX1+Ru0D+PwhLVQ2nmUyzrUJpsZhT3ukcImMOQimyGFIFRoatTomSPySPtLhKELVji9Dl+TNKf3pwJdXczYH3l2Z7XHsuVXRSrpoh9nk/TNrJ7JgSvMZt8ULKYxpsfeuqRuV8nITBbLOWc/GSGXhpiEdji0vSY+eNKPvZwnZRKmhj6RSYYdix0vJ8VXKe0Pqo0vfK5LbR/HGdrRCT9jFMrQ0bXG1R/3P2MgY9ezv0rVLKHh6w5jw6uqMZpnVcOwYX4MnAIyaXPhwHKJJ5M2YEE/DY7gJYXrqhPjb3HXfSIAxgqauePUF/+E/Tkxej5nWvgMgdSch2/aLsvqck0NV5u7LCb2eA6Yb6MbCSQGl9goe9FONikOIv/r9t2PWAQb815X/ml7orG0Wye2L13QsA+auvc1iXGViqYL/Qu9Kc+zFZR0mxyTv6loo9He41DMLlNNZcCbytmbZayOQ+K4UGQ3u5O880p8g/p6DKL8pfU=
+  on:
+    tags: true
+    repo: FoKo/kue
