@@ -1,8 +1,4 @@
 language: node_js
-node_js:
-  - "4"
-  - "6"
-  - "8"
-  - "node"
+node_js: 6
 services:
   - redis-server
