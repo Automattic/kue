@@ -10,18 +10,18 @@ describe 'Kue Tests', ->
   Job = null
 
   beforeEach ->
-    jobs = kue.createQueue({promotion:{interval:50}})
-    Job = kue.Job
+    jobs = kue.getQueue({promotion:{interval:50}})
+    Job = jobs.Job
 
   afterEach (done) ->
     jobs.shutdown 50, done
 
   #  before (done) ->
-  #    jobs = kue.createQueue({promotion:{interval:100}})
+  #    jobs = kue.getQueue({promotion:{interval:100}})
   #    jobs.client.flushdb done
 
   #  after (done) ->
-  #    jobs = kue.createQueue({promotion:{interval:100}})
+  #    jobs = kue.getQueue({promotion:{interval:100}})
   #    jobs.client.flushdb done
 
 

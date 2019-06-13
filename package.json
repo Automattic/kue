@@ -49,7 +49,10 @@
     "kue-dashboard": "bin/kue-dashboard"
   },
   "scripts": {
-    "test": "make test-all"
+    "test": "make test-all",
+    "test:dev:tdd": "mocha --require should --require sinon test/tdd/*.js --watch",
+    "test:dev:bdd": "mocha --require should test/*.js --watch",
+    "test:dev:bdd-coffee": "mocha --require should --require coffee-script/register test/*.coffee --watch"
   },
   "optionalDependencies": {
     "reds": "^0.2.5"
