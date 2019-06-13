@@ -4,6 +4,8 @@ var kue     = require( '../' )
 // create our job queue
 
 var jobs = kue.createQueue();
+var appPortDefault = 3000;
+var mPort = process.env.PORT || appPortDefault;
 
 // start redis with $ redis-server
 
@@ -47,8 +49,8 @@ function convertFrame( i, fn ) {
 }
 
 // start the UI
-var app = express.createServer();
-app.use( express.basicAuth( 'foo', 'bar' ) );
+var app = express();
 app.use( kue.app );
-app.listen( 3000 );
-console.log( 'UI started on port 3000' );
+app.listen(mPort,function(){
+    console.log(`UI started on port ${mPort}`);
+});
