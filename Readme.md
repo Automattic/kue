@@ -1,5 +1,9 @@
 # Kue
 
+## Kue is no longer maintained
+
+Please see e.g. [Bull](https://github.com/OptimalBits/bull) as an alternative. Thank you!
+
 [![Build Status](https://travis-ci.org/Automattic/kue.svg?branch=master&style=flat)](https://travis-ci.org/Automattic/kue)
 [![npm version](https://badge.fury.io/js/kue.svg?style=flat)](http://badge.fury.io/js/kue)
 [![Dependency Status](https://img.shields.io/david/Automattic/kue.svg?style=flat)](https://david-dm.org/Automattic/kue)
