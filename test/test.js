@@ -178,6 +178,88 @@ describe( 'JOBS', function () {
     } );
   } );
 
+
+  it('should prevent duplicate jobs based on a specific arg when #unique is used with params', function (done) {
+    var jobData1 = {resource: 'users', action: 'count'};
+    var jobData2 = {resource: 'groups', action: 'count'};
+
+    // Enqueueing dup jobs with the same id
+    // The example here is a job to "get the latest user counts", a job which is pointless to rerun back-to-back
+    var uniqueJobs = [];
+    var numDone = 0;
+    var numProcessed = 0;
+
+    uniqueJobs.push(jobs.create('unique-job-example-args', jobData1).unique('resource').removeOnComplete(true).save(checkDone));
+    uniqueJobs.push(jobs.create('unique-job-example-args', jobData1).unique('resource').removeOnComplete(true).save(checkDone));
+
+    uniqueJobs.push(jobs.create('unique-job-example-args', jobData2).unique('resource').removeOnComplete(true).save(checkDone));
+    uniqueJobs.push(jobs.create('unique-job-example-args', jobData2).unique('resource').removeOnComplete(true).save(checkDone));
+
+    function checkDone(err) {
+      // should.not.exist(err);
+      if(err) throw new Error('Error saving unique job (couldnt get should.not.exist(err) to work) - ' + err.message);
+      if(++numDone < uniqueJobs.length) return; // don't verify status yet
+
+      kue.Job.rangeByType('unique-job-example-args', 'inactive', 0, 100, 'asc', function (err, ids) {
+        ids.should.have.length(2); // job for 'users' and 'groups'
+
+        // Verify it cleans up after itself
+        jobs.process('unique-job-example-args', function (job, jdone) {
+          job.uniqKey.should.include('unique-job-example-args');
+          jdone(); // this should trigger the HMAP to be cleaned up
+          if(++numProcessed < 2) return;
+
+          setTimeout(function () {
+            jobs.client.hkeys(jobs.client.getKey('jobs:unique'), function (err, keys) {
+              if(err) throw new Error('Error checking unique job cleanup (couldnt get should.not.exist(err) to work) - ' + err.message);
+
+              keys.should.have.length(0);
+              done();
+            });
+          }, 10);
+        });
+      });
+    }
+  });
+
+  it('should prevent duplicate jobs based on all args when #unique is used without params', function (done) {
+    var jobData = { resource: 'users', action: 'count' };
+
+    // Enqueueing dup jobs with the same id
+    // The example here is a job to "get the latest user counts", a job which is pointless to rerun back-to-back
+    var uniqueJobs = [];
+    var numDone = 0;
+    uniqueJobs.push(jobs.create('unique-job-example-noargs', jobData).unique().removeOnComplete(true).save(checkDone));
+    uniqueJobs.push(jobs.create('unique-job-example-noargs', jobData).unique().removeOnComplete(true).save(checkDone));
+    uniqueJobs.push(jobs.create('unique-job-example-noargs', jobData).unique().removeOnComplete(true).save(checkDone));
+    uniqueJobs.push(jobs.create('unique-job-example-noargs', jobData).unique().removeOnComplete(true).save(checkDone));
+
+    function checkDone(err) {
+      // should.not.exist(err);
+      if(err) throw new Error('Error saving unique job (couldnt get should.not.exist(err) to work) - ' + err.message);
+      if (++numDone < uniqueJobs.length) return; // don't verify status yet
+
+      kue.Job.rangeByType('unique-job-example-noargs', 'inactive', 0, 100, 'asc', function (err, ids) {
+        ids.should.have.length(1); // if there are more than 1, unique didn't work
+
+          // Verify it cleans up after itself
+        jobs.process('unique-job-example-noargs', function (job, jdone) {
+          job.uniqKey.should.include('unique-job-example-noargs');
+          jdone(); // this should trigger the HMAP to be cleaned up
+
+          setTimeout(function () {
+            jobs.client.hkeys(jobs.client.getKey('jobs:unique'), function (err, keys) {
+              if(err) throw new Error('Error checking unique job cleanup (couldnt get should.not.exist(err) to work) - ' + err.message);
+
+              keys.should.have.length(0);
+              done();
+            });
+          }, 10);
+        });
+      });
+    }
+  });
+
   it( 'should retry on failure if attempts is set', function ( testDone ) {
     var job      = jobs.create( 'failure-attempts', {} );
     var failures = 0;
