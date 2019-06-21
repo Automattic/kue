@@ -14,16 +14,6 @@ describe('redis', function() {
       redis.reset.restore();
     });
 
-    it('should parse a url connection string', function () {
-      var options = {
-        redis: 'redis://:password@host:1234/db'
-      };
-      redis.configureFactory(options);
-      options.redis.port.should.equal('1234');
-      options.redis.host.should.equal('host');
-      options.redis.db.should.equal('db');
-    });
-
     it('should reset everything', function () {
       var options = {
         redis: 'redis://:password@host:1234/db'
@@ -110,49 +100,6 @@ describe('redis', function() {
         var id = client.stripFIFO( '03|123' );
         id.should.equal(123);
       });
-    });
-
-  });
-
-  describe('Function: createClientFactory', function() {
-    var options, client;
-    beforeEach(function(){
-      options = {
-        prefix: 'prefix',
-        redis: {
-          port: 'port',
-          host: 'host',
-          db: 'db',
-          options: {}
-        }
-      };
-      client = {
-        auth: sinon.stub(),
-        select: sinon.stub()
-      };
-      sinon.stub(r, 'createClient').returns(client);
-    });
-
-    afterEach(function(){
-      r.createClient.restore();
-    });
-
-    it('should create a client', function () {
-      var c = redis.createClientFactory(options);
-      r.createClient.called.should.be.true;
-      r.createClient.calledWith(options.redis.port, options.redis.host, options.redis.options).should.be.true;
-    });
-
-    it('should authenticate if auth is present', function () {
-      options.redis.auth = 'auth';
-      var c = redis.createClientFactory(options);
-      client.auth.calledWith(options.redis.auth).should.be.true;
-    });
-
-    it('should select the passed in db', function () {
-      options.redis.db = 1;
-      var c = redis.createClientFactory(options);
-      client.select.calledWith(options.redis.db).should.be.true;
     });
 
   });

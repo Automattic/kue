@@ -588,11 +588,7 @@ var kue = require('kue');
 var q = kue.createQueue({
   prefix: 'q',
   redis: {
-    socket: '/data/sockets/redis.sock',
-    auth: 'password',
-    options: {
-      // see https://github.com/mranney/node_redis#rediscreateclient
-    }
+    // see https://github.com/mranney/node_redis#rediscreateclient for options
   }
 });
 ```
