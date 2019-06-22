@@ -1,46 +1,44 @@
 var sinon = require('sinon');
 var kue = require('../../lib/kue');
-var redis = require('../../lib/redis');
-var events = require('../../lib/queue/events');
-var Job = require('../../lib/queue/job');
-var Worker = require('../../lib/queue/worker');
+var Worker = require('../../lib/worker');
 var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 var redisClient = {};
 
 describe('Kue', function () {
+  var queue = kue.getQueue()
 
   beforeEach(function(){
-    sinon.stub(events, 'subscribe');
-    sinon.stub(redis, 'configureFactory', function () {
-      redis.createClient = sinon.stub();
+    sinon.stub(queue.events, 'subscribe');
+    sinon.stub(queue.redis, 'configureFactory').callsFake( function () {
+      queue.redis.createClient = sinon.stub();
     });
   });
 
   afterEach(function(){
-    events.subscribe.restore();
-    redis.configureFactory.restore();
+    queue.events.subscribe.restore && queue.events.subscribe.restore();
+    queue.redis.configureFactory.restore && queue.redis.configureFactory.restore();
   });
 
-  describe('Function: createQueue', function () {
+  describe('Function: getQueue', function () {
 
     it('should subscribe to queue events', function () {
-      var queue = kue.createQueue();
-      events.subscribe.called.should.be.true;
+      queue = kue.getQueue();
+      queue.events.subscribe.called.should.be.true;
     });
 
     it('should set the correct default values', function () {
-      var queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.name.should.equal('kue');
       queue.id.should.equal([ 'kue', require("os").hostname(), process.pid ].join(':'));
       (queue.promoter === null).should.be.true;
-      queue.workers.should.eql(kue.workers);
+      queue.workers.should.eql([]);
       queue.shuttingDown.should.be.false;
     });
 
     it('should allow a custom name option', function () {
       it('should set the correct default values', function () {
-        var queue = kue.createQueue({
+        queue = kue.getQueue({
           name: 'name'
         });
         queue.name.should.equal('name');
@@ -49,9 +47,8 @@ describe('Kue', function () {
   });
 
   describe('Function: create', function() {
-    var queue;
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
     });
 
     it('should return a new Job instance', function () {
@@ -66,16 +63,16 @@ describe('Kue', function () {
   });
 
   describe('Function: on', function() {
-    var queue, noop;
+    var noop;
     beforeEach(function(){
-      queue = kue.createQueue();
-      events.subscribe.reset();
+      queue = kue.getQueue();
+      queue.events.subscribe.reset();
       noop = function () {};
     });
 
     it('should subscribe to events when subscribing to the job event', function () {
       queue.on('job', noop);
-      events.subscribe.called.should.be.true;
+      queue.events.subscribe.called.should.be.true;
     });
 
     it('should proxy the event listener', function (done) {
@@ -88,9 +85,8 @@ describe('Kue', function () {
   });
 
   describe('Function: setupTimers', function() {
-    var queue;
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'checkJobPromotion');
       sinon.stub(queue, 'checkActiveJobTtl');
     });
@@ -118,7 +114,7 @@ describe('Kue', function () {
   });
 
   describe('Function: checkJobPromotion', function() {
-    var queue, unlock, clock, timeout, client, ids, job;
+    var unlock, clock, timeout, client, ids, job;
 
     beforeEach(function(){
       unlock = sinon.spy();
@@ -133,19 +129,19 @@ describe('Kue', function () {
         inactive: sinon.stub().callsArg(0)
       };
 
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
 
-      sinon.stub(Job, 'get').callsArgWith(1, null, job);
+      sinon.stub(queue.Job, 'get').callsArgWith(1, null, job);
       sinon.stub(queue.warlock, 'lock').callsArgWith(2, null, unlock);
-      sinon.stub(events, 'emit');
+      sinon.stub(queue.events, 'emit');
       clock = sinon.useFakeTimers();
     });
 
     afterEach(function(){
-      Job.get.restore();
+      queue.Job.get.restore();
       queue.warlock.lock.restore();
-      events.emit.restore();
+      queue.events.emit.restore();
       clock.restore();
     });
 
@@ -164,25 +160,25 @@ describe('Kue', function () {
     it('should load all delayed jobs that should be run job', function () {
       queue.checkJobPromotion();
       clock.tick(timeout);
-      client.zrangebyscore.calledWith(client.getKey('jobs:delayed'), 0, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
+      queue.client.zrangebyscore.calledWith(queue.client.getKey('jobs:delayed'), 0, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
     });
 
     it('should get each job', function () {
       queue.checkJobPromotion();
       clock.tick(timeout);
-      Job.get.callCount.should.equal(3);
-      Job.get.calledWith(ids[0]).should.be.true;
-      Job.get.calledWith(ids[1]).should.be.true;
-      Job.get.calledWith(ids[2]).should.be.true;
+      queue.Job.get.callCount.should.equal(3);
+      queue.Job.get.calledWith(ids[0]).should.be.true;
+      queue.Job.get.calledWith(ids[1]).should.be.true;
+      queue.Job.get.calledWith(ids[2]).should.be.true;
     });
 
     it('should emit promotion for each job', function () {
       queue.checkJobPromotion();
       clock.tick(timeout);
-      events.emit.callCount.should.equal(3);
-      events.emit.calledWith(ids[0], 'promotion').should.be.true;
-      events.emit.calledWith(ids[1], 'promotion').should.be.true;
-      events.emit.calledWith(ids[2], 'promotion').should.be.true;
+      queue.events.emit.callCount.should.equal(3);
+      queue.events.emit.calledWith(ids[0], 'promotion').should.be.true;
+      queue.events.emit.calledWith(ids[1], 'promotion').should.be.true;
+      queue.events.emit.calledWith(ids[2], 'promotion').should.be.true;
     });
 
     it('should set each job to inactive', function () {
@@ -200,7 +196,7 @@ describe('Kue', function () {
   });
 
   describe('Function: checkActiveJobTtl', function() {
-    var queue, unlock, clock, timeout, client, ids, job;
+    var unlock, clock, timeout, client, ids, job;
 
     beforeEach(function(){
       unlock = sinon.spy();
@@ -215,21 +211,21 @@ describe('Kue', function () {
         failedAttempt: sinon.stub().callsArg(1)
       };
 
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
 
       sinon.spy(queue, 'removeAllListeners');
-      sinon.stub(Job, 'get').callsArgWith(1, null, job);
+      sinon.stub(queue.Job, 'get').callsArgWith(1, null, job);
       sinon.stub(queue.warlock, 'lock').callsArgWith(2, null, unlock);
-      sinon.stub(events, 'emit');
+      sinon.stub(queue.events, 'emit');
       clock = sinon.useFakeTimers();
     });
 
     afterEach(function(){
       queue.removeAllListeners.restore();
-      Job.get.restore();
+      queue.Job.get.restore();
       queue.warlock.lock.restore();
-      events.emit.restore();
+      queue.events.emit.restore();
       clock.restore();
     });
 
@@ -242,16 +238,16 @@ describe('Kue', function () {
     it('should load all expired jobs', function () {
       queue.checkActiveJobTtl();
       clock.tick(timeout);
-      client.zrangebyscore.calledWith(client.getKey('jobs:active'), 100000, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
+      queue.client.zrangebyscore.calledWith(queue.client.getKey('jobs:active'), 100000, sinon.match.any, "LIMIT", 0, 1000).should.be.true;
     });
 
     it('should emit ttl exceeded for each job', function () {
       queue.checkActiveJobTtl();
       clock.tick(timeout);
-      events.emit.callCount.should.equal(3);
-      events.emit.calledWith(ids[0], 'ttl exceeded');
-      events.emit.calledWith(ids[1], 'ttl exceeded');
-      events.emit.calledWith(ids[2], 'ttl exceeded');
+      queue.events.emit.callCount.should.equal(3);
+      queue.events.emit.calledWith(ids[0], 'ttl exceeded');
+      queue.events.emit.calledWith(ids[1], 'ttl exceeded');
+      queue.events.emit.calledWith(ids[2], 'ttl exceeded');
     });
 
     it('should unlock after all the job ttl exceeded acks have been received', function () {
@@ -276,7 +272,7 @@ describe('Kue', function () {
         queue.emit('job ttl exceeded ack', id);
       });
       clock.tick(timeout);
-      Job.get.calledWith(id).should.be.true;
+      queue.Job.get.calledWith(id).should.be.true;
       job.failedAttempt.calledOnce.should.be.true;
       job.failedAttempt.calledWith({
         error: true,
@@ -286,7 +282,7 @@ describe('Kue', function () {
   });
 
   describe('Function: watchStuckJobs', function() {
-    var queue, clock, client, sha;
+    var clock, client, sha;
 
     beforeEach(function(){
       sha = 'sha';
@@ -295,7 +291,7 @@ describe('Kue', function () {
         evalsha: sinon.stub().callsArg(2)
       };
 
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
 
       clock = sinon.useFakeTimers();
@@ -307,22 +303,22 @@ describe('Kue', function () {
 
     it('should load the script', function () {
       queue.watchStuckJobs();
-      client.script.calledWith('LOAD').should.be.true;
+      queue.client.script.calledWith('LOAD').should.be.true;
     });
 
     it('should run the script on an interval', function () {
       queue.watchStuckJobs();
       clock.tick(1000);
-      client.evalsha.calledWith(sha, 0).should.be.true;
-      client.evalsha.callCount.should.equal(1);
+      queue.client.evalsha.calledWith(sha, 0).should.be.true;
+      queue.client.evalsha.callCount.should.equal(1);
       clock.tick(1000);
-      client.evalsha.callCount.should.equal(2);
+      queue.client.evalsha.callCount.should.equal(2);
     });
 
   });
 
   describe('Function: setting', function() {
-    var queue, client;
+    var client;
 
     beforeEach(function(){
       client = {
@@ -330,13 +326,13 @@ describe('Kue', function () {
         hget: sinon.stub().callsArg(2)
       };
 
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
     });
 
     it('should get the requested setting', function (done) {
       queue.setting('name', function () {
-        client.hget.calledWith(client.getKey('settings'), 'name').should.be.true;
+        queue.client.hget.calledWith(queue.client.getKey('settings'), 'name').should.be.true;
         done();
       });
     });
@@ -344,7 +340,7 @@ describe('Kue', function () {
   });
 
   describe('Function: process', function() {
-    var queue, client, worker;
+    var client, worker;
 
     beforeEach(function(){
       client = {
@@ -352,9 +348,10 @@ describe('Kue', function () {
         incrby: sinon.stub()
       };
       worker = new EventEmitter();
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.workers = [];
       queue.client = client;
+      worker.client = queue.client;
 
       sinon.stub(queue, 'setupTimers');
       sinon.stub(Worker.prototype, 'start').returns(worker);
@@ -394,7 +391,7 @@ describe('Kue', function () {
       };
       queue.process('type', 3, sinon.stub());
       worker.emit('job complete', job);
-      client.incrby.calledWith(client.getKey('stats:work-time'), job.duration).should.be.true;
+      queue.client.incrby.calledWith(queue.client.getKey('stats:work-time'), job.duration).should.be.true;
     });
 
     it('should setup timers', function () {
@@ -405,7 +402,7 @@ describe('Kue', function () {
   });
 
   describe('Function: shutdown', function() {
-    var queue, client, worker, lockClient;
+    var client, worker, lockClient;
 
     beforeEach(function(){
       client = {
@@ -417,19 +414,19 @@ describe('Kue', function () {
       worker = {
         shutdown: sinon.stub().callsArg(1)
       };
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.shuttingDown = false;
       queue.workers = [worker, worker, worker];
       queue.client = client;
       queue.lockClient = lockClient;
 
-      sinon.stub(events, 'unsubscribe');
-      sinon.stub(redis, 'reset');
+      sinon.stub(queue.events, 'unsubscribe');
+      sinon.stub(queue.redis, 'reset');
     });
 
     afterEach(function(){
-      events.unsubscribe.restore();
-      redis.reset.restore();
+      queue.events.unsubscribe.restore();
+      queue.redis.reset.restore();
     });
 
     it('should return an error if it is already shutting down', function (done) {
@@ -450,8 +447,8 @@ describe('Kue', function () {
     it('should clean things up', function (done) {
       queue.shutdown(function () {
         queue.workers.length.should.equal(0);
-        events.unsubscribe.called.should.be.true;
-        redis.reset.called.should.be.true;
+        queue.events.unsubscribe.called.should.be.true;
+        queue.redis.reset.called.should.be.true;
         client.quit.called.should.be.true;
         (queue.client == null).should.be.true;
         lockClient.quit.called.should.be.true;
@@ -463,7 +460,7 @@ describe('Kue', function () {
   });
 
   describe('Function: types', function() {
-    var queue, client, types;
+    var client, types;
 
     beforeEach(function(){
       types = ['type1', 'type2'];
@@ -471,7 +468,7 @@ describe('Kue', function () {
         getKey: sinon.stub().returnsArg(0),
         smembers: sinon.stub().callsArgWith(1, null, types)
       };
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
     });
 
@@ -484,7 +481,7 @@ describe('Kue', function () {
   });
 
   describe('Function: state', function() {
-    var queue, client, jobIds, state;
+    var client, jobIds, state;
 
     beforeEach(function(){
       jobIds = [1, 2];
@@ -494,7 +491,7 @@ describe('Kue', function () {
         stripFIFO: sinon.stub().returnsArg(0),
         zrange: sinon.stub().callsArgWith(3, null, jobIds)
       };
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
     });
 
@@ -508,7 +505,7 @@ describe('Kue', function () {
   });
 
   describe('Function: workTime', function() {
-    var queue, client, n;
+    var client, n;
 
     beforeEach(function(){
       n = 20;
@@ -516,7 +513,7 @@ describe('Kue', function () {
         getKey: sinon.stub().returnsArg(0),
         get: sinon.stub().callsArgWith(1, null, n)
       };
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
     });
 
@@ -530,7 +527,7 @@ describe('Kue', function () {
   });
 
   describe('Function: cardByType', function() {
-    var queue, client, type, state, total;
+    var client, type, state, total;
 
     beforeEach(function(){
       type = 'type';
@@ -540,7 +537,7 @@ describe('Kue', function () {
         getKey: sinon.stub().returnsArg(0),
         zcard: sinon.stub().callsArgWith(1, null, total)
       };
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
     });
 
@@ -553,7 +550,7 @@ describe('Kue', function () {
   });
 
   describe('function: card', function() {
-    var queue, client, state, total;
+    var client, state, total;
 
     beforeEach(function(){
       state = 'state';
@@ -562,7 +559,7 @@ describe('Kue', function () {
         getKey: sinon.stub().returnsArg(0),
         zcard: sinon.stub().callsArgWith(1, null, total)
       };
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       queue.client = client;
     });
 
@@ -575,10 +572,9 @@ describe('Kue', function () {
   });
 
   describe('Function: complete', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'state').callsArg(1);
     });
 
@@ -595,10 +591,9 @@ describe('Kue', function () {
   });
 
   describe('Function: failed', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'state').callsArg(1);
     });
 
@@ -615,10 +610,9 @@ describe('Kue', function () {
   });
 
   describe('Function: inactive', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'state').callsArg(1);
     });
 
@@ -635,10 +629,9 @@ describe('Kue', function () {
   });
 
   describe('Function: active', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'state').callsArg(1);
     });
 
@@ -655,10 +648,9 @@ describe('Kue', function () {
   });
 
   describe('Function: delayed', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'state').callsArg(1);
     });
 
@@ -675,10 +667,9 @@ describe('Kue', function () {
   });
 
   describe('Function: completeCount', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'card').callsArg(1);
       sinon.stub(queue, 'cardByType').callsArg(2);
     });
@@ -704,10 +695,9 @@ describe('Kue', function () {
   });
 
   describe('Function: failedCount', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'card').callsArg(1);
       sinon.stub(queue, 'cardByType').callsArg(2);
     });
@@ -733,10 +723,9 @@ describe('Kue', function () {
   });
 
   describe('Function: inactiveCount', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'card').callsArg(1);
       sinon.stub(queue, 'cardByType').callsArg(2);
     });
@@ -762,10 +751,9 @@ describe('Kue', function () {
   });
 
   describe('Function: activeCount', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'card').callsArg(1);
       sinon.stub(queue, 'cardByType').callsArg(2);
     });
@@ -791,10 +779,9 @@ describe('Kue', function () {
   });
 
   describe('Function: delayedCount', function() {
-    var queue;
 
     beforeEach(function(){
-      queue = kue.createQueue();
+      queue = kue.getQueue();
       sinon.stub(queue, 'card').callsArg(1);
       sinon.stub(queue, 'cardByType').callsArg(2);
     });

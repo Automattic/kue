@@ -4,7 +4,7 @@ var kue     = require( '../' )
 // create our job queue
 
 var jobs = kue.createQueue()
-  , Job  = kue.Job;
+  , Job  = jobs.Job;
 
 // start redis with $ redis-server
 

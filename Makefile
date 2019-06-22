@@ -4,11 +4,13 @@ all:    build
 
 build:
 	@./node_modules/coffee-script/bin/coffee \
+		--exit \
     -c \
     -o lib src
 
 test-tdd:
 	@./node_modules/.bin/mocha \
+		--exit \
     --reporter $(REPORTER) \
 		--require should \
 		--require sinon \
@@ -17,6 +19,7 @@ test-tdd:
 
 test-bdd:
 	@./node_modules/.bin/mocha \
+		--exit \
     --reporter $(REPORTER) \
     --require should \
     --ui bdd \
@@ -24,10 +27,10 @@ test-bdd:
 
 test-bdd-coffee:
 	@./node_modules/.bin/mocha \
-    --compilers coffee:coffee-script \
+		--exit \
     --reporter $(REPORTER) \
-    --require should \
     --require coffee-script/register \
+    --require should \
     --ui bdd \
     test/*.coffee
 

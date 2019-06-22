@@ -1,4 +1,5 @@
 should = require 'should'
+assert = require 'assert'
 
 kue = require '../'
 
@@ -6,34 +7,35 @@ kue = require '../'
 describe 'Kue', ->
 
   before (done) ->
-    jobs = kue.createQueue()
+    jobs = kue.getQueue()
     jobs.client.flushdb done
 
   after (done) ->
-    jobs = kue.createQueue()
+    jobs = kue.getQueue()
     jobs.client.flushdb done
 
   describe 'Shutdown', ->
-    it 'should return singleton from createQueue', (done) ->
-      jobs = kue.createQueue()
-      jobsToo = kue.createQueue()
+    it 'should return singleton from getQueue', (done) ->
+      jobs = kue.getQueue()
+      jobsToo = kue.getQueue()
       jobs.should.equal jobsToo
       jobs.shutdown done
 
 
 
-    it 'should destroy singleton on shutdown', (done) ->
-      jobs = kue.createQueue()
+    it 'should return new instance from getQueue', (done) ->
+      jobs = kue.getQueue()
       jobs.shutdown (err) ->
         # test that new jobs object is a different reference
-        newJobs = kue.createQueue()
-        newJobs.should.not.equal jobs
+        newJobs = kue.getQueue()
+        # newJobs.should.not.equal jobs
+        assert( newJobs != jobs)
         newJobs.shutdown done
 
 
 
     it 'should clear properties on shutdown', (done) ->
-      jobs = kue.createQueue({promotion:{interval:200}})
+      jobs = kue.getQueue({promotion:{interval:200}})
       jobs.shutdown (err) ->
         should(jobs.workers).be.empty
         should(jobs.client).be.empty
@@ -43,7 +45,7 @@ describe 'Kue', ->
 
 
     it 'should be able to pause/resume the worker', (done) ->
-      jobs = kue.createQueue()
+      jobs = kue.getQueue()
       job_data =
         title: 'resumable jobs'
         to: 'tj@learnboost.com'
@@ -62,7 +64,7 @@ describe 'Kue', ->
 
 
     it 'should not clear properties on single type shutdown', (testDone) ->
-      jobs = kue.createQueue()
+      jobs = kue.getQueue()
       fn = (err) ->
         jobs.client.should.not.be.empty
         jobs.shutdown 10, testDone
@@ -72,7 +74,7 @@ describe 'Kue', ->
 
 
     it 'should shutdown one worker type on single type shutdown', (testDone) ->
-      jobs = kue.createQueue()
+      jobs = kue.getQueue()
       # set up two worker types
       jobs.process 'runningTask', (job, done) ->
           done()
@@ -98,7 +100,7 @@ describe 'Kue', ->
 
 
     it 'should fail active job when shutdown timer expires', (testDone) ->
-      jobs = kue.createQueue()
+      jobs = kue.getQueue()
       jobId = null
       jobs.process 'long-task', (job, done) ->
           jobId = job.id
@@ -110,7 +112,7 @@ describe 'Kue', ->
       # need to make sure long-task has had enough time to get into active state
       waitForJobToRun = ->
           fn = (err) ->
-              kue.Job.get jobId, (err, job) ->
+              jobs.Job.get jobId, (err, job) ->
                   job.should.have.property '_state', "failed"
                   job.should.have.property '_error', "Shutdown"
                   testDone()
@@ -123,7 +125,7 @@ describe 'Kue', ->
 
 
     it 'should not call graceful shutdown twice on subsequent calls', (testDone) ->
-      jobs = kue.createQueue()
+      jobs = kue.getQueue()
       jobs.process 'test-subsequent-shutdowns', (job, done) ->
         done()
         setTimeout ()->
@@ -144,7 +146,7 @@ describe 'Kue', ->
 
 
     it 'should fail active re-attemptable job when shutdown timer expires', (testDone) ->
-      jobs = kue.createQueue()
+      jobs = kue.getQueue()
       jobId = null
       jobs.process 'shutdown-reattemptable-jobs', (job, done) ->
         jobId = job.id
@@ -155,10 +157,10 @@ describe 'Kue', ->
       # need to make sure long-task has had enough time to get into active state
       waitForJobToRun = ->
         fn = (err) ->
-          kue.Job.get jobId, (err, job) ->
+          jobs.Job.get jobId, (err, job) ->
             job.should.have.property '_state', "inactive"
-            job.should.have.property '_attempts', "1"
             job.should.have.property '_error', "Shutdown"
+            job.should.have.property '_attempts', 1
             testDone()
 
         # shutdown timer is shorter than job length
