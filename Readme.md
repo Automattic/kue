@@ -561,6 +561,7 @@ var q = kue.createQueue({
     port: 1234,
     host: '10.0.50.20',
     auth: 'password',
+    timeout: 1000,  // optional, default 3 second, 1000 = 1 second
     db: 3, // if provided select a non-default redis db
     options: {
       // see https://github.com/mranney/node_redis#rediscreateclient
