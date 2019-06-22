@@ -925,8 +925,8 @@ before(function() {
 
 When contributing, follow the simple rules:
 
-* Don't violate [DRY](http://programmer.97things.oreilly.com/wiki/index.php/Don%27t_Repeat_Yourself) principles.
-* [Boy Scout Rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule) needs to have been applied.
+* Don't violate [DRY](http://web.archive.org/web/20171110024609/http://programmer.97things.oreilly.com/wiki/index.php/Don't_Repeat_Yourself) principles.
+* [Boy Scout Rule](http://web.archive.org/web/20171010053344/http://programmer.97things.oreilly.com/wiki/index.php/97_Things_Every_Programmer_Should_Know) needs to have been applied.
 * Your code should look like all the other code – this project should look like it was written by one person, always.
 * If you want to propose something – just create an issue and describe your question with as much description as you can.
 * If you think you have some general improvement, consider creating a pull request with it.
