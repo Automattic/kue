@@ -209,7 +209,8 @@ describe('Kue', function () {
       client = {
         zrangebyscore: sinon.stub().callsArgWith(6, null, ids),
         getKey: sinon.stub().returnsArg(0),
-        stripFIFO: sinon.stub().returnsArg(0)
+        stripFIFO: sinon.stub().returnsArg(0),
+        zrem: sinon.stub().returnsArg(0)
       };
       job = {
         failedAttempt: sinon.stub().callsArg(1)
