@@ -790,6 +790,32 @@ describe('Kue', function () {
     });
   });
 
+  describe('Function: progress', function () {
+    var queue;
+    var client;
+
+    beforeEach(function() {
+      queue = kue.createQueue();
+      client = {
+        hset: sinon.spy(),
+        zadd: sinon.spy(),
+        getKey: sinon.spy(),
+        publish: sinon.spy()
+      }
+      events.emit = sinon.spy()
+    });
+
+    it('accepts callback', function() {
+      var job = queue.create('type', {});
+      job.client = client;
+      var clbk = sinon.spy();
+      job._state = 'active';
+      job._ttl = 1000;
+      job.progress(1, 10, 'data', clbk);
+      client.zadd.getCall(0).args[3].should.be.eql(clbk);
+    });
+  });
+
   describe('Function: delayedCount', function() {
     var queue;
 
