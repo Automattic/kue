@@ -1,7 +1,7 @@
 {
-  "name": "kue",
+  "name": "kue-cors",
   "version": "0.11.5",
-  "description": "Feature rich priority job queue backed by redis",
+  "description": "Feature rich priority job queue backed by redis with CORS enabled",
   "homepage": "http://automattic.github.io/kue/",
   "keywords": [
     "job",
@@ -15,17 +15,22 @@
     {
       "name": "Behrad Zari",
       "email": "behradz@gmail.com"
+    },
+    {
+      "name": "Miguel Angel Flores",
+      "email": "supermafete@gmail.com"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Automattic/kue.git"
+    "url": "https://github.com/supermafete/kue-cors"
   },
   "bugs": {
-    "url": "https://github.com/Automattic/kue/issues"
+    "url": "https://github.com/supermafete/kue-cors/issues"
   },
   "dependencies": {
     "body-parser": "^1.12.2",
+    "cors": "^2.8.4",
     "express": "^4.12.2",
     "lodash": "^4.0.0",
     "nib": "~1.1.2",
