@@ -168,6 +168,16 @@ Job producers can set an expiry value for the time their job can live in active 
 queue.create('email', {title: 'email job with TTL'}).ttl(milliseconds).save();
 ```
 
+
+### Job inactive TTL
+
+Job producers can set an expiry value for the time their job can live in inactive state, to prevent overload or unavailable workers
+
+```js
+queue.create('email', {title: 'email job with TTL'}).ttlInactive(milliseconds).save();
+```
+
+
 ### Job Logs
 
 Job-specific logs enable you to expose information to the UI at any point in the job's life-time. To do so simply invoke `job.log()`, which accepts a message string as well as variable-arguments for sprintf-like support:
