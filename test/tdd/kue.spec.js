@@ -65,6 +65,75 @@ describe('Kue', function () {
     });
   });
 
+  describe('Function: save', function () {
+    var queue;
+    var client;
+
+    beforeEach(function () {
+      client = {
+        incr: sinon.stub().callsArgWith(1, null, 1),
+        getKey: sinon.stub().returns([]),
+        createFIFO: sinon.stub().returns(1),
+        sadd: sinon.stub()
+      };
+      queue = kue.createQueue();
+      Job.client = client;
+    });
+
+    it('should set created_at when job saved', function (done) {
+      var now = Date.now();
+      var job = queue.create('type', {});
+      job.subscribe = sinon.stub().callsArg(0);
+      job.set = sinon.stub();
+      job.update = sinon.stub().callsArg(0);
+
+      job.save(function () {
+        job.created_at.should.be.approximately(now, 200);
+        done();
+      });
+    });
+  });
+
+  describe('Function: get', function () {
+    var client;
+    var createClient;
+
+    beforeEach(function () {
+      client = {
+        getKey: sinon.stub().returns([]),
+        createFIFO: sinon.stub().returns(1),
+        hgetall: sinon.stub().callsArgWith(1, null, {
+          created_at: '12345',
+          failed_at: '12345',
+          promote_at: '12345',
+          delay: '12345',
+          updated_at: '12345',
+          started_at: '12345',
+          type: 'type'
+        })
+      };
+      createClient = redis.createClient;
+      redis.createClient = sinon.stub().returns(client);
+    });
+
+    afterEach(function () {
+      redis.createClient = createClient;
+      redis._client = null;
+    });
+
+    it('should convert date fields to numbers', function (done) {
+      Job.get(1, 'type', function (err, job) {
+        job.created_at.should.be.an.instanceOf(Number);
+        job.failed_at.should.be.an.instanceOf(Number);
+        job.promote_at.should.be.an.instanceOf(Number);
+        job._delay.should.be.an.instanceOf(Number);
+        job.updated_at.should.be.an.instanceOf(Number);
+        job.started_at.should.be.an.instanceOf(Number);
+        done();
+      });
+    });
+  });
+
   describe('Function: on', function() {
     var queue, noop;
     beforeEach(function(){
