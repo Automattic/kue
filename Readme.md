@@ -822,6 +822,15 @@ You can create multiple jobs at once by passing an array. In this case, the resp
 
 Note: when inserting multiple jobs in bulk, if one insertion fails Kue will keep processing the remaining jobs in order. The response array will contain the ids of the jobs added successfully, and any failed element will be an object describing the error: `{"error": "error reason"}`.
 
+### Updating Jobs - PUT /job/id/...
+
+Changing the priority of an existing job (only numeric priorities are currently supported)
+
+    $ curl -X PUT http://localhost:3000/job/<jobid>/priority/<priority_number>
+
+Changing the state of an existing job:
+
+    $ curl -X PUT http://localhost:3000/job/<jobid>/state/<state_string>
 
 ## Parallel Processing With Cluster
 
