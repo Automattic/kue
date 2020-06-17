@@ -2,7 +2,7 @@
 
 ## Kue is no longer maintained
 
-Please see e.g. [Bull](https://github.com/OptimalBits/bull) as an alternative. Thank you!
+Please see e.g. [Bull](https://github.com/OptimalBits/bull) or [Conveyor MQ](https://github.com/conveyor-mq/conveyor-mq) as an alternative. Thank you!
 
 [![Build Status](https://travis-ci.org/Automattic/kue.svg?branch=master&style=flat)](https://travis-ci.org/Automattic/kue)
 [![npm version](https://badge.fury.io/js/kue.svg?style=flat)](http://badge.fury.io/js/kue)
