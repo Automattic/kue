@@ -2,7 +2,7 @@
 
 ## Kue is no longer maintained
 
-Please see e.g. [Bull](https://github.com/OptimalBits/bull) as an alternative. Thank you!
+Please see [Bree](https://jobscheduler.net), [Bull](https://github.com/OptimalBits/bull), [Agenda](https://github.com/agenda/agenda), and [node-cron](https://github.com/node-cron/node-cron) as alternatives. Thank you!
 
 [![Build Status](https://travis-ci.org/Automattic/kue.svg?branch=master&style=flat)](https://travis-ci.org/Automattic/kue)
 [![npm version](https://badge.fury.io/js/kue.svg?style=flat)](http://badge.fury.io/js/kue)
