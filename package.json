@@ -1,6 +1,6 @@
 {
   "name": "@progresskinvey/kue",
-  "version": "0.11.5",
+  "version": "0.11.6",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://automattic.github.io/kue/",
   "keywords": [
@@ -33,7 +33,7 @@
     "pug": "3.0.2",
     "redis": "~2.6.0-2",
     "stylus": "~0.54.5",
-    "yargs": "^4.0.0"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "async": "^1.4.2",

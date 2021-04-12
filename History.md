@@ -1,3 +1,14 @@
+0.11.6 / 2021-04-12
+===================
+
+* Update yargs to 16.2.0 to fix security vulnerability
+
+0.11.5 / 2021-04-09
+===================
+
+* Transfer to the @progresskinvey organization
+* Update pug to fix security vulnerability
+
 0.11.5 / 2016-11-05
 ===================
 
