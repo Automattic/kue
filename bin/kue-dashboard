@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var kue = require('kue');
+var kue = require('@progresskinvey/kue');
 var argv = require('yargs')
 	.usage('Usage: $0 [options]')
 	.example('$0 -p 3050 -r redis://10.0.0.4:6379 -q q')
