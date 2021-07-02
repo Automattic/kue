@@ -1,6 +1,6 @@
 {
   "name": "@progresskinvey/kue",
-  "version": "0.11.9",
+  "version": "1.0.0",
   "description": "Feature rich priority job queue backed by redis",
   "homepage": "http://automattic.github.io/kue/",
   "keywords": [
@@ -25,15 +25,9 @@
     "url": "https://github.com/Automattic/kue/issues"
   },
   "dependencies": {
-    "body-parser": "1.19.0",
-    "express": "4.17.1",
     "lodash": "4.17.21",
-    "nib": "1.1.2",
     "node-redis-warlock": "1.0.0",
-    "pug": "3.0.2",
-    "redis": "3.1.2",
-    "stylus": "0.54.8",
-    "yargs": "17.0.1"
+    "redis": "2.8.0"
   },
   "devDependencies": {
     "async": "^1.4.2",
@@ -45,11 +39,9 @@
     "supertest": "^1.1.0"
   },
   "main": "index",
-  "bin": {
-    "kue-dashboard": "bin/kue-dashboard"
-  },
   "scripts": {
-    "test": "make test-all"
+    "test": "make test-all",
+    "test-npm-security": "npm audit --production --audit-level=high"
   },
   "optionalDependencies": {
     "reds": "^0.2.5"
