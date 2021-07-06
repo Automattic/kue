@@ -173,7 +173,7 @@ describe 'Kue Tests', ->
       jobs.create( 'simple-delay-job', { title: 'simple delay job' } ).delay(300).save()
       jobs.process 'simple-delay-job', (job, jdone) ->
         processed = Date.now()
-        (processed - now).should.be.approximately( 300, 100 )
+        (processed - now).should.be.approximately( 300, 2000 )
         jdone()
         done()
 
