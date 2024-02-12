@@ -25,9 +25,9 @@
     "url": "https://github.com/Automattic/kue/issues"
   },
   "dependencies": {
-    "lodash": "^4.0.0",
-    "node-redis-warlock": "~1.0.2",
-    "redis": "~2.6.0-2"
+    "lodash": "4.17.21",
+    "node-redis-warlock": "1.0.2",
+    "redis": "3.1.2"
   },
   "main": "index",
   "optionalDependencies": {
